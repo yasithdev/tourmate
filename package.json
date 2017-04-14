@@ -1,0 +1,20 @@
+{
+  "name": "tourmate",
+  "private": true,
+  "scripts": {
+    "start": "meteor run",
+    "test": "meteor test --driver-package practicalmeteor:mocha --port 4000"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.20.0",
+    "bcrypt": "^1.0.2",
+    "classnames": "^2.2.5",
+    "meteor-node-stubs": "~0.2.4",
+    "prop-types": "^15.5.8",
+    "react": "^15.5.4",
+    "react-addons-pure-render-mixin": "^15.5.2",
+    "react-dom": "^15.5.4",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1"
+  }
+}
