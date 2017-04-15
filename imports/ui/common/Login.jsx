@@ -6,14 +6,26 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import { Jumbotron, Form, FormInput, FormButton } from './Components'
 
-// -- LOGIN COMPONENT
 export class Login extends React.Component {
+	constructor(props){
+		super(props);
+	}
+
 	componentWillMount(){
 		// If a user has already logged in, redirect to their home page
 		if(this.props.currentUser){
 			if(this.props.currentUser.profile.role){
 				this.props.history.push("/" + this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/home");
-			} 
+			}
+		}
+	}
+
+	componentWillUpdate(){
+		// If a user has already logged in, redirect to their home page
+		if(this.props.currentUser){
+			if(this.props.currentUser.profile.role){
+				this.props.history.push("/" + this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/home");
+			}
 		}
 	}
 
@@ -32,25 +44,26 @@ export class Login extends React.Component {
 
 	handleSubmit(event){
 		event.preventDefault();
-		let username = ReactDOM.findDOMNode(this.refs.inputUsername.refs.input).value;
-		let password = ReactDOM.findDOMNode(this.refs.inputPassword.refs.input).value;
+		let username = this.refs.inputUsername.refs.input.value;
+		let password = this.refs.inputPassword.refs.input.value;
 		
 		// Login
 		Meteor.loginWithPassword(username, password, (error) => {
-			console.log({username, password}, error.message);
+			console.log(username, password, error);
+			if(!error) {
+				// Show message that could not be logged in
+			}
 		});
 	}
 }
 
-// -- LOGOUT COMPONENT
-export class Logout extends React.Component {
-	render() {
-		// Text to display while logging out
-		return (<Jumbotron>Logging out..</Jumbotron>);
-	}
-
-	componentDidMount(){
-		// Logout and redirect to login page
-		Meteor.logout(() => {this.props.history.push('/login');});
-	}
-}
+// REACT-METEOR-DATA CONTAINER
+Login.propTypes = {
+  currentUser: PropTypes.object,
+};
+ 
+export default createContainer(() => {
+  return {
+    currentUser: Meteor.user(),
+  };
+}, Login);

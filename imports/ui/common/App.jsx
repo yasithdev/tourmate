@@ -8,7 +8,11 @@ import { Nav, NavItem } from './Components';
 import TouristApp from '../tourist/TouristApp';
 import TourProviderApp from '../tourprovider/TourProviderApp';
 
-export class TourMateUI extends React.Component{
+export class App extends React.Component{
+	constructor(props){
+		super(props);
+	}
+
 	render(){
 		return (
 			<div className="container-fluid">
@@ -16,7 +20,7 @@ export class TourMateUI extends React.Component{
 				<p>A platform to connect tourists and tour providers</p>
 				{/*{Navigation bar}*/}
 				<Nav activeKey="1">
-					<NavItem to="/home">Home</NavItem>
+					<NavItem to="/">Home</NavItem>
 					{this.props.currentUser 
 						? <NavItem to={"/" + this.props.currentUser.profile.role +"/"+ this.props.currentUser.username}>{this.props.currentUser.profile.role }</NavItem> 
 						: ''
@@ -39,12 +43,12 @@ export class TourMateUI extends React.Component{
 };
 
 // REACT-METEOR-DATA CONTAINER
-TourMateUI.propTypes = {
+App.propTypes = {
   currentUser: PropTypes.object,
 };
  
-export default TourMateUIContainer = createContainer(() => {
+export default createContainer(() => {
   return {
     currentUser: Meteor.user(),
   };
-}, TourMateUI);
+}, App);

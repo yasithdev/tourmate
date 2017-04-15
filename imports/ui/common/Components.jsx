@@ -25,11 +25,11 @@ export const Nav =
 
 export const NavItem =
   (props) => (
-    <Route path={props.to} params={props.parameters} children={({match}) => (
-      <li role="presentation" className={match ? 'active' : ''}>
+    <Route path={props.to} params={props.parameters} children={({match}) => {
+      return (<li role="presentation" className={match ? match.isExact ? 'active' : '' : ''}>
         <Link to={props.to}>{props.children}</Link>
-      </li>
-    )} />
+      </li>);
+    }} />
   );
 
 export const NavButton = 
@@ -49,18 +49,27 @@ export class FormInput extends React.Component{
     return (
       <div className="input-group">
         <span className="input-group-addon" style={{"fontStyle": "italic"}}/>
-        <input type={this.props.type} className="form-control" placeholder={this.props.placeholder} onChanged={this.props.onChanged} ref="input"/>
-        <p className="help-block" ref='helptext'></p>
+        <input type={this.props.type} className="form-control" placeholder={this.props.placeholder} onChange={this.props.onChange} ref="input"/>
+        <p className="help-block">{this.props.tip}</p>
       </div>
     );
   }
 }
 
 export class FormRadioButtons extends React.Component{
-  render(){ 
+  constructor(props){
+    super(props);
+    this.state = {'value' : ''};
+  }
+
+  handleChange(event){
+    this.setState({value: event.target.value });
+  }
+
+  render(){
     return (
       <div className="radio">
-        {this.props.buttons.map((button) => <label className='radio'><input type="radio" ref="selection" name='selection' value={button}/>{button}</label>)}
+        {this.props.buttons.map((option) => <label key={ option }><input type="radio" checked={ option === this.state.value } name='selection' value={ option } onChange={ this.handleChange.bind(this) }/>{ option }</label>)}
       </div>
     );
   }
