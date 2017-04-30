@@ -9,34 +9,38 @@ import { Jumbotron, Form, FormInput, FormButton } from './Components'
 export class Login extends React.Component {
 	constructor(props){
 		super(props);
+		this.state = {'isLoggedIn' : false};
 	}
 
 	componentWillMount(){
-		// If a user has already logged in, redirect to their home page
 		if(this.props.currentUser){
-			if(this.props.currentUser.profile.role){
-				this.props.history.push("/" + this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/home");
-			}
+			this.setState({'isLoggedIn' : true});
 		}
 	}
 
-	componentWillUpdate(){
-		// If a user has already logged in, redirect to their home page
-		if(this.props.currentUser){
-			if(this.props.currentUser.profile.role){
-				this.props.history.push("/" + this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/home");
-			}
+	componentDidMount(){
+		if(this.state.isLoggedIn){
+			this.props.history.push("/" + this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/");
+		}
+	}
+
+	componentDidUpdate(){
+		if(this.state.isLoggedIn){
+			this.props.history.push("/" + this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/");
 		}
 	}
 
 	render() {
-		return(
+		if(this.state.isLoggedIn) {
+			return (<div className="jumbotron text-center">Successfully Logged In. Redirecting..</div>);
+		}
+		else return(
 		<div>
-			<h1>Login UI</h1>
+			<h1>Log in to your Account</h1>
 			<Form onSubmit={this.handleSubmit.bind(this)}>
 				<FormInput type='text' ref='inputUsername' placeholder='User Name'/>
 				<FormInput type='password' ref='inputPassword' placeholder='Password'/>
-				<FormButton text='Login'/>
+				<FormButton text='Log in'/>
 			</Form>
 		</div>
 		);
@@ -51,7 +55,7 @@ export class Login extends React.Component {
 		Meteor.loginWithPassword(username, password, (error) => {
 			console.log(username, password, error);
 			if(!error) {
-				// Show message that could not be logged in
+				this.setState({'isLoggedIn' : true});
 			}
 		});
 	}

@@ -25,7 +25,7 @@ Meteor.startup(() => {
 					<Route path="/logout" component={Logout}/>
 					<Route path="/register" component={Register}/>
 					<Route path="/tourist/:username" component={TouristApp}/>
-					<Route path="/tourprovider/:username" component={TourProviderApp}/>
+					<Route path="/tour-provider/:username" component={TourProviderApp}/>
 				</div>
 			</Router>
 	), document.getElementById('render-target'));

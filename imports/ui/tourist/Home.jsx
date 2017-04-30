@@ -12,7 +12,7 @@ export default class Home extends React.Component {
 				</Row>
 				<Row>
 					<Col width="2"><Img source={'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png'}/></Col>
-					<Col width="10"><p>{this.props.user.username} {this.props.user.emails[0].address}</p></Col>
+					{<Col width="10"><p>{this.props.user.username} {this.props.user.emails[0].address}</p></Col>}
 				</Row>
 				<Row>
 					<NavButton to="/">Update Profile</NavButton>

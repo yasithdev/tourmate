@@ -10,11 +10,13 @@ import TouristUI from './TouristUI';
 
 // Render application routes of tourist subsystem into {this.props.children} of TourMateUI
 export default TouristApp = ({props, match}) => (
-	<TouristUI>
+	<div>
+		<Route path="/tourist/:username" component={TouristUI}/>
+		<Route exact path="/tourist/:username" component={Home}/>
+		
 		<Route path="/tourist/:username/contactus" component={ContactUs}/>
-		<Route path="/tourist/:username/home" component={Home}/>
 		<Route path="/tourist/:username/messaging" component={Messaging}/>
 		<Route path="/tourist/:username/plantour" component={PlanTour}/>
 		<Route path="/tourist/:username/profile" component={Profile}/>
-	</TouristUI>
+	</div>
 );
