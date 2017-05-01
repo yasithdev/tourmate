@@ -60,14 +60,8 @@ export class Register extends React.Component
 		);
 	}
 };
-
-// REACT-METEOR-DATA CONTAINER
-Register.propTypes = {
-	currentUser: PropTypes.object,
-  isAvailable: PropTypes.func,
-};
  
-export default createContainer(() => {
+export default RegisterContainer = createContainer((props) => {
   return {
   	currentUser: Meteor.user(),
     isAvailable: (username) => (username ? !(Meteor.users.findOne({'username' : username})) : ''),

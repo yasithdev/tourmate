@@ -1,11 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { createContainer } from 'meteor/react-meteor-data';
 import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
 import Home from './Home';
-import {Nav, NavItem} from '../common/Components';
+import {Navbar, NavHeader, Nav, NavItem, CollapsingNav} from '../common/Components';
 
 export class TouristUI extends React.Component {
 	constructor(props){
@@ -21,30 +20,33 @@ export class TouristUI extends React.Component {
 	}
 
 	render(){
-		return (
-			<div>
-				<h1>Welcome {this.props.currentUser.username}!</h1>
-				<Nav>
-					<NavItem to={"/tourist/" + this.props.currentUser.username}>Home</NavItem>
-					<NavItem to={"/tourist/" + this.props.currentUser.username + "/profile"}>Profile</NavItem>
-					<NavItem to={"/tourist/" + this.props.currentUser.username + "/plantour"}>Plan a Tour</NavItem>
-					<NavItem to={"/tourist/" + this.props.currentUser.username + "/messaging"}>Messaging</NavItem>
-					<NavItem to={"/tourist/" + this.props.currentUser.username + "/contact"}>Contact</NavItem>
-				</Nav>
-				{/*UI Components render here*/}
-				{this.props.children}
-			</div>
-		);
+		if (this.props.currentUser){
+			return (
+				<div>
+					<Navbar>
+						<Nav>
+							<NavHeader to={"/tourist/" + this.props.currentUser.username} collapsetarget="tourist-nav">Home</NavHeader>
+						</Nav>
+						<CollapsingNav id="tourist-nav">
+							<Nav>
+								<NavItem to={"/tourist/" + this.props.currentUser.username + "/profile"}>Profile</NavItem>
+								<NavItem to={"/tourist/" + this.props.currentUser.username + "/plantour"}>Plan a Tour</NavItem>
+								<NavItem to={"/tourist/" + this.props.currentUser.username + "/messaging"}>Messaging</NavItem>
+								<NavItem to={"/tourist/" + this.props.currentUser.username + "/contact"}>Contact</NavItem>
+							</Nav>
+						</CollapsingNav>
+					</Navbar>
+					{/*UI Components render here*/}
+					{this.props.children}
+				</div>
+			);
+		} else {
+			return (<div><h1>Loading.. </h1></div>);
+		}
 	}
 }
 
-
-// REACT-METEOR-DATA CONTAINER
-TouristUI.propTypes = {
-  currentUser: PropTypes.object,
-};
- 
-export default createContainer(() => {
+export default TouristUIContainer = createContainer((props) => {
   return {
     currentUser: Meteor.user(),
   };

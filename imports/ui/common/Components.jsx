@@ -20,8 +20,27 @@ export const Col =
 export const Button = 
   (props) => (<button type="button" className="btn">{props.children}</button>);
 
+export const Navbar = 
+  (props) => (<nav className="navbar navbar-default"><div className="container-fluid">{props.children}</div></nav>);
+
+export const CollapsingNav = 
+  (props) => (<div className="navbar-collapse collapse" id={props.id}>{props.children}</div>);
+
 export const Nav = 
-  (props) => (<ul className="nav nav-tabs">{props.children}</ul>);
+  (props) => (<ul className={"nav navbar-nav " + (props.align == "right" ? "navbar-right " : "navbar-left ")}>{props.children}</ul>);
+
+export const NavHeader = 
+  (props) => (
+    <div className="navbar-header">
+      <button className="navbar-toggle" type="button" data-toggle="collapse" data-target={"#" + props.collapsetarget}>
+        <span className="icon-bar"></span>
+        <span className="icon-bar"></span>
+        <span className="icon-bar"></span>
+      </button>
+      <NavItem to={props.to} parameters={props.parameters}>
+        <a className="navbar-brand">{props.children}</a>
+      </NavItem>
+    </div>);
 
 export const NavItem =
   (props) => (

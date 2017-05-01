@@ -1,64 +1,72 @@
 import { Meteor } from 'meteor/meteor';
+import { createContainer } from 'meteor/react-meteor-data';
 import React from 'react';
 
+import { Form, FormInput, FormButton} from '../common/Components';
+import  '../../api/users';
+
 // update profile information page for tourist
-export default class Profile extends React.Component
-{
-    constructor(props) {
-        super(props);
-    }
-    
-    /* this method is invoked when currentUser submits the profile update form */
-    handleSubmit(event){
-        event.preventDefault();
+export class Profile extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+	
+	/* this method is invoked when currentUser submits the profile update form */
+	handleSubmit(event){
+		event.preventDefault();
 
-        /* Load content from UI to variables */
-        let iName = this.refs.inputName.value;
-        let iUrl = this.refs.inputUrl.value;
-        let iBio = this.refs.inputBio.value;
-        let iAvatar = $("#inputAvatar").val();
-        iAvatar = iAvatar === "" ? this.props.currentUser.profile.avatar : iAvatar;
+		/* Load content from UI to variables */
+		let iName = this.refs.inputName.refs.input.value;
+		let iUrl = this.refs.inputUrl.refs.input.value;
+		let iBio = this.refs.inputBio.refs.input.value;
+		let iAvatar = this.refs.inputAvatar.refs.input.files;
+		iAvatar = iAvatar === "" ? this.props.currentUser.profile.avatar : iAvatar;
 
-        /* create object with all profile parameters */
-        let iProfile = {
-            name: iName,
-            url: iUrl,
-            bio: iBio,
-            avatar: iAvatar,
-            role: this.props.currentUser.role
-        };
+		/* create object with all profile parameters */
+		let iProfile = {
+			role: this.props.currentUser.profile.role,
 
-        /* call server method to update currentUser profile, and pass the created object */
-        Meteor.call('users.profile.update',iProfile);
+			name: iName,
+			url: iUrl,
+			bio: iBio,
+			avatar: iAvatar,
+		};
 
-        /* if successful, refresh the current page */
-        this.props.history.push(this.props.history.pop());
-    }
+		console.log(iProfile);
+		/* call server method to update currentUser profile, and pass the created object */
+		Meteor.call('users.profile.update', iProfile, (error, result) => {
+			/* if successful, refresh the current page */
+			if(result) this.props.history.push(this.props.history.pop());
+		});
+	}
 
-    /* UI layout for editing currentUser profile information */
-    render(){
-        return(
+	/* UI layout for editing currentUser profile information */
+	render(){
+		return(
 			<div>
-				<h1>Profile - {this.props.currentUser.username}</h1>
-                {/* Form content */}
+				<h2>Update Profile</h2>
+				{/* Form content */}
 				<Form onSubmit={this.handleSubmit.bind(this)}>
-                    <FormInput type="url" placeholder="Name" ref="inputName"/>
-                    <FormInput type="url" placeholder="Webpage URL" ref="inputUrl"/>
-                    <FormInput type="text" placeholder="Bio" ref="inputBio"/>
+					<FormInput type="text" placeholder="Name" ref="inputName"/>
+					<FormInput type="url" placeholder="Webpage URL" ref="inputUrl"/>
+					<FormInput type="text" placeholder="Bio" ref="inputBio"/>
 					<FormInput type="file" accept="image/*" placeholder="Avatar" ref="inputAvatar"/>
-					<FormButton>Submit</FormButton>
+					<FormButton text="Submit"/>
 				</Form>
 			</div>
-        );
-    }
+		);
+	}
 
-    /* Load currentUser profile content with current parameters from database after form is rendered in html */
-    componentDidMount(){
-        // set initial values for all components
-        let currentUser = this.props.currentUser;
-        this.refs.inputName.value = currentUser.profile.name;
-        this.refs.inputUrl.value = currentUser.profile.url;
-        this.refs.inputBio.value = currentUser.profile.bio;
-        // this.refs.inputAvatar.value = currentUser.profile.avatar; --commented out because form does not allow assigning file inputs programmatically
-    }
+	componentDidMount() {
+		this.refs.inputName.refs.input.value = this.props.currentUser.profile.name;
+		this.refs.inputUrl.refs.input.value = this.props.currentUser.profile.url;
+		this.refs.inputBio.refs.input.value = this.props.currentUser.profile.bio;
+		// this.refs.inputAvatar.refs.input.value = this.props.currentUser.profile.avatar;
+	}
 };
+
+export default ProfileContainer = createContainer((props) => {
+	return {
+		currentUser: Meteor.user(),
+  };
+}, Profile);

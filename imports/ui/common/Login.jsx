@@ -12,19 +12,7 @@ export class Login extends React.Component {
 		this.state = {'isLoggedIn' : false};
 	}
 
-	componentWillMount(){
-		if(this.props.currentUser){
-			this.setState({'isLoggedIn' : true});
-		}
-	}
-
 	componentDidMount(){
-		if(this.state.isLoggedIn){
-			this.props.history.push("/" + this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/");
-		}
-	}
-
-	componentDidUpdate(){
 		if(this.state.isLoggedIn){
 			this.props.history.push("/" + this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/");
 		}
@@ -61,12 +49,7 @@ export class Login extends React.Component {
 	}
 }
 
-// REACT-METEOR-DATA CONTAINER
-Login.propTypes = {
-  currentUser: PropTypes.object,
-};
- 
-export default createContainer(() => {
+export default LoginContainer = createContainer((props) => {
   return {
     currentUser: Meteor.user(),
   };
