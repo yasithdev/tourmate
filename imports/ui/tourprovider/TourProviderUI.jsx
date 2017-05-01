@@ -4,7 +4,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
 import Home from './Home';
-import {Navbar, Nav, NavItem} from '../common/Components';
+import {Navbar, NavHeader, Nav, NavItem, CollapsingNav} from '../common/Components';
 
 export class TourProviderUI extends React.Component{
 	constructor(props){
@@ -20,20 +20,26 @@ export class TourProviderUI extends React.Component{
 	}
 
 	render(){
+		if (!this.props.currentUser) return (<div><h1>Loading.. </h1></div>);
 		return (
 			<div>
-				<h1>Welcome {this.props.currentUser.username}!</h1>
 				<Navbar>
 					<Nav>
-						<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/"}>Home</NavItem>
-						<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/profile"}>Profile</NavItem>
-						<NavItem to={"/tour-provider/" + this.props.currentUserv.username + "/reservations"}>Reservations</NavItem>
-						<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/messaging"}>Messaging</NavItem>
-						<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/reviews"}>Reviews</NavItem>
+						<NavHeader to={"/tour-provider/" + this.props.currentUser.username} collapsetarget="tour-provider-nav">Home</NavHeader>
 					</Nav>
+					<CollapsingNav id="tour-provider-nav">
+						<Nav>
+							{/*<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/profile"}>Profile</NavItem>*/}
+							<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/reservations"}>Reservations</NavItem>
+							<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/messaging"}>Messaging</NavItem>
+							<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/reviews"}>Reviews</NavItem>
+						</Nav>
+					</CollapsingNav>
 				</Navbar>
-				{/*UI Components render here*/}
-				{this.props.children}
+				<div className="container">
+					{/*UI Components render here*/}
+					{this.props.children}
+				</div>
 			</div>
 		);
 	}

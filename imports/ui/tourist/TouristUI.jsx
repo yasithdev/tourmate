@@ -20,29 +20,28 @@ export class TouristUI extends React.Component {
 	}
 
 	render(){
-		if (this.props.currentUser){
-			return (
-				<div>
-					<Navbar>
+		if (!this.props.currentUser) return (<div><h1>Loading.. </h1></div>);
+		return (
+			<div>
+				<Navbar>
+					<Nav>
+						<NavHeader to={"/tourist/" + this.props.currentUser.username} collapsetarget="tourist-nav">Home</NavHeader>
+					</Nav>
+					<CollapsingNav id="tourist-nav">
 						<Nav>
-							<NavHeader to={"/tourist/" + this.props.currentUser.username} collapsetarget="tourist-nav">Home</NavHeader>
+							{/*<NavItem to={"/tourist/" + this.props.currentUser.username + "/profile"}>Profile</NavItem>*/}
+							<NavItem to={"/tourist/" + this.props.currentUser.username + "/plantour"}>Plan a Tour</NavItem>
+							<NavItem to={"/tourist/" + this.props.currentUser.username + "/messaging"}>Messaging</NavItem>
+							<NavItem to={"/tourist/" + this.props.currentUser.username + "/contact"}>Contact</NavItem>
 						</Nav>
-						<CollapsingNav id="tourist-nav">
-							<Nav>
-								<NavItem to={"/tourist/" + this.props.currentUser.username + "/profile"}>Profile</NavItem>
-								<NavItem to={"/tourist/" + this.props.currentUser.username + "/plantour"}>Plan a Tour</NavItem>
-								<NavItem to={"/tourist/" + this.props.currentUser.username + "/messaging"}>Messaging</NavItem>
-								<NavItem to={"/tourist/" + this.props.currentUser.username + "/contact"}>Contact</NavItem>
-							</Nav>
-						</CollapsingNav>
-					</Navbar>
+					</CollapsingNav>
+				</Navbar>
+				<div className="container">
 					{/*UI Components render here*/}
 					{this.props.children}
 				</div>
-			);
-		} else {
-			return (<div><h1>Loading.. </h1></div>);
-		}
+			</div>
+		);
 	}
 }
 

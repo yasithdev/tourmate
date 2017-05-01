@@ -23,7 +23,9 @@ export class App extends React.Component {
 					<CollapsingNav id="main-nav">
 						<Nav>
 							{this.props.currentUser 
-								? <NavItem to={"/" + this.props.currentUser.profile.role +"/"+ this.props.currentUser.username}>{this.props.currentUser.profile.role }</NavItem> 
+								? <NavItem to={"/" + this.props.currentUser.profile.role +"/"+ this.props.currentUser.username}>
+										{this.props.currentUser.profile.role == "tourist" ? "Tourist" : this.props.currentUser.profile.role == "tour-provider" ? "Tour Provider" : "Admin"}
+									</NavItem> 
 								: ''
 							}
 							<NavItem to="/about">About Us</NavItem>

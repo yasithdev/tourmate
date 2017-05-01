@@ -17,6 +17,6 @@ export default TouristApp = ({props, match}) => (
 		<Route path="/tourist/:username/contactus" component={ContactUs}/>
 		<Route path="/tourist/:username/messaging" component={Messaging}/>
 		<Route path="/tourist/:username/plantour" component={PlanTour}/>
-		<Route path="/tourist/:username/profile" component={Profile}/>
+		{<Route path="/tourist/:username/profile" component={Profile}/>}
 	</div>
 );

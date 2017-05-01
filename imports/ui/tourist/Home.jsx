@@ -9,15 +9,34 @@ export class Home extends React.Component {
 	render(){
 		return (
 			<FluidContainer>
+				<h2>{this.props.currentUser.profile.name}</h2>
 				<Row>
-					<Col width="12"><h2>{this.props.currentUser.profile.name}</h2></Col>
+					<Col width="3"><Img source={'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png'}/></Col>
+					<Col width="9">
+						<Row>
+							<Col width="4"><strong>Email</strong></Col>
+							<Col width="8">{this.props.currentUser.emails[0].address}</Col>
+						</Row>
+						<Row>
+							<Col width="4"><strong>Member Since</strong></Col>
+							<Col width="8">{this.props.currentUser.createdAt}</Col>
+						</Row>
+						<Row>
+							<Col width="4"><strong>Username</strong></Col>
+							<Col width="8">{this.props.currentUser.username}</Col>
+						</Row>
+						<Row>
+							<Col width="4"><strong>Url</strong></Col>
+							<Col width="8"><a href={this.props.currentUser.profile.url}>{this.props.currentUser.profile.url}</a></Col>
+						</Row>
+						<Row>
+							<Col width="4"><strong>Bio</strong></Col>
+							<Col width="8">{this.props.currentUser.profile.bio}</Col>
+						</Row>
+					</Col>
 				</Row>
 				<Row>
-					<Col width="2"><Img source={'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png'}/></Col>
-					{<Col width="10"><p>{this.props.currentUser.emails[0].address}</p></Col>}
-				</Row>
-				<Row>
-					<NavButton to="/tourist/">Update Profile</NavButton>
+					<NavButton to={"/"+ this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/" + "profile"}>Update Profile</NavButton>
 				</Row>
 			</FluidContainer>
 		);

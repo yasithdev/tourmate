@@ -21,8 +21,8 @@ export class Profile extends React.Component {
         let iBio = this.refs.inputBio.refs.input.value;
         let iAvatar = this.refs.inputAvatar.refs.input.files;
         iAvatar = iAvatar === "" ? this.props.currentUser.profile.avatar : iAvatar;
-        // Subscription
-        // Selected services
+        // Subscriptions
+        // Selected Services
 
         /* create object with all profile parameters */
         let iProfile = {
@@ -38,7 +38,7 @@ export class Profile extends React.Component {
         /* call server method to update currentUser profile, and pass the created object */
         Meteor.call('users.profile.update', iProfile, (error, result) => {
             /* if successful, refresh the current page */
-            if(result) this.props.history.push(this.props.history.pop());
+            if(result) this.props.history.push("/" + this.props.currentUser.profile.role + "/" + this.props.currentUser.username);
         });
     }
 
@@ -46,7 +46,7 @@ export class Profile extends React.Component {
     render(){
         return(
             <div>
-                <h1>Profile - {this.props.currentUser.username}</h1>
+                <h2>Update Profile</h2>
                 {/* Form content */}
                 <Form onSubmit={this.handleSubmit.bind(this)}>
                     <FormInput type="text" placeholder="Name" ref="inputName"/>

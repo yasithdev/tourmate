@@ -36,7 +36,7 @@ export class Profile extends React.Component {
 		/* call server method to update currentUser profile, and pass the created object */
 		Meteor.call('users.profile.update', iProfile, (error, result) => {
 			/* if successful, refresh the current page */
-			if(result) this.props.history.push(this.props.history.pop());
+      if(result) this.props.history.push("/" + this.props.currentUser.profile.role + "/" + this.props.currentUser.username);
 		});
 	}
 
