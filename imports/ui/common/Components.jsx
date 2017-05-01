@@ -37,7 +37,7 @@ export const NavHeader =
         <span className="icon-bar"></span>
         <span className="icon-bar"></span>
       </button>
-      <NavItem to={props.to} parameters={props.parameters}>
+      <NavItem to={props.to} parameters={props.parameters} collapsetarget={props.collapsetarget}>
         <a className="navbar-brand">{props.children}</a>
       </NavItem>
     </div>);
@@ -45,7 +45,7 @@ export const NavHeader =
 export const NavItem =
   (props) => (
     <Route path={props.to} params={props.parameters} children={({match}) => {
-      return (<li role="presentation" className={match ? 'active' : ''}>
+      return (<li role="presentation" className={match ? 'active' : ''} data-toggle="collapse" data-target={"#" + props.collapsetarget + ".in"}>
         <Link to={props.to}>{props.children}</Link>
       </li>);
     }} />

@@ -30,9 +30,9 @@ export class TourProviderUI extends React.Component{
 					<CollapsingNav id="tour-provider-nav">
 						<Nav>
 							{/*<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/profile"}>Profile</NavItem>*/}
-							<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/reservations"}>Reservations</NavItem>
-							<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/messaging"}>Messaging</NavItem>
-							<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/reviews"}>Reviews</NavItem>
+							<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/reservations"} collapsetarget="tour-provider-nav">Reservations</NavItem>
+							<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/messaging"} collapsetarget="tour-provider-nav">Messaging</NavItem>
+							<NavItem to={"/tour-provider/" + this.props.currentUser.username + "/reviews"} collapsetarget="tour-provider-nav">Reviews</NavItem>
 						</Nav>
 					</CollapsingNav>
 				</Navbar>

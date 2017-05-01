@@ -23,25 +23,25 @@ export class App extends React.Component {
 					<CollapsingNav id="main-nav">
 						<Nav>
 							{this.props.currentUser 
-								? <NavItem to={"/" + this.props.currentUser.profile.role +"/"+ this.props.currentUser.username}>
+								? <NavItem to={"/" + this.props.currentUser.profile.role +"/"+ this.props.currentUser.username} collapsetarget="main-nav">
 										{this.props.currentUser.profile.role == "tourist" ? "Tourist" : this.props.currentUser.profile.role == "tour-provider" ? "Tour Provider" : "Admin"}
 									</NavItem> 
 								: ''
 							}
-							<NavItem to="/about">About Us</NavItem>
+							<NavItem to="/about" collapsetarget="main-nav">About Us</NavItem>
 						</Nav>
 						<Nav align="right">
 							{this.props.currentUser 
 								? '' 
-								: <NavItem to="/register">Register</NavItem>
+								: <NavItem to="/register" collapsetarget="main-nav">Register</NavItem>
 							}
 							{this.props.currentUser 
 								? <a className="navbar-brand">{this.props.currentUser.profile.name + " (" + this.props.currentUser.profile.role + ")"}</a>
 								: ''
 							}
 							{this.props.currentUser
-								? <NavItem to="/logout">Logout</NavItem> 
-								: <NavItem to="/login">Login</NavItem>
+								? <NavItem to="/logout" collapsetarget="main-nav">Logout</NavItem> 
+								: <NavItem to="/login" collapsetarget="main-nav">Login</NavItem>
 							}
 						</Nav>
 					</CollapsingNav>

@@ -30,9 +30,9 @@ export class TouristUI extends React.Component {
 					<CollapsingNav id="tourist-nav">
 						<Nav>
 							{/*<NavItem to={"/tourist/" + this.props.currentUser.username + "/profile"}>Profile</NavItem>*/}
-							<NavItem to={"/tourist/" + this.props.currentUser.username + "/plantour"}>Plan a Tour</NavItem>
-							<NavItem to={"/tourist/" + this.props.currentUser.username + "/messaging"}>Messaging</NavItem>
-							<NavItem to={"/tourist/" + this.props.currentUser.username + "/contact"}>Contact</NavItem>
+							<NavItem to={"/tourist/" + this.props.currentUser.username + "/plantour"} collapsetarget="tourist-nav">Plan a Tour</NavItem>
+							<NavItem to={"/tourist/" + this.props.currentUser.username + "/messaging"} collapsetarget="tourist-nav">Messaging</NavItem>
+							<NavItem to={"/tourist/" + this.props.currentUser.username + "/contact"} collapsetarget="tourist-nav">Contact</NavItem>
 						</Nav>
 					</CollapsingNav>
 				</Navbar>
