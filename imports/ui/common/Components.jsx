@@ -17,8 +17,8 @@ export const Row =
 export const Col = 
   (props) => (<div className={"col-xs-" + props.width}>{props.children}</div>);
 
-export const Button = 
-  (props) => (<button type="button" className="btn">{props.children}</button>);
+const Button = 
+  (props) => (<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default")}>{props.children}</a>);
 
 export const Navbar = 
   (props) => (<nav className="navbar navbar-default"><div className="container-fluid">{props.children}</div></nav>);
@@ -45,7 +45,7 @@ export const NavHeader =
 export const NavItem =
   (props) => (
     <Route path={props.to} params={props.parameters} children={({match}) => {
-      return (<li role="presentation" className={match ? match.isExact ? 'active' : '' : ''}>
+      return (<li role="presentation" className={match ? 'active' : ''}>
         <Link to={props.to}>{props.children}</Link>
       </li>);
     }} />
@@ -53,11 +53,9 @@ export const NavItem =
 
 export const NavButton = 
   (props) => (
-    <Route path={props.to} params={props.parameters} children={({match}) => (
-      <Button>
-        <Link to={props.to}>{props.children}</Link>
-      </Button>
-    )} />
+    <Route path={props.to} params={props.parameters} children={({match}) => {
+      return (<Link to={props.to}><Button>{props.children}</Button></Link>);
+    }} />
   );
 
 export const Form = 
@@ -79,6 +77,7 @@ export class FormRadioButtons extends React.Component{
   constructor(props){
     super(props);
     this.state = {'value' : ''};
+    if(this.props.selection) this.state["value"] = this.props.selection;
   }
 
   handleChange(event){
@@ -98,7 +97,36 @@ export class FormCheckbox extends React.Component{
   render(){ 
     return (
       <div className="checkbox">
-        <label><input type="checkbox" ref='checked'/>{this.props.text}</label>
+        <label><input type="checkbox" id={this.props.id} ref='checked' onChange={this.props.onChange} checked={this.props.checked} />{this.props.text}</label>
+      </div>
+    );
+  }
+}
+
+export class FormCheckboxGroup extends React.Component{
+  constructor(props){
+    super(props);
+    if(this.props.selection){
+      this.state = this.props.selection;
+    } 
+    else {
+      let selection = {};
+      for(option of this.props.options){
+        selection[option] = false;
+      }
+      this.state = selection;
+    }
+  }
+
+  handleChange(event){
+    this.state[event.target.id] = event.target.checked;
+    this.setState(this.state);
+  }
+
+  render(){
+    return (
+      <div className="input-group" >
+        {this.props.options.map((option) => <FormCheckbox id={option} checked={this.state[option]} ref={option} key={option} text={option} onChange={this.handleChange.bind(this)} />)}
       </div>
     );
   }

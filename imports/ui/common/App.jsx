@@ -36,7 +36,7 @@ export class App extends React.Component {
 								: <NavItem to="/register">Register</NavItem>
 							}
 							{this.props.currentUser 
-								? <a className="navbar-brand">{this.props.currentUser.profile.name}</a>
+								? <a className="navbar-brand">{this.props.currentUser.profile.name + " (" + this.props.currentUser.profile.role + ")"}</a>
 								: ''
 							}
 							{this.props.currentUser

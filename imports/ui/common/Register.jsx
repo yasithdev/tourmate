@@ -49,7 +49,7 @@ export class Register extends React.Component
 		<div>
 			<h1>Register UI</h1>
 			<Form onSubmit={this.handleSubmit.bind(this)}>
-				<FormRadioButtons ref='inputRole' buttons={['tourist', 'tour-provider']}/>
+				<FormRadioButtons ref='inputRole' buttons={['tourist', 'tour-provider']} selection="tourist"/>
 				<FormInput type='text' placeholder='User Name' ref='inputUsername' tip={this.state.available == true ? 'Available' : this.state.available === false ? 'Already taken' : ''} onChange={this.handleUsernameChange.bind(this)}/>
 				<FormInput type='password' placeholder='Password' ref='inputPassword'/>
 				<FormInput type='email' placeholder='Email' ref='inputEmail'/>

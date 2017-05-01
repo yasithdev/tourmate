@@ -36,7 +36,7 @@ export class Home extends React.Component {
 					</Col>
 				</Row>
 				<Row>
-					<NavButton to={"/"+ this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/" + "profile"}>Update Profile</NavButton>
+					<NavButton type="default" to={"/"+ this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/" + "profile"}>Update Profile</NavButton>
 				</Row>
 			</FluidContainer>
 		);

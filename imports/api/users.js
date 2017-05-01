@@ -11,6 +11,7 @@ Meteor.methods({
 		check(user.profile.role, String);
 		check(user.password, String);
 		check(user.email, String);
+		if(user.profile.role == "tour-provider" && !user.profile.subscription) user.profile[subscription] = "Free";
 		Accounts.createUser(user);
 		return true;
 	},

@@ -33,10 +33,22 @@ export class Home extends React.Component {
 							<Col width="4"><strong>Bio</strong></Col>
 							<Col width="8">{this.props.currentUser.profile.bio}</Col>
 						</Row>
+						<Row>
+							<Col width="4"><strong>Subscription</strong></Col>
+							<Col width="8">{this.props.currentUser.profile.subscription}</Col>
+						</Row>
+						<Row>
+							<Col width="4"><strong>Services</strong></Col>
+							<Col width="8">
+								<ul>
+									{Object.keys(this.props.currentUser.profile.services).map((key) => this.props.currentUser.profile.services[key] ? (<li key={key}>{key}</li>) : '' )}
+								</ul>
+							</Col>
+						</Row>
 					</Col>
 				</Row>
 				<Row>
-					<NavButton to={"/"+ this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/" + "profile"}>Update Profile</NavButton>
+					<NavButton type="default" to={"/"+ this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/" + "profile"}>Update Profile</NavButton>
 				</Row>
 			</FluidContainer>
 		);

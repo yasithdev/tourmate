@@ -25,7 +25,7 @@ export class TouristUI extends React.Component {
 			<div>
 				<Navbar>
 					<Nav>
-						<NavHeader to={"/tourist/" + this.props.currentUser.username} collapsetarget="tourist-nav">Home</NavHeader>
+						<NavHeader to={"/tourist/" + this.props.currentUser.username} collapsetarget="tourist-nav">My Profile</NavHeader>
 					</Nav>
 					<CollapsingNav id="tourist-nav">
 						<Nav>
