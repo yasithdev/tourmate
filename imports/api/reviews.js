@@ -4,6 +4,14 @@ import { check } from 'meteor/check';
 
 export const Reviews = new Mongo.Collection('reviews');
 
+/* 'reviews' Schema
+ * -------------------
+ * |--- writeDate : date
+ * |--- title : String
+ * |--- rating : int (between 1 and 10 inclusive)
+ * |--- review : String
+ */
+
 if (Meteor.isServer) {
   Meteor.publish('reviews', () => {
     return Reviews.find({userId: this.userId});
