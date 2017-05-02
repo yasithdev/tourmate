@@ -42,17 +42,13 @@ export class Profile extends React.Component {
 	/* UI layout for editing currentUser profile information */
 	render(){
 		return(
-			<div>
-				<h2>Update Profile</h2>
-				{/* Form content */}
-				<Form onSubmit={this.handleSubmit.bind(this)}>
-					<FormInput type="text" placeholder="Name" ref="inputName"/>
-					<FormInput type="url" placeholder="Webpage URL" ref="inputUrl"/>
-					<FormInput type="text" placeholder="Bio" ref="inputBio"/>
-					<FormInput type="file" accept="image/*" placeholder="Avatar" ref="inputAvatar"/>
-					<FormButton text="Submit"/>
-				</Form>
-			</div>
+			<Form title="Update profile" onSubmit={this.handleSubmit.bind(this)}>
+				<FormInput type="text" placeholder="Name" ref="inputName"/>
+				<FormInput type="url" placeholder="Webpage URL" ref="inputUrl"/>
+				<FormInput type="text" placeholder="Bio" ref="inputBio"/>
+				<FormInput type="file" accept="image/*" placeholder="Avatar" ref="inputAvatar"/>
+				<FormButton text="Submit"/>
+			</Form>
 		);
 	}
 

@@ -44,3 +44,15 @@ Meteor.methods({
 		return !(user != null);
 	},
 });
+
+Meteor.publish("tourists", () => 
+	Meteor.users.find(
+		{'profile.role' : 'tourist'}, 
+		{fields: {'profile': 1}}
+	));
+
+Meteor.publish("tour-providers", () => 
+	Meteor.users.find(
+		{'profile.role' : 'tour-provider'}, 
+		{fields: {'profile.role': 1, 'profile.name': 1, 'profile.url': 1, 'profile.bio': 1, 'profile.avatar': 1, 'profile.services': 1}}
+	));

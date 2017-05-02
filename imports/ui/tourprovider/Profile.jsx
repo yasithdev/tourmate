@@ -46,19 +46,15 @@ export class Profile extends React.Component {
     /* UI layout for editing currentUser profile information */
     render(){
         return(
-            <div>
-                <h2>Update Profile</h2>
-                {/* Form content */}
-                <Form onSubmit={this.handleSubmit.bind(this)}>
-                    <FormInput type="text" placeholder="Name" ref="inputName"/>
-                    <FormInput type="url" placeholder="Webpage URL" ref="inputUrl"/>
-                    <FormInput type="text" placeholder="Bio" ref="inputBio"/>
-                    <FormInput type="file" accept="image/*" placeholder="Avatar" ref="inputAvatar"/>
-                    <FormCheckboxGroup options={this.availableServices} selection={this.props.currentUser.profile.services} ref="inputServices"/>
-                    <FormRadioButtons ref="inputSubscription" buttons={{'Free': 'Free', 'Paid' : 'Paid'}} selection={this.props.currentUser.profile.subscription}/>
-                    <FormButton text="Submit"/>
-                </Form>
-            </div>
+            <Form title="Update Profile" onSubmit={this.handleSubmit.bind(this)}>
+                <FormInput type="text" placeholder="Name" ref="inputName"/>
+                <FormInput type="url" placeholder="Webpage URL" ref="inputUrl"/>
+                <FormInput type="text" placeholder="Bio" ref="inputBio"/>
+                <FormInput type="file" accept="image/*" placeholder="Avatar" ref="inputAvatar"/>
+                <FormCheckboxGroup placeholder="Services" options={this.availableServices} selection={this.props.currentUser.profile.services} ref="inputServices"/>
+                <FormRadioButtons placeholder="Subscription" ref="inputSubscription" buttons={{'Free': 'Free', 'Paid' : 'Paid'}} selection={this.props.currentUser.profile.subscription}/>
+                <FormButton text="Submit"/>
+            </Form>
         );
     }
 

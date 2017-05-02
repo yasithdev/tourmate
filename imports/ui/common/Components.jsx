@@ -153,7 +153,10 @@ export class FormCheckboxGroup extends React.Component{
   render(){
     return (
       <div className="form-group" >
-        {this.props.options.map((option) => <FormCheckbox id={option} checked={this.state[option]} ref={option} key={option} text={option} onChange={this.handleChange.bind(this)} />)}
+        <label className="col-lg-2 control-label">{this.props.placeholder}</label>
+        <div className="col-lg-10">
+          {this.props.options.map((option) => <div key={option}><label><input type="checkbox" id={option} checked={this.state[option]} ref={option} onChange={this.handleChange.bind(this)} /> {option}</label></div>)}
+        </div>  
       </div>
     );
   }
