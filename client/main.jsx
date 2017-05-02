@@ -9,7 +9,6 @@ import App from '../imports/ui/common/App';
 import About from '../imports/ui/common/About';
 import Home from '../imports/ui/common/Home';
 import Login from '../imports/ui/common/Login';
-import Logout from '../imports/ui/common/Logout';
 import Register from '../imports/ui/common/Register';
 
 export class Routes extends React.Component {
@@ -25,7 +24,10 @@ export class Routes extends React.Component {
 					<Route path="/login" render={()=> this.props.currentUser
 						? (<Redirect to={"/" + this.props.currentUser.profile.role + "/" + this.props.currentUser.username}/>)
 						: (<Login/>)} />
-					<Route path="/logout" component={Logout}/>
+					<Route path="/logout" render={() => {
+						Meteor.logout();
+						return(<Redirect to="/login"/>);
+					}}/>
 					<Route path="/register" component={Register}/>
 					<Route path="/tourist/:username" render={() => this.props.currentUser
 						? <TouristApp/>

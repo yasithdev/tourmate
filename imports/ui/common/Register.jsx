@@ -11,7 +11,7 @@ export class Register extends React.Component
 {
 	constructor(props){
 		super(props);
-		this.state = {'available' : ''};
+		this.state = {'available' : '', 'agreed' : false};
 	}
 
 	componentWillMount(){
@@ -41,29 +41,37 @@ export class Register extends React.Component
 
 	handleUsernameChange(event){
 		const uname = event.target.value;
-		this.setState({available: this.props.isAvailable(uname)});
+		if(uname == '' || uname == null || uname == undefined) {
+			this.setState({'available' : ""});
+		}
+		else {
+			Meteor.call("users.username.isAvailable", uname, (error, result) => {
+				this.setState({'available': result});
+			});
+		}
+	}
+
+	handleCheckChange(event){
+		const agreed = (event.target.checked == true);
+		this.setState({'agreed' : agreed});
 	}
 
 	render(){
 		return(
-		<div>
-			<h1>Register UI</h1>
-			<Form onSubmit={this.handleSubmit.bind(this)}>
-				<FormRadioButtons ref='inputRole' buttons={['tourist', 'tour-provider']} selection="tourist"/>
-				<FormInput type='text' placeholder='User Name' ref='inputUsername' tip={this.state.available == true ? 'Available' : this.state.available === false ? 'Already taken' : ''} onChange={this.handleUsernameChange.bind(this)}/>
-				<FormInput type='password' placeholder='Password' ref='inputPassword'/>
-				<FormInput type='email' placeholder='Email' ref='inputEmail'/>
-				<FormCheckbox text='I agree to the terms and conditions of TourMate' ref='inputAccepted'/>
-				<FormButton text='Register'/>
+			<Form onSubmit={this.handleSubmit.bind(this)} title="Registration">
+				<FormRadioButtons placeholder="Account Type" ref='inputRole' buttons={{'tourist' : 'Tourist', 'tour-provider' : 'Tour Provider'}} selection="tourist"/>
+				<FormInput type='text' placeholder='User Name' minlength='8' ref='inputUsername' tip={this.state.available === true ? 'Available' : this.state.available === false ? 'Already taken' : ''} onChange={this.handleUsernameChange.bind(this)}/>
+				<FormInput type='password' placeholder='Password' minlength='8' ref='inputPassword'/>
+				<FormInput type='email' placeholder='Email' minlength='8' ref='inputEmail'/>
+				<FormCheckbox text='I agree to the terms and conditions of TourMate' ref='inputAccepted' onChange={this.handleCheckChange.bind(this)}/>
+				<FormButton enabled={this.state.available === true && this.state.agreed === true} text='Register'/>
 			</Form>
-		</div>
 		);
 	}
 };
  
 export default RegisterContainer = createContainer((props) => {
   return {
-  	currentUser: Meteor.user(),
-    isAvailable: (username) => (username ? !(Meteor.users.findOne({'username' : username})) : ''),
+  	currentUser: Meteor.user()
   };
 }, Register);

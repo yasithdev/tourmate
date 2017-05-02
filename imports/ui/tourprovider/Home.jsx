@@ -41,7 +41,13 @@ export class Home extends React.Component {
 							<Col width="4"><strong>Services</strong></Col>
 							<Col width="8">
 								<ul>
-									{Object.keys(this.props.currentUser.profile.services).map((key) => this.props.currentUser.profile.services[key] ? (<li key={key}>{key}</li>) : '' )}
+									{
+										this.props.currentUser.profile.services 
+											? ((Object.values(this.props.currentUser.profile.services).indexOf(true) >= 0)
+												? (Object.keys(this.props.currentUser.profile.services).map((key) => this.props.currentUser.profile.services[key] ? (<li key={key}>{key}</li>) : ''))
+												: '(N/A)')
+											: '(N/A)'
+									}
 								</ul>
 							</Col>
 						</Row>

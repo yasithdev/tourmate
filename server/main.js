@@ -1,11 +1,46 @@
 import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check';
+import { Accounts } from 'meteor/accounts-base'
 
 import '../imports/api/messages.js';
 import '../imports/api/reservations.js';
 import '../imports/api/reviews.js';
 import '../imports/api/tasks.js';
-import '../imports/api/users.js';
 
 Meteor.startup(() => {
   // code to run on server at startup
+});
+
+Meteor.methods({
+
+	// Inserts a new user into database
+	'users.createUser': (user) => {
+		check(user.username, String);
+		check(user.profile.role, String);
+		check(user.password, String);
+		check(user.email, String);
+		if(user.profile.role == "tour-provider" && user.profile['subscription'] === undefined) user.profile['subscription'] = "Free";
+		console.log(user);
+		Accounts.createUser(user);
+		return true;
+	},
+
+	'users.profile.update': (iProfile) => {
+		check(iProfile.role, String);
+
+		check(iProfile.name, String);
+		check(iProfile.url, String);
+		check(iProfile.bio, String);
+		check(iProfile.avatar, Object);
+
+		if(!Meteor.user()) throw new Meteor.error('User is undefined');
+		Meteor.users.update(Meteor.userId(), {$set : {profile : iProfile}});
+		return true;
+	},
+
+	'users.username.isAvailable': (uname) => {
+		check(uname, String);
+		let user = Accounts.findUserByUsername(uname);
+		return !(user != null);
+	},
 });

@@ -23,14 +23,11 @@ export class Login extends React.Component {
 			return (<div className="jumbotron text-center">Successfully Logged In. Redirecting..</div>);
 		}
 		else return(
-		<div>
-			<h1>Log in to your Account</h1>
-			<Form onSubmit={this.handleSubmit.bind(this)}>
+			<Form onSubmit={this.handleSubmit.bind(this)} title="Log in to your Account">
 				<FormInput type='text' ref='inputUsername' placeholder='User Name'/>
 				<FormInput type='password' ref='inputPassword' placeholder='Password'/>
 				<FormButton text='Log in'/>
 			</Form>
-		</div>
 		);
 	}
 

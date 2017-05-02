@@ -17,8 +17,8 @@ export const Row =
 export const Col = 
   (props) => (<div className={"col-xs-" + props.width}>{props.children}</div>);
 
-const Button = 
-  (props) => (<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default")}>{props.children}</a>);
+export const Button = 
+  (props) => (<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default")} onClick={props.onClick}>{props.children}</a>);
 
 export const Navbar = 
   (props) => (<nav className="navbar navbar-default"><div className="container-fluid">{props.children}</div></nav>);
@@ -59,15 +59,29 @@ export const NavButton =
   );
 
 export const Form = 
-  (props) => (<form onSubmit={props.onSubmit}>{props.children}</form>);
+  (props) => (
+    <div className="well bs-component">
+      <form className="form-horizontal" onSubmit={props.onSubmit}>
+        <fieldset>
+          <legend>{props.title}</legend>
+          {props.children}
+        </fieldset>
+      </form>
+    </div>);
 
 export class FormInput extends React.Component{
+  constructor(props){
+    super(props);
+  }
+  
   render(){ 
     return (
-      <div className="input-group">
-        <span className="input-group-addon" style={{"fontStyle": "italic"}}/>
-        <input type={this.props.type} className="form-control" placeholder={this.props.placeholder} onChange={this.props.onChange} ref="input"/>
-        <p className="help-block">{this.props.tip}</p>
+      <div className="form-group">
+        <label htmlFor={this.props.placeholder} className="col-lg-2 control-label">{this.props.placeholder}</label>
+        <div className="col-lg-10">
+          <input type={this.props.type} className="form-control" placeholder={this.props.placeholder} onChange={this.props.onChange} ref="input" minLength={this.props.minlength ? this.props.minlength : 0}/>
+          <p className="help-block">{this.props.tip}</p>
+        </div>
       </div>
     );
   }
@@ -86,8 +100,18 @@ export class FormRadioButtons extends React.Component{
 
   render(){
     return (
-      <div className="radio">
-        {this.props.buttons.map((option) => <label key={ option }><input type="radio" checked={ option === this.state.value } name='selection' value={ option } onChange={ this.handleChange.bind(this) }/>{ option }</label>)}
+      <div className="form-group">
+        <label className="col-lg-2 control-label">{this.props.placeholder}</label>
+        <div className="col-lg-10">
+            {Object.keys(this.props.buttons).map((key) => 
+              (<div className="radio" key={ key }>
+                <label>
+                  <input type="radio" checked={ key === this.state.value } name='selection' value={ key } onChange={ this.handleChange.bind(this) }/>
+                  { this.props.buttons[key] }
+                </label>
+              </div>)
+            )}
+        </div>
       </div>
     );
   }
@@ -96,8 +120,11 @@ export class FormRadioButtons extends React.Component{
 export class FormCheckbox extends React.Component{
   render(){ 
     return (
-      <div className="checkbox">
-        <label><input type="checkbox" id={this.props.id} ref='checked' onChange={this.props.onChange} checked={this.props.checked} />{this.props.text}</label>
+      <div className="form-group">
+        <label className="col-lg-2 control-label">{this.props.placeholder}</label>
+        <div className="col-lg-10">
+          <label><input type="checkbox" id={this.props.id} ref='checked' onChange={this.props.onChange} checked={this.props.checked} />{this.props.text}</label>
+        </div>
       </div>
     );
   }
@@ -125,7 +152,7 @@ export class FormCheckboxGroup extends React.Component{
 
   render(){
     return (
-      <div className="input-group" >
+      <div className="form-group" >
         {this.props.options.map((option) => <FormCheckbox id={option} checked={this.state[option]} ref={option} key={option} text={option} onChange={this.handleChange.bind(this)} />)}
       </div>
     );
@@ -135,7 +162,11 @@ export class FormCheckboxGroup extends React.Component{
 export class FormButton extends React.Component{
   render(){ 
     return (
-      <button type="submit" className="btn btn-default">{this.props.text}</button>
+      <div className="form-group">
+        <div className="col-lg-10 col-lg-offset-2">
+          <button type="submit" className="btn btn-primary" disabled={this.props.enabled === false}>{this.props.text}</button>
+        </div>
+    </div>
     );
   }
 }

@@ -3,7 +3,6 @@ import { createContainer } from 'meteor/react-meteor-data';
 import React from 'react';
 
 import { Form, FormInput, FormButton, FormCheckboxGroup, FormRadioButtons} from '../common/Components';
-import  '../../api/users';
 
 // update profile information page for tourist
 export class Profile extends React.Component {
@@ -56,7 +55,7 @@ export class Profile extends React.Component {
                     <FormInput type="text" placeholder="Bio" ref="inputBio"/>
                     <FormInput type="file" accept="image/*" placeholder="Avatar" ref="inputAvatar"/>
                     <FormCheckboxGroup options={this.availableServices} selection={this.props.currentUser.profile.services} ref="inputServices"/>
-                    <FormRadioButtons ref="inputSubscription" buttons={['Free', 'Paid']} selection={this.props.currentUser.profile.subscription}/>
+                    <FormRadioButtons ref="inputSubscription" buttons={{'Free': 'Free', 'Paid' : 'Paid'}} selection={this.props.currentUser.profile.subscription}/>
                     <FormButton text="Submit"/>
                 </Form>
             </div>
@@ -64,9 +63,9 @@ export class Profile extends React.Component {
     }
 
     componentDidMount() {
-        this.refs.inputName.refs.input.value = this.props.currentUser.profile.name;
-        this.refs.inputUrl.refs.input.value = this.props.currentUser.profile.url;
-        this.refs.inputBio.refs.input.value = this.props.currentUser.profile.bio;
+        this.refs.inputName.refs.input.value = this.props.currentUser.profile.name == undefined ? '' : this.props.currentUser.profile.name;
+        this.refs.inputUrl.refs.input.value = this.props.currentUser.profile.url == undefined ? '' : this.props.currentUser.profile.url;
+        this.refs.inputBio.refs.input.value = this.props.currentUser.profile.bio == undefined ? '' : this.props.currentUser.profile.bio;
 
         for(service of this.availableServices){
           this.refs.inputServices.refs[service].checked = this.props.currentUser.profile.services[service];
