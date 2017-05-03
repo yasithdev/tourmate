@@ -8,7 +8,9 @@ import { Tasks } from '../api/tasks.js';
 import Task from './Task.jsx';
 import AccountsUI from './AccountsUI.jsx';
  
-// App component - represents the whole app
+/* ------------------------------------------------------------ *
+ * Application page ------------------------------------------- *
+ * ------------------------------------------------------------ */
 class App extends Component {
   constructor(props) {
     super(props);
@@ -98,7 +100,10 @@ App.propTypes = {
   currentUser: PropTypes.object,
   showPrivateButton: React.PropTypes.bool.isRequired,
 };
- 
+
+/* ------------------------------------------------------------ *
+ * Reactive data container for App ---------------------------- *
+ * ------------------------------------------------------------ */
 export default AppContainer = createContainer(() => {
   Meteor.subscribe('tasks');
 

@@ -6,6 +6,9 @@ import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import Home from './Home';
 import {Navbar, NavHeader, Nav, NavItem, CollapsingNav} from '../common/Components';
 
+/* ------------------------------------------------------------ *
+ * Application page for tour provider subsystem --------------- *
+ * ------------------------------------------------------------ */
 export class TourProviderUI extends React.Component{
 	constructor(props){
 		super(props);
@@ -44,7 +47,10 @@ export class TourProviderUI extends React.Component{
 		);
 	}
 }
- 
+
+/* ------------------------------------------------------------ *
+ * Reactive data container for TourProviderUI ----------------- *
+ * ------------------------------------------------------------ */
 export default TourProviderUIContainer = createContainer((props) => {
   return {
     currentUser: Meteor.user(),

@@ -4,7 +4,9 @@ import React from 'react';
 
 import { Form, FormInput, FormButton, FormCheckboxGroup, FormRadioButtons} from '../common/Components';
 
-// update profile information page for tourist
+/* ------------------------------------------------------------ *
+ * Update profile information of tour provider ---------------- *
+ * ------------------------------------------------------------ */
 export class Profile extends React.Component {
     constructor(props) {
         super(props);
@@ -72,6 +74,9 @@ export class Profile extends React.Component {
     }
 };
 
+/* ------------------------------------------------------------ *
+ * Reactive data container for Profile ------------------------ *
+ * ------------------------------------------------------------ */
 export default ProfileContainer = createContainer((props) => {
     return {
         currentUser: Meteor.user(),

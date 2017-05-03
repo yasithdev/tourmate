@@ -6,6 +6,9 @@ import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import Home from './Home';
 import {Navbar, NavHeader, Nav, NavItem, CollapsingNav} from '../common/Components';
 
+/* ------------------------------------------------------------ *
+ * Application page for tourist subsystem --------------------- *
+ * ------------------------------------------------------------ */
 export class TouristUI extends React.Component {
 	constructor(props){
 		super(props);
@@ -45,6 +48,9 @@ export class TouristUI extends React.Component {
 	}
 }
 
+/* ------------------------------------------------------------ *
+ * Reactive data container for TouristUI ---------------------- *
+ * ------------------------------------------------------------ */
 export default TouristUIContainer = createContainer((props) => {
   return {
     currentUser: Meteor.user(),

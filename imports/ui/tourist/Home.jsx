@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import { createContainer } from 'meteor/react-meteor-data';
 import {FluidContainer, Row, Col, Img, NavButton} from '../common/Components';
 
-// home page for tourist
+/* ------------------------------------------------------------ *
+ * Homepage for tourist --------------------------------------- *
+ * ------------------------------------------------------------ */
 export class Home extends React.Component {
 	render(){
 		return (
@@ -42,7 +44,10 @@ export class Home extends React.Component {
 		);
 	}
 }
- 
+
+/* ------------------------------------------------------------ *
+ * Reactive data container for Homepage ----------------------- *
+ * ------------------------------------------------------------ */
 export default HomeContainer = createContainer((props) => {
   return {
     currentUser: Meteor.user(),

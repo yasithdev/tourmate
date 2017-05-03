@@ -5,11 +5,40 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { Button, Row, Col } from '../common/Components';
 import { Reservations as ReservationsDb } from '../../api/reservations';
 
-/* ----------
- * Components
- * ---------- */
+/* ------------------------------------------------------------ *
+ * Reservation page for tour provider ------------------------- *
+ * ------------------------------------------------------------ */
+export class Reservations extends React.Component {
+	constructor(props){
+		super(props);
+	}
 
-// Work Item - Reservation records with different statuses show in different panel colours
+	render(){
+		return (
+			<div>
+				<h2> Reservations </h2>
+			{this.props.reservations ? this.props.reservations.map((reservation) => (<ReservationRecord username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
+			</div>
+		);
+	}
+}
+
+/* ------------------------------------------------------------ *
+ * Reactive data container for Reservations ------------------- *
+ * ------------------------------------------------------------ */
+export default ReservationsContainer = createContainer((props) => {
+	Meteor.subscribe('tourists');
+	Meteor.subscribe('reservations', Meteor.user().profile.role, Meteor.userId());
+	return {
+		currentUser : Meteor.user(),
+		reservations : ReservationsDb.find().fetch(),
+		usernameById : (userId) => (Meteor.users.findOne(userId) ? Meteor.users.findOne(userId)['username'] : ('')),
+	};
+}, Reservations);
+
+/* ------------------------------------------------------------ *
+ * Components ------------------------------------------------- *
+ * ------------------------------------------------------------ */
 export class ReservationRecord extends React.Component {
 	constructor(props){
 		super(props);
@@ -31,32 +60,12 @@ export class ReservationRecord extends React.Component {
 						<Col className="text-right" width="4"><Button id={this.props.reservation} onClick={this.handleClick.bind(this)}>Click</Button></Col>
 					</Row>
 				</div>
-				<div className="panel-body">Description</div>
+				<div className="panel-body">
+					<div>Tourist : {this.props.username}</div>
+					<div>Start Date : {this.props.reservation.startDate.toLocaleDateString()}</div>
+					<div>End Date : {this.props.reservation.endDate.toLocaleDateString()}</div>
+				</div>
 			</div>
 		);
 	}
 }
-
-// reservations page for tourprovider
-export class Reservations extends React.Component {
-	constructor(props){
-		super(props);
-	}
-
-	render(){
-		return (
-			<div>
-				<h2> Reservations </h2>
-			{this.props.reservations ? this.props.reservations.map((reservation) => (<ReservationRecord key={reservation._id} reservation={reservation}/>)) : ''}
-			</div>
-		);
-	}
-}
-
-export default ReservationsContainer = createContainer((props) => {
-	Meteor.subscribe('reservations', Meteor.user().profile.role, Meteor.userId());
-	return {
-		currentUser: Meteor.user(),
-		reservations : ReservationsDb.find().fetch(),
-	};
-}, Reservations);

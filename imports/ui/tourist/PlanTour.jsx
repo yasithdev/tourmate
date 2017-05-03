@@ -6,7 +6,9 @@ import { Row, Col, Form, FormInput, FormButton, FormCheckboxGroup, Button} from 
 
 import {Reservations} from '../../api/reservations'
 
-// contact us page for tourist
+/* ------------------------------------------------------------ *
+ * Plan a Tour Page for tourist ------------------------------- *
+ * ------------------------------------------------------------ */
 class PlanTour extends React.Component {
 	constructor(props){
 		super(props);
@@ -89,11 +91,14 @@ class PlanTour extends React.Component {
 	}
 
 	componentDidMount(){
-		this.refs.inputStartDate.refs.input.value = new Date().toISOString().substring(0, 10);
-		this.refs.inputEndDate.refs.input.value = new Date(new Date().getTime() + 86400000).toISOString().substring(0, 10);
+		this.refs.inputStartDate.refs.input.value = new Date().toLocaleDateString();
+		this.refs.inputEndDate.refs.input.value = new Date(new Date().getTime() + 86400000).toLocaleDateString();
 	}
 }
 
+/* ------------------------------------------------------------ *
+ * Reactive data container for PlanTour ----------------------- *
+ * ------------------------------------------------------------ */
 export default PlanTourContainer = createContainer((props) => {
 	Meteor.subscribe('tour-providers');
 	Meteor.subscribe('reservations');
@@ -103,8 +108,9 @@ export default PlanTourContainer = createContainer((props) => {
 	});
 }, PlanTour);
 
-
-// Components ------------------------------------------------------------------------------------------
+/* ------------------------------------------------------------ *
+ * Components ------------------------------------------------- *
+ * ------------------------------------------------------------ */
 class SearchResult extends React.Component {
 	constructor(props){
 		super(props);

@@ -8,7 +8,9 @@ import Reservations from './Reservations';
 import Reviews from './Reviews';
 import TourProviderUI from './TourProviderUI';
 
-// Render application routes of tourist subsystem into {this.props.children} of TourMateUI
+/* ------------------------------------------------------------ *
+ * Application routes of tour provider subsystem -------------- *
+ * ------------------------------------------------------------ */
 export default TourProviderApp = ({props, match}) => ( 
 	<div>
 		<Route path="/tour-provider/:username" component={TourProviderUI}/>

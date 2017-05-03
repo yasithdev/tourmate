@@ -8,7 +8,9 @@ import PlanTour from './PlanTour';
 import Profile from './Profile';
 import TouristUI from './TouristUI';
 
-// Render application routes of tourist subsystem into {this.props.children} of TourMateUI
+/* ------------------------------------------------------------ *
+ * Application routes of tourist subsystem -------------------- *
+ * ------------------------------------------------------------ */
 export default TouristApp = ({props, match}) => (
 	<div>
 		<Route path="/tourist/:username" component={TouristUI}/>

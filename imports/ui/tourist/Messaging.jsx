@@ -1,6 +1,8 @@
 import React from 'react';
 
-// contact us page for tourist
+/* ------------------------------------------------------------ *
+ * Messaging page for tourist --------------------------------- *
+ * ------------------------------------------------------------ */
 export default class Messaging extends React.Component {
 	render(){
 		return (

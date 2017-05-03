@@ -1,6 +1,8 @@
 import React from 'react';
 
-// reviews section for tourprovider
+/* ------------------------------------------------------------ *
+ * Reviews page for tour provider ----------------------------- *
+ * ------------------------------------------------------------ */
 export default Reviews = () => ( 
 	<div>
 		<h2> Reviews </h2>

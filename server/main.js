@@ -5,7 +5,6 @@ import { Accounts } from 'meteor/accounts-base'
 import '../imports/api/messages.js';
 import '../imports/api/reservations.js';
 import '../imports/api/reviews.js';
-import '../imports/api/tasks.js';
 
 Meteor.startup(() => {
   // code to run on server at startup
@@ -48,11 +47,13 @@ Meteor.methods({
 Meteor.publish("tourists", () => 
 	Meteor.users.find(
 		{'profile.role' : 'tourist'}, 
-		{fields: {'profile': 1}}
-	));
+		{fields: {'profile': 1, 'username' : 1}}
+	)
+);
 
 Meteor.publish("tour-providers", () => 
 	Meteor.users.find(
 		{'profile.role' : 'tour-provider'}, 
-		{fields: {'profile.role': 1, 'profile.name': 1, 'profile.url': 1, 'profile.bio': 1, 'profile.avatar': 1, 'profile.services': 1}}
-	));
+		{fields: {'profile.role': 1, 'profile.name': 1, 'profile.url': 1, 'profile.bio': 1, 'profile.avatar': 1, 'profile.services': 1, 'username' : 1}}
+	)
+);

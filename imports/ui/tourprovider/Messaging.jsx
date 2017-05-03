@@ -1,6 +1,8 @@
 import React from 'react';
 
-// messaging page for tourprovider
+/* ------------------------------------------------------------ *
+ * Messaging page for tour provider --------------------------- *
+ * ------------------------------------------------------------ */
 export default Messaging = () => ( 
 	<div>
 		<h2> Messaging </h2>
