@@ -15,10 +15,10 @@ export const Row =
   (props) => (<div className="row">{props.children}</div>);
 
 export const Col = 
-  (props) => (<div className={"col-xs-" + props.width}>{props.children}</div>);
+  (props) => (<div className={"col-sm-" + props.width + " " + props.className}>{props.children}</div>);
 
 export const Button = 
-  (props) => (<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default")} onClick={props.onClick}>{props.children}</a>);
+  (props) => (<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default")} id={props.id} onClick={props.onClick}>{props.children}</a>);
 
 export const Navbar = 
   (props) => (<nav className="navbar navbar-default"><div className="container-fluid">{props.children}</div></nav>);

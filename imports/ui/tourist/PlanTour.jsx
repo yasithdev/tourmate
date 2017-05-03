@@ -18,20 +18,45 @@ class PlanTour extends React.Component {
 		event.preventDefault();
 
 		// Create query
+		let startDate = this.refs.inputStartDate.refs.input.value;
+		let endDate = this.refs.inputEndDate.refs.input.value;
+
 		let query = this.generateQuery(
-			this.availableServices.filter((key) => this.refs.inputServices.state[key])
+			this.availableServices.filter((key) => this.refs.inputServices.state[key]),
+			startDate,
+			endDate
 		);
 		
 		// Update state with search results for query
 		this.setState({ 'results' : this.props.searchResults(query) });
 	}
 
-	generateQuery(selectedServices){
+	generateQuery(selectedServices, startDate, endDate){
 		let query = { 'profile.role' : 'tour-provider' };
 		for(service of selectedServices){
 			query['profile.services.' + service] = true;
 		}
 		return query;
+	}
+
+	handleReserve(event){
+		event.preventDefault();
+
+		// Create reservation object
+		let reservation = {
+			'tourist' : this.props.currentUser._id,
+			'tour-provider' : event.target.id,
+			'services' : this.availableServices.filter((key) => this.refs.inputServices.state[key]),
+			'startDate' : new Date(this.refs.inputStartDate.refs.input.value),
+			'endDate' : new Date(this.refs.inputEndDate.refs.input.value),
+			'status' : 'pending',
+			'message' : 'test message'
+		};
+		
+		// Add reservation to reservations collection
+		Meteor.call('reservations.insert', reservation, (error, result) => {
+			console.log(error, result);
+		})
 	}
 
 	render(){
@@ -55,17 +80,23 @@ class PlanTour extends React.Component {
 					<h4>Search Results</h4>
 					{ 
 						Object.keys(this.state.results) 
-							? Object.keys(this.state.results).map((result) => <SearchResult key={result} data={this.state.results[result].profile} />)
+							? Object.keys(this.state.results).map((result) => <SearchResult onClick={this.handleReserve.bind(this)} key={result} data={this.state.results[result]} />)
 							: '' 
 					}
 				</div>
 			</div>
 		);
 	}
+
+	componentDidMount(){
+		this.refs.inputStartDate.refs.input.value = new Date();
+		this.refs.inputEndDate.refs.input.value = new Date();
+	}
 }
 
 export default PlanTourContainer = createContainer((props) => {
 	Meteor.subscribe('tour-providers');
+	Meteor.subscribe('reservations');
 	return({
 		currentUser: Meteor.user(),
 		searchResults: (params) => Meteor.users.find(params).fetch(),
@@ -79,21 +110,26 @@ class SearchResult extends React.Component {
 		super(props);
 	}
 
-	handleClick(event){
-		event.preventDefault();
-	}
-
 	render(){
 		return (
 			<div className="panel panel-primary">
 				<div className="panel-heading">
-					<h3 className="panel-title">
-						{this.props.data.name}
-						<Button type="primary" onClick={this.handleClick.bind(this)}>Reserve</Button>
-					</h3>
+					<Row>
+						<Col width="8"><h3 className="panel-title">{this.props.data.profile.name}</h3></Col>
+						<Col className="text-right" width="4"><Button id={this.props.data._id} onClick={this.props.onClick}>Reserve</Button></Col>
+					</Row>
 				</div>
 				<div className="panel-body">
-					{this.props.data.bio}
+					{this.props.data.profile.bio}
+					<ul>
+						{
+							this.props.data.profile.services 
+								? ((Object.values(this.props.data.profile.services).indexOf(true) >= 0)
+									? (Object.keys(this.props.data.profile.services).map((key) => this.props.data.profile.services[key] ? (<li key={key}>{key}</li>) : ''))
+									: '(N/A)')
+								: '(N/A)'
+						}
+					</ul>
 				</div>
 			</div>
 		);

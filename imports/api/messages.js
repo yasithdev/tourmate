@@ -5,7 +5,7 @@ import { check } from 'meteor/check';
 export const Messages = new Mongo.Collection('messages');
 
 if (Meteor.isServer) {
-  Meteor.publish('messages', () => {
+  Meteor.publish('messages', function() {
     return Messages.find({userId: this.userId});
   });
 }

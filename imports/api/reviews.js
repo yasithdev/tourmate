@@ -13,7 +13,7 @@ export const Reviews = new Mongo.Collection('reviews');
  */
 
 if (Meteor.isServer) {
-  Meteor.publish('reviews', () => {
+  Meteor.publish('reviews', function() {
     return Reviews.find({userId: this.userId});
   });
 }

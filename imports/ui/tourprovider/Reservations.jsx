@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 
-import { Button } from '../common/Components';
+import { Button, Row, Col } from '../common/Components';
 import { Reservations as ReservationsDb } from '../../api/reservations';
 
 /* ----------
@@ -26,10 +26,10 @@ export class ReservationRecord extends React.Component {
 				this.props.reservation.status == "Accepted" ? "panel-primary" :
 				this.props.reservation.status == "Completed" ? "panel-success" : "panel-default")}>
 				<div className="panel-heading">
-					<h3 className="panel-title">
-						{this.props.reservation.message}
-						<Button id={this.props.reservation} onClick={this.handleClick.bind(this)}>Click</Button>
-					</h3>
+					<Row>
+						<Col width="8"><h3 className="panel-title">{this.props.reservation.message}</h3></Col>
+						<Col className="text-right" width="4"><Button id={this.props.reservation} onClick={this.handleClick.bind(this)}>Click</Button></Col>
+					</Row>
 				</div>
 				<div className="panel-body">Description</div>
 			</div>
@@ -54,7 +54,7 @@ export class Reservations extends React.Component {
 }
 
 export default ReservationsContainer = createContainer((props) => {
-	Meteor.subscribe('reservations');
+	Meteor.subscribe('reservations', Meteor.user().profile.role, Meteor.userId());
 	return {
 		currentUser: Meteor.user(),
 		reservations : ReservationsDb.find().fetch(),
