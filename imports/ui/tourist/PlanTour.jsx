@@ -89,8 +89,8 @@ class PlanTour extends React.Component {
 	}
 
 	componentDidMount(){
-		this.refs.inputStartDate.refs.input.value = new Date();
-		this.refs.inputEndDate.refs.input.value = new Date();
+		this.refs.inputStartDate.refs.input.value = new Date().toISOString().substring(0, 10);
+		this.refs.inputEndDate.refs.input.value = new Date(new Date().getTime() + 86400000).toISOString().substring(0, 10);
 	}
 }
 

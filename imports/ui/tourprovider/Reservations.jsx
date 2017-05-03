@@ -47,7 +47,7 @@ export class Reservations extends React.Component {
 		return (
 			<div>
 				<h2> Reservations </h2>
-			{this.props.reservations ? this.props.reservations.map((reservation) => (<ReservationRecord key={reservation} reservation={reservation}/>)) : ''}
+			{this.props.reservations ? this.props.reservations.map((reservation) => (<ReservationRecord key={reservation._id} reservation={reservation}/>)) : ''}
 			</div>
 		);
 	}
