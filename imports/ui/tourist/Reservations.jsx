@@ -20,10 +20,10 @@ class Reservations extends React.Component {
 		});
 	}
 
-	handleCancelReservation(reservation){
-		console.log("Running handleCancelReservation");
-		Meteor.call('reservations.update', reservation._id, {'status' : 'canceled'} , (error, result) => {
-			if(result) alert("Successfully canceled");
+	handleCancelAcceptedReservation(reservation){
+		console.log("Running handleCancelAcceptedReservation");
+		Meteor.call('reservations.update', reservation._id, {'status' : 'pendingcancel'} , (error, result) => {
+			if(result) alert("Successfully marked for cancellation");
 		});
 	}
 
@@ -41,7 +41,7 @@ class Reservations extends React.Component {
 
 				<h2> Accepted Reservations </h2>
 				{/*Accepted Reservations - Can be cancelled (request to cancel with message)*/}
-				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "accepted").map((reservation) => (<AcceptedReservation onCancelReservation={this.handleCancelReservation} username={this.props.usernameById(reservation['tour-provider'])} key={reservation._id} reservation={reservation}/>)) : ''}
+				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "accepted").map((reservation) => (<AcceptedReservation onCancelReservation={this.handleCancelAcceptedReservation} username={this.props.usernameById(reservation['tour-provider'])} key={reservation._id} reservation={reservation}/>)) : ''}
 
 				<h2> Completed Reservations </h2>
 				{/*Completed Reservations - Can write a review, or view the review if one exists*/}

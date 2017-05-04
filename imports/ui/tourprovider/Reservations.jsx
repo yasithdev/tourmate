@@ -20,9 +20,9 @@ class Reservations extends React.Component {
 		});
 	}
 
-	handleRejectReservation(reservation){
-		console.log("Running handleRejectReservation");
-		Meteor.call('reservations.update', reservation._id, {'status' : 'canceled'} , (error, result) => {
+	handleRejectReservation(reservation, message){
+		console.log("Running handleRejectReservation", message);
+		Meteor.call('reservations.update', reservation._id, {'status' : 'rejected'} , (error, result) => {
 			if(result) alert("Successfully rejected");
 		});
 	}
@@ -34,9 +34,9 @@ class Reservations extends React.Component {
 		});
 	}
 
-	handleDisputeReservation(reservation){
-		console.log("Running handleDisputeReservation");
-		Meteor.call('reservations.update', reservation._id, {'status' : 'canceled'} , (error, result) => {
+	handleDisputeReservation(reservation, message){
+		console.log("Running handleDisputeReservation", message);
+		Meteor.call('reservations.update', reservation._id, {'status' : 'disputed'} , (error, result) => {
 			if(result) alert("Successfully disputed");
 		});
 	}
@@ -62,7 +62,7 @@ class Reservations extends React.Component {
 
 				<h2> Pending Cancellation </h2>
 				{/*Pending Cancellations - Can accept or dispute*/}
-				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "pendingcancel").map((reservation) => (<PendingCancelReservation onAcceptReservation={this.handleCancelReservation} onRejectReservation={this.handleDisputeReservation} username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
+				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "pendingcancel").map((reservation) => (<PendingCancelReservation onConfirmCancellation={this.handleCancelReservation} onDisputeCancellation={this.handleDisputeReservation} username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
 			</div>
 		);
 	}
@@ -88,24 +88,16 @@ class PendingReservation extends React.Component {
 	constructor(props){
 		super(props);
 		if(this.props.reservation.status != "pending") throw 'Invalid reservation';
-		this.state = {
-			'accepted' : '',
-			'selectedAction' : '',
-		};
 	}
 
-	handleClick(event){
+	handleAcceptClick(event){
 		event.preventDefault();
-		if(this.state.accepted == true) this.props.onAcceptReservation(this.props.reservation);
-		if(this.state.accepted == false) this.props.onRejectReservation(this.props.reservation);
+		this.props.onAcceptReservation(this.props.reservation);
 	}
 
-	handleSelect(event){
+	handleRejectClick(event){
 		event.preventDefault();
-		this.setState({
-			selectedAction : event.target.innerHTML,
-			accepted : event.target.innerHTML == "Accept" ? true : event.target.innerHTML == "Reject" ? false : '',
-		});
+		this.props.onRejectReservation(this.props.reservation, this.refs.inputMessage.value);
 	}
 
 	render() {
@@ -117,8 +109,8 @@ class PendingReservation extends React.Component {
 							<Col widthXS="8"><strong className="panel-title">{this.props.reservation.message}</strong></Col>
 							<Col className="text-right" widthXS="4">
 								<span className="text-right">
-									<Button type="primary" id={this.props.reservation._id} dataToggle="modal" dataTarget="#confirmationModal" onClick={this.handleSelect.bind(this)}>Accept</Button>
-									<Button id={this.props.reservation._id} dataToggle="modal" dataTarget="#confirmationModal" onClick={this.handleSelect.bind(this)}>Reject</Button>
+									<Button type="primary" id={this.props.reservation._id} dataToggle="modal" dataTarget="#confirmationModal">Accept</Button>
+									<Button id={this.props.reservation._id} dataToggle="modal" dataTarget="#rejectionModal">Reject</Button>
 								</span>
 							</Col>
 						</Row>
@@ -130,8 +122,12 @@ class PendingReservation extends React.Component {
 					</div>
 				</div>
 
-				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.handleClick.bind(this)}>
-					<p>{"Are you sure you want to " + this.state.selectedAction + "?"}</p>
+				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.handleAcceptClick.bind(this)}>
+					<p>{"Are you sure you want to Accept this reservation?"}</p>
+				</Modal>
+				<Modal id="rejectionModal" title="Rejection" cancelText="Back" submitText="Confirm" onClick={this.handleRejectClick.bind(this)}>
+					<p>{"Please enter your reason for rejection."}</p>
+					<textArea ref="inputMessage" rows="3" style={{'width' : '100%'}}/>
 				</Modal>
 
 			</div>
@@ -227,24 +223,16 @@ class PendingCancelReservation extends React.Component {
 	constructor(props){
 		super(props);
 		if(this.props.reservation.status != "pendingcancel") throw 'Invalid reservation';
-		this.state = {
-			'accepted' : '',
-			'selectedAction' : '',
-		};
 	}
 
-	handleClick(event){
+	handleConfirmClick(event){
 		event.preventDefault();
-		if(this.state.accepted == true) this.props.onAcceptReservation(this.props.reservation);
-		if(this.state.accepted == false) this.props.onRejectReservation(this.props.reservation);
+		this.props.onConfirmCancellation(this.props.reservation);
 	}
 
-	handleSelect(event){
+	handleDisputeClick(event){
 		event.preventDefault();
-		this.setState({
-			selectedAction : event.target.innerHTML,
-			accepted : event.target.innerHTML == "Accept" ? true : event.target.innerHTML == "Reject" ? false : '',
-		});
+		this.props.onDisputeCancellation(this.props.reservation, this.refs.inputMessage.value);
 	}
 
 	render() {
@@ -256,8 +244,8 @@ class PendingCancelReservation extends React.Component {
 							<Col widthXS="8"><strong className="panel-title">{this.props.reservation.message}</strong></Col>
 							<Col className="text-right" widthXS="4">
 								<span className="text-right">
-									<Button type="primary" id={this.props.reservation._id} dataToggle="modal" dataTarget="#confirmationModal" onClick={this.handleSelect.bind(this)}>Accept</Button>
-									<Button id={this.props.reservation._id} dataToggle="modal" dataTarget="#confirmationModal" onClick={this.handleSelect.bind(this)}>Dispute</Button>
+									<Button type="primary" id={this.props.reservation._id} dataToggle="modal" dataTarget="#confirmationModal">Accept</Button>
+									<Button id={this.props.reservation._id} dataToggle="modal" dataTarget="#rejectionModal">Dispute</Button>
 								</span>
 							</Col>
 						</Row>
@@ -269,8 +257,12 @@ class PendingCancelReservation extends React.Component {
 					</div>
 				</div>
 
-				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.handleClick.bind(this)}>
-					<p>{"Are you sure you want to " + this.state.selectedAction + "?"}</p>
+				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.handleConfirmClick.bind(this)}>
+					<p>{"Are you sure you want to confirm this Cancellation?"}</p>
+				</Modal>
+				<Modal id="rejectionModal" title="Dispute" cancelText="Back" submitText="Confirm" onClick={this.handleDisputeClick.bind(this)}>
+					<p>{"Please enter your reason for dispute."}</p>
+					<textArea ref="inputMessage" rows="3" style={{'width' : '100%'}}/>
 				</Modal>
 
 			</div>

@@ -11,7 +11,7 @@ export const Reservations = new Mongo.Collection('reservations');
  * |--- services : Array
  * |--- startDate : date
  * |--- endDate : date
- * |--- status : string (pending, accepted, completed, pendingcancel, canceled)
+ * |--- status : string (pending, accepted, completed, pendingcancel, canceled, rejected, disputed)
  * |--- message : string
  */
 
@@ -58,7 +58,7 @@ Meteor.methods({
 
 	// Deletes an existing reservation
 	'reservations.delete': (id) => {
-		Reservations.delete({'_id' : id});
+		Reservations.remove({'_id' : id});
 		return true;
 	},
 });
