@@ -45,8 +45,14 @@ Meteor.methods({
 	},
 
 	// Updates an existing reservation
-	'reservations.update': (reservation) => {
-		Reservations.update({'_id' : reservation._id}, {$set: reservation});
+	'reservations.update': (id, params) => {
+		if(params['tourist']) check(params['tourist'], String);
+		if(params['tour-provider']) check(params['tour-provider'], String);
+		if(params['services']) check(params['services'], Array);
+		if(params['startDate']) check(params['startDate'], Date);
+		if(params['endDate']) check(params['endDate'], Date);
+		if(params['message']) check(params['message'], String);
+		Reservations.update({'_id' : id}, {$set: params});
 		return true;
 	},
 

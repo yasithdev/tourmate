@@ -13,8 +13,8 @@ export class Home extends React.Component {
 			<FluidContainer>
 				<h2>{this.props.currentUser.profile.name}</h2>
 				<Row>
-					<Col width="3"><Img source={'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png'}/></Col>
-					<Col width="9">
+					<Col widthXS="4"><Img source={'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png'}/></Col>
+					<Col widthXS="8">
 						<Row>
 							<Col width="4"><strong>Email</strong></Col>
 							<Col width="8">{this.props.currentUser.emails[0].address}</Col>
