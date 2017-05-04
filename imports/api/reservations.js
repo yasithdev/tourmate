@@ -11,7 +11,7 @@ export const Reservations = new Mongo.Collection('reservations');
  * |--- services : Array
  * |--- startDate : date
  * |--- endDate : date
- * |--- status : string (pending, accepted, completed, canceled)
+ * |--- status : string (pending, accepted, completed, pendingcancel, canceled)
  * |--- message : string
  */
 

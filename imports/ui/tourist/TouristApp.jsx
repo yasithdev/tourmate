@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-import ContactUs from './ContactUs';
+import Reservations from './Reservations';
 import Home from './Home';
 import Messaging from './Messaging';
 import PlanTour from './PlanTour';
@@ -16,7 +16,7 @@ export default TouristApp = ({props, match}) => (
 		<Route path="/tourist/:username" component={TouristUI}/>
 		<Route exact path="/tourist/:username" component={Home}/>
 		
-		<Route path="/tourist/:username/contactus" component={ContactUs}/>
+		<Route path="/tourist/:username/reservations" component={Reservations}/>
 		<Route path="/tourist/:username/messaging" component={Messaging}/>
 		<Route path="/tourist/:username/plantour" component={PlanTour}/>
 		<Route path="/tourist/:username/profile" component={Profile}/>
