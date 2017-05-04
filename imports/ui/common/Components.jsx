@@ -2,19 +2,19 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link, browserHistory } from 'react-router-dom';
 
 // RETURNS BOOTSTRAPPED HTML ELEMENTS
-export const Img = 
+export const Img =
   (props) => (<img className="img-circle" src={props.source} style={{"maxWidth": "100%"}}/>);
 
-export const FluidContainer = 
+export const FluidContainer =
   (props) => (<div className="container-fluid">{props.children}</div>);
 
-export const Jumbotron = 
+export const Jumbotron =
   (props) => (<div className="jumbotron text-center">{props.children}</div>);
 
-export const Row = 
+export const Row =
   (props) => (<div className="row">{props.children}</div>);
 
-export const Col = 
+export const Col =
   (props) => (<div className={
     (props.widthXS ? ("col-xs-" + props.widthXS) : " ") +
     (props.width ? ("col-sm-" + props.width) : " ") +
@@ -22,22 +22,22 @@ export const Col =
     (props.widthL ? ("col-lg-" + props.widthL) : " ") +
     " " + props.className}>{props.children} </div>);
 
-export const Button = 
+export const Button =
   (props) => (<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default") + " " + props.className} data-toggle={props.dataToggle} data-target={props.dataTarget} id={props.id} onClick={props.onClick}>{props.children}</a>);
 
-export const Navbar = 
+export const Navbar =
   (props) => (<nav className="navbar navbar-default"><div className="container-fluid">{props.children}</div></nav>);
 
-export const CollapsingNav = 
+export const CollapsingNav =
   (props) => (<div className="navbar-collapse collapse" id={props.id}>{props.children}</div>);
 
-export const Nav = 
+export const Nav =
   (props) => (<ul className={"nav navbar-nav " + (props.align == "right" ? "navbar-right " : "navbar-left ")}>{props.children}</ul>);
 
-export const NavHeader = 
+export const NavHeader =
   (props) => (
     <div className="navbar-header">
-      <button className="navbar-toggle" type="button" data-toggle="collapse" data-target={"#" + props.collapsetarget}>
+      <button className="navbar-toggle" data-toggle="collapse" data-target={"#" + props.collapsetarget}>
         <span className="icon-bar"></span>
         <span className="icon-bar"></span>
         <span className="icon-bar"></span>
@@ -56,14 +56,14 @@ export const NavItem =
     }} />
   );
 
-export const NavButton = 
+export const NavButton =
   (props) => (
     <Route path={props.to} params={props.parameters} children={({match}) => {
       return (<Link to={props.to}><Button>{props.children}</Button></Link>);
     }} />
   );
 
-export const Form = 
+export const Form =
   (props) => (
     <div className="well bs-component">
       <form className="form-horizontal" onSubmit={props.onSubmit}>
@@ -78,8 +78,8 @@ export class FormInput extends React.Component{
   constructor(props){
     super(props);
   }
-  
-  render(){ 
+
+  render(){
     return (
       <div className="form-group">
         <label htmlFor={this.props.placeholder} className="col-lg-2 control-label">{this.props.placeholder}</label>
@@ -96,8 +96,8 @@ export class FormTextArea extends React.Component{
   constructor(props){
     super(props);
   }
-  
-  render(){ 
+
+  render(){
     return (
       <div className="form-group">
         <label htmlFor={this.props.placeholder} className="col-lg-2 control-label">{this.props.placeholder}</label>
@@ -125,7 +125,7 @@ export class FormRadioButtons extends React.Component{
       <div className="form-group">
         <label className="col-lg-2 control-label">{this.props.placeholder}</label>
         <div className="col-lg-10">
-            {Object.keys(this.props.buttons).map((key) => 
+            {Object.keys(this.props.buttons).map((key) =>
               (<div className="radio" key={ key }>
                 <label>
                   <input type="radio" checked={ key === this.state.value } name='selection' value={ key } onChange={ this.handleChange.bind(this) }/>
@@ -140,7 +140,7 @@ export class FormRadioButtons extends React.Component{
 }
 
 export class FormCheckbox extends React.Component{
-  render(){ 
+  render(){
     return (
       <div className="form-group">
         <label className="col-lg-2 control-label">{this.props.placeholder}</label>
@@ -157,7 +157,7 @@ export class FormCheckboxGroup extends React.Component{
     super(props);
     if(this.props.selection){
       this.state = this.props.selection;
-    } 
+    }
     else {
       let selection = {};
       for(option of this.props.options){
@@ -178,14 +178,14 @@ export class FormCheckboxGroup extends React.Component{
         <label className="col-lg-2 control-label">{this.props.placeholder}</label>
         <div className="col-lg-10">
           {this.props.options.map((option) => <div key={option}><label><input type="checkbox" id={option} checked={this.state[option]} ref={option} onChange={this.handleChange.bind(this)} /> {option}</label></div>)}
-        </div>  
+        </div>
       </div>
     );
   }
 }
 
 export class FormButton extends React.Component{
-  render(){ 
+  render(){
     return (
       <div className="form-group">
         <div className="col-lg-10 col-lg-offset-2">
@@ -207,15 +207,15 @@ export class Modal extends React.Component {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <a className="close" data-dismiss="modal" aria-hidden="true">&times;</a>
               <h4 className="modal-title">{this.props.title}</h4>
             </div>
             <div className="modal-body">
               {this.props.children}
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-default" data-dismiss="modal">{this.props.cancelText}</button>
-              <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.props.onClick}>{this.props.submitText}</button>
+              <a className="btn btn-default" data-dismiss="modal">{this.props.cancelText}</a>
+              <a className="btn btn-primary" data-dismiss="modal" onClick={this.props.onClick}>{this.props.submitText}</a>
             </div>
           </div>
         </div>

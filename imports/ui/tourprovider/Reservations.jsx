@@ -13,28 +13,32 @@ class Reservations extends React.Component {
 		super(props);
 	}
 
-	handleAccept(reservation){
+	handleAcceptReservation(reservation){
+		console.log("Running handleAcceptReservation");
 		Meteor.call('reservations.update', reservation._id, {'status' : 'accepted'} , (error, result) => {
-			if(result) alert("Successfully updated");
-		})
+			if(result) alert("Successfully accepted");
+		});
 	}
 
-	handleReject(reservation){
+	handleRejectReservation(reservation){
+		console.log("Running handleRejectReservation");
 		Meteor.call('reservations.update', reservation._id, {'status' : 'canceled'} , (error, result) => {
-			if(result) alert("Successfully updated");
-		})
+			if(result) alert("Successfully rejected");
+		});
 	}
 
-	handleCancel(reservation){
+	handleCancelReservation(reservation){
+		console.log("Running handleCancelReservation");
 		Meteor.call('reservations.update', reservation._id, {'status' : 'canceled'} , (error, result) => {
-			if(result) alert("Successfully updated");
-		})
+			if(result) alert("Successfully canceled");
+		});
 	}
 
-	handleDispute(reservation){
+	handleDisputeReservation(reservation){
+		console.log("Running handleDisputeReservation");
 		Meteor.call('reservations.update', reservation._id, {'status' : 'canceled'} , (error, result) => {
-			if(result) alert("Successfully updated");
-		})
+			if(result) alert("Successfully disputed");
+		});
 	}
 
 	render(){
@@ -42,7 +46,7 @@ class Reservations extends React.Component {
 			<div>
 				<h2> Pending Reservations </h2>
 				{/*Pending Reservations - Can be accepted or rejected*/}
-				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "pending").map((reservation) => (<PendingReservation onAccept={this.handleAccept} onReject={this.handleReject} username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
+				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "pending").map((reservation) => (<PendingReservation onAcceptReservation={this.handleAcceptReservation} onRejectReservation={this.handleRejectReservation} username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
 
 				<h2> Accepted Reservations </h2>
 				{/*Accepted Reservations - No action possible*/}
@@ -58,7 +62,7 @@ class Reservations extends React.Component {
 
 				<h2> Pending Cancellation </h2>
 				{/*Pending Cancellations - Can accept or dispute*/}
-				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "pendingcancel").map((reservation) => (<PendingCancelReservation onAccept={this.handleCancel} onReject={this.handleDispute} username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
+				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "pendingcancel").map((reservation) => (<PendingCancelReservation onAcceptReservation={this.handleCancelReservation} onRejectReservation={this.handleDisputeReservation} username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
 			</div>
 		);
 	}
@@ -85,17 +89,19 @@ class PendingReservation extends React.Component {
 		super(props);
 		if(this.props.reservation.status != "pending") throw 'Invalid reservation';
 		this.state = {
-			'accepted' : '', 
+			'accepted' : '',
 			'selectedAction' : '',
 		};
 	}
 
-	handleAction(event){
-		if(this.state.accepted == true) this.props.onAccept(this.props.reservation);
-		if(this.state.accepted == false) this.props.onReject(this.props.reservation);
+	handleClick(event){
+		event.preventDefault();
+		if(this.state.accepted == true) this.props.onAcceptReservation(this.props.reservation);
+		if(this.state.accepted == false) this.props.onRejectReservation(this.props.reservation);
 	}
 
 	handleSelect(event){
+		event.preventDefault();
 		this.setState({
 			selectedAction : event.target.innerHTML,
 			accepted : event.target.innerHTML == "Accept" ? true : event.target.innerHTML == "Reject" ? false : '',
@@ -124,7 +130,7 @@ class PendingReservation extends React.Component {
 					</div>
 				</div>
 
-				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.handleAction.bind(this)}>
+				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.handleClick.bind(this)}>
 					<p>{"Are you sure you want to " + this.state.selectedAction + "?"}</p>
 				</Modal>
 
@@ -222,17 +228,19 @@ class PendingCancelReservation extends React.Component {
 		super(props);
 		if(this.props.reservation.status != "pendingcancel") throw 'Invalid reservation';
 		this.state = {
-			'accepted' : '', 
+			'accepted' : '',
 			'selectedAction' : '',
 		};
 	}
 
-	handleAction(event){
-		if(this.state.accepted == true) this.props.onAccept(this.props.reservation);
-		if(this.state.accepted == false) this.props.onReject(this.props.reservation);
+	handleClick(event){
+		event.preventDefault();
+		if(this.state.accepted == true) this.props.onAcceptReservation(this.props.reservation);
+		if(this.state.accepted == false) this.props.onRejectReservation(this.props.reservation);
 	}
 
 	handleSelect(event){
+		event.preventDefault();
 		this.setState({
 			selectedAction : event.target.innerHTML,
 			accepted : event.target.innerHTML == "Accept" ? true : event.target.innerHTML == "Reject" ? false : '',
@@ -261,7 +269,7 @@ class PendingCancelReservation extends React.Component {
 					</div>
 				</div>
 
-				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.handleAction.bind(this)}>
+				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.handleClick.bind(this)}>
 					<p>{"Are you sure you want to " + this.state.selectedAction + "?"}</p>
 				</Modal>
 

@@ -13,16 +13,23 @@ class Reservations extends React.Component {
 		super(props);
 	}
 
-	handleDelete(reservation){
-
+	handleDeleteReservation(reservation){
+		console.log("Running handleDeleteReservation");
+		Meteor.call('reservations.delete', reservation._id, (error, result) => {
+			if(result) alert("Successfully deleted");
+		});
 	}
 
-	handleCancel(reservation){
-
+	handleCancelReservation(reservation){
+		console.log("Running handleCancelReservation");
+		Meteor.call('reservations.update', reservation._id, {'status' : 'canceled'} , (error, result) => {
+			if(result) alert("Successfully canceled");
+		});
 	}
 
 	handleWriteReview(reservation){
-
+		console.log("Running handleWriteReview");
+		console.log('not implemented');
 	}
 
 	render(){
@@ -30,14 +37,14 @@ class Reservations extends React.Component {
 			<div>
 				<h2> Pending Reservations </h2>
 				{/*Pending Reservations - Can be cancelled (deleted from database)*/}
-				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "pending").map((reservation) => (<PendingReservation onDelete={this.handleDelete} username={this.props.usernameById(reservation['tour-provider'])} key={reservation._id} reservation={reservation}/>)) : ''}
+				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "pending").map((reservation) => (<PendingReservation onDeleteReservation={this.handleDeleteReservation} username={this.props.usernameById(reservation['tour-provider'])} key={reservation._id} reservation={reservation}/>)) : ''}
 
 				<h2> Accepted Reservations </h2>
 				{/*Accepted Reservations - Can be cancelled (request to cancel with message)*/}
-				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "accepted").map((reservation) => (<AcceptedReservation onCancel={this.handleCancel} username={this.props.usernameById(reservation['tour-provider'])} key={reservation._id} reservation={reservation}/>)) : ''}
+				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "accepted").map((reservation) => (<AcceptedReservation onCancelReservation={this.handleCancelReservation} username={this.props.usernameById(reservation['tour-provider'])} key={reservation._id} reservation={reservation}/>)) : ''}
 
 				<h2> Completed Reservations </h2>
-				{/*Completed Reservations - Can write a review*/}
+				{/*Completed Reservations - Can write a review, or view the review if one exists*/}
 				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "completed").map((reservation) => (<CompletedReservation onWriteReview={this.handleWriteReview} username={this.props.usernameById(reservation['tour-provider'])} key={reservation._id} reservation={reservation}/>)) : ''}
 
 				<h2> Canceled Reservations </h2>
@@ -74,6 +81,10 @@ class PendingReservation extends React.Component {
 		if(this.props.reservation.status != "pending") throw 'Invalid reservation';
 	}
 
+	handleClick(event){
+		this.props.onDeleteReservation(this.props.reservation);
+	}
+
 	render() {
 		return (
 			<div>
@@ -95,7 +106,7 @@ class PendingReservation extends React.Component {
 						<Row><Col widthXS="2"><strong>End Date</strong></Col><Col widthXS="10">{this.props.reservation.endDate.toLocaleDateString()}</Col></Row>
 					</div>
 				</div>
-				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.props.onDelete(this.props.reservation)}>
+				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.handleClick.bind(this)}>
 					<p>{"Are you sure you want to cancel?"}</p>
 				</Modal>
 			</div>
@@ -107,6 +118,10 @@ class AcceptedReservation extends React.Component {
 	constructor(props){
 		super(props);
 		if(this.props.reservation.status != "accepted") throw 'Invalid reservation';
+	}
+
+	handleClick(event){
+		this.props.onCancelReservation(this.props.reservation);
 	}
 
 	render() {
@@ -130,7 +145,7 @@ class AcceptedReservation extends React.Component {
 					</div>
 				</div>
 
-				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.props.onCancel(this.props.reservation)}>
+				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.handleClick.bind(this)}>
 					<p>{"Are you sure you want to request a cancellation?"}</p>
 				</Modal>
 
@@ -143,6 +158,10 @@ class CompletedReservation extends React.Component {
 	constructor(props){
 		super(props);
 		if(this.props.reservation.status != "completed") throw 'Invalid reservation';
+	}
+
+	handleClick(event){
+		this.props.onWriteReview(this.props.reservation, this.refs.inputMessage.value);
 	}
 
 	render() {
@@ -166,7 +185,7 @@ class CompletedReservation extends React.Component {
 					</div>
 				</div>
 
-				<Modal id="confirmationModal" title="Write a review" cancelText="No" submitText="Yes" onClick={ this.props.onWriteReview(this.props.reservation, this.refs.inputMessage.value) }>
+				<Modal id="<confirmationModaldiv></confirmationModaldiv>" title="Enter your review here" cancelText="Close" submitText="Make Reservation" onClick={this.handleClick.bind(this)}>
 					<textArea ref="inputMessage" rows="3" style={{'width' : '100%'}}/>
 				</Modal>
 
@@ -178,7 +197,7 @@ class CompletedReservation extends React.Component {
 class CancelledReservation extends React.Component {
 	constructor(props){
 		super(props);
-		if(this.props.reservation.status != "cancelled") throw 'Invalid reservation';
+		if(this.props.reservation.status != "canceled") throw 'Invalid reservation';
 	}
 
 	render() {

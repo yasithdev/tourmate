@@ -58,7 +58,7 @@ Meteor.methods({
 
 	// Deletes an existing reservation
 	'reservations.delete': (id) => {
-		Reservations.deleteOne({'_id' : id});
+		Reservations.delete({'_id' : id});
 		return true;
 	},
 });
