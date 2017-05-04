@@ -2,13 +2,13 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 
-import { Button, Row, Col } from '../common/Components';
+import { Button, Row, Col, Modal } from '../common/Components';
 import { Reservations as ReservationsDb } from '../../api/reservations';
 
 /* ------------------------------------------------------------ *
  * Reservation page for tour provider ------------------------- *
  * ------------------------------------------------------------ */
-export class Reservations extends React.Component {
+class Reservations extends React.Component {
 	constructor(props){
 		super(props);
 	}
@@ -16,8 +16,17 @@ export class Reservations extends React.Component {
 	render(){
 		return (
 			<div>
-				<h2> Reservations </h2>
-			{this.props.reservations ? this.props.reservations.map((reservation) => (<ReservationRecord username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
+				<h2> Pending Reservations </h2>
+				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "pending").map((reservation) => (<ReservationRecord username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
+
+				<h2> Accepted Reservations </h2>
+				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "accepted").map((reservation) => (<ReservationRecord username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
+
+				<h2> Completed Reservations </h2>
+				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "completed").map((reservation) => (<ReservationRecord username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
+
+				<h2> Canceled Reservations </h2>
+				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "canceled").map((reservation) => (<ReservationRecord username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
 			</div>
 		);
 	}
@@ -37,34 +46,56 @@ export default ReservationsContainer = createContainer((props) => {
 }, Reservations);
 
 /* ------------------------------------------------------------ *
- * Components ------------------------------------------------- *
+ * Component to display each reservation ---------------------- *
  * ------------------------------------------------------------ */
-export class ReservationRecord extends React.Component {
+class ReservationRecord extends React.Component {
 	constructor(props){
 		super(props);
+		this.selectedAction = "";		
 	}
 
-	handleClick(event){
+	handleAction(event){
 		console.log(event.target.id);
+		// Update database
+	}
+
+	handleSelect(event){
+		console.log(event.target.id);
+		// Assign selected action and reservation id
 	}
 
 	render() {
 		return (
-			<div className={"panel " + (
-				this.props.reservation.status == "Pending" ? "panel-danger" :
-				this.props.reservation.status == "Accepted" ? "panel-primary" :
-				this.props.reservation.status == "Completed" ? "panel-success" : "panel-default")}>
-				<div className="panel-heading">
-					<Row>
-						<Col width="8"><h3 className="panel-title">{this.props.reservation.message}</h3></Col>
-						<Col className="text-right" width="4"><Button id={this.props.reservation} onClick={this.handleClick.bind(this)}>Click</Button></Col>
-					</Row>
+			<div>
+				<div className={"panel " + (
+					this.props.reservation.status == "pending" ? "panel-warning" :
+					this.props.reservation.status == "accepted" ? "panel-primary" :
+					this.props.reservation.status == "completed" ? "panel-success" : "panel-default")}>
+					<div className="panel-heading">
+						<Row>
+							<Col widthXS="8"><strong className="panel-title">{this.props.reservation.message}</strong></Col>
+							<Col className="text-right" widthXS="4">
+								{this.props.reservation.status == "pending" 
+									? (<span className="text-right">
+											<Button type="primary" id={this.props.reservation._id} dataToggle="modal" dataTarget="#confirmationModal" onClick={this.handleSelect.bind(this)}>Accept</Button>
+											<Button id={this.props.reservation._id} dataToggle="modal" dataTarget="#confirmationModal" onClick={this.handleSelect.bind(this)}>Reject</Button>
+										</span>)
+									: ('')
+								}
+							</Col>
+						</Row>
+					</div>
+					<div className="panel-body">
+						<Row><Col widthXS="2"><strong>Tourist</strong></Col><Col widthXS="10">{this.props.username}</Col></Row>
+						<Row><Col widthXS="2"><strong>Start Date</strong></Col><Col widthXS="10">{this.props.reservation.startDate.toLocaleDateString()}</Col></Row>
+						<Row><Col widthXS="2"><strong>End Date</strong></Col><Col widthXS="10">{this.props.reservation.endDate.toLocaleDateString()}</Col></Row>
+					</div>
 				</div>
-				<div className="panel-body">
-					<div>Tourist : {this.props.username}</div>
-					<div>Start Date : {this.props.reservation.startDate.toLocaleDateString()}</div>
-					<div>End Date : {this.props.reservation.endDate.toLocaleDateString()}</div>
-				</div>
+
+				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.handleAction.bind(this)}>
+					<p>Are you sure?</p>
+				</Modal>
+
 			</div>
 		);
 	}

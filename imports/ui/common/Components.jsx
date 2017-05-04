@@ -15,10 +15,15 @@ export const Row =
   (props) => (<div className="row">{props.children}</div>);
 
 export const Col = 
-  (props) => (<div className={"col-sm-" + props.width + " " + props.className}>{props.children}</div>);
+  (props) => (<div className={
+    (props.widthXS ? ("col-xs-" + props.widthXS) : " ") +
+    (props.width ? ("col-sm-" + props.width) : " ") +
+    (props.widthM ? ("col-md-" + props.widthM) : " ") +
+    (props.widthL ? ("col-lg-" + props.widthL) : " ") +
+    " " + props.className}>{props.children} </div>);
 
 export const Button = 
-  (props) => (<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default")} id={props.id} onClick={props.onClick}>{props.children}</a>);
+  (props) => (<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default") + " " + props.className} data-toggle={props.dataToggle} data-target={props.dataTarget} id={props.id} onClick={props.onClick}>{props.children}</a>);
 
 export const Navbar = 
   (props) => (<nav className="navbar navbar-default"><div className="container-fluid">{props.children}</div></nav>);
@@ -81,6 +86,23 @@ export class FormInput extends React.Component{
         <div className="col-lg-10">
           <input type={this.props.type} className="form-control" placeholder={this.props.placeholder} onChange={this.props.onChange} ref="input" minLength={this.props.minlength ? this.props.minlength : 0}/>
           <p className="help-block">{this.props.tip}</p>
+        </div>
+      </div>
+    );
+  }
+}
+
+export class FormTextArea extends React.Component{
+  constructor(props){
+    super(props);
+  }
+  
+  render(){ 
+    return (
+      <div className="form-group">
+        <label htmlFor={this.props.placeholder} className="col-lg-2 control-label">{this.props.placeholder}</label>
+        <div className="col-lg-10">
+          <textarea className="form-control" rows={this.props.rows} placeholder={this.props.placeholder} onChange={this.props.onChange} ref="input" minLength={this.props.minlength ? this.props.minlength : 0}/>
         </div>
       </div>
     );
@@ -173,3 +195,33 @@ export class FormButton extends React.Component{
     );
   }
 }
+
+export class Modal extends React.Component {
+  constructor(props){
+    super(props);
+  }
+
+  render(){
+    return(
+      <div id={this.props.id} className="modal fade" role="dialog">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 className="modal-title">{this.props.title}</h4>
+            </div>
+            <div className="modal-body">
+              {this.props.children}
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-default" data-dismiss="modal">{this.props.cancelText}</button>
+              <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.props.onClick}>{this.props.submitText}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+

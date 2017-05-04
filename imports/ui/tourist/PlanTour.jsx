@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import React from 'react';
 
-import { Row, Col, Form, FormInput, FormButton, FormCheckboxGroup, Button} from '../common/Components';
+import { Row, Col, Form, FormInput, FormButton, FormCheckboxGroup, Button, Modal} from '../common/Components';
 
 import {Reservations} from '../../api/reservations'
 
@@ -13,6 +13,7 @@ class PlanTour extends React.Component {
 	constructor(props){
 		super(props);
 		this.availableServices = ['Vehicle Rent', 'Tours', 'Tour Guides'];
+		this.selectedId = "";
 		this.state = {'results' : ''};
 	}
 
@@ -41,18 +42,22 @@ class PlanTour extends React.Component {
 		return query;
 	}
 
+	handleSelect(event){
+		event.preventDefault();
+		this.selectedId = event.target.id;
+	}
+
 	handleReserve(event){
 		event.preventDefault();
-
 		// Create reservation object
 		let reservation = {
 			'tourist' : this.props.currentUser._id,
-			'tour-provider' : event.target.id,
+			'tour-provider' : this.selectedId,
 			'services' : this.availableServices.filter((key) => this.refs.inputServices.state[key]),
 			'startDate' : new Date(this.refs.inputStartDate.refs.input.value),
 			'endDate' : new Date(this.refs.inputEndDate.refs.input.value),
 			'status' : 'pending',
-			'message' : 'test message'
+			'message' : this.refs.inputMessage.value
 		};
 		
 		// Add reservation to reservations collection
@@ -82,10 +87,16 @@ class PlanTour extends React.Component {
 					<h4>Search Results</h4>
 					{ 
 						Object.keys(this.state.results) 
-							? Object.keys(this.state.results).map((result) => <SearchResult onClick={this.handleReserve.bind(this)} key={result} data={this.state.results[result]} />)
+							? Object.keys(this.state.results).map((result) => <SearchResult onClick={this.handleSelect.bind(this)} key={result} data={this.state.results[result]} />)
 							: '' 
 					}
 				</div>
+
+				{/*SECTION > Modal Popup for entering Message*/}
+				<Modal id="messageModal" title="Enter your reservation Message" cancelText="Close" submitText="Make Reservation" onClick={this.handleReserve.bind(this)}>
+					<textArea ref="inputMessage" rows="3" style={{'width' : '100%'}}/>
+				</Modal>
+
 			</div>
 		);
 	}
@@ -109,7 +120,7 @@ export default PlanTourContainer = createContainer((props) => {
 }, PlanTour);
 
 /* ------------------------------------------------------------ *
- * Components ------------------------------------------------- *
+ * Component to display each search results ------------------- *
  * ------------------------------------------------------------ */
 class SearchResult extends React.Component {
 	constructor(props){
@@ -118,26 +129,26 @@ class SearchResult extends React.Component {
 
 	render(){
 		return (
-			<div className="panel panel-primary">
-				<div className="panel-heading">
-					<Row>
-						<Col width="8"><h3 className="panel-title">{this.props.data.profile.name}</h3></Col>
-						<Col className="text-right" width="4"><Button id={this.props.data._id} onClick={this.props.onClick}>Reserve</Button></Col>
-					</Row>
+				<div className="panel panel-primary">
+					<div className="panel-heading">
+						<Row>
+							<Col width="8"><h3 className="panel-title">{this.props.data.profile.name}</h3></Col>
+							<Col className="text-right" width="4"><Button id={this.props.data._id} dataToggle="modal" dataTarget="#messageModal" onClick={this.props.onClick}>Select</Button></Col>
+						</Row>
+					</div>
+					<div className="panel-body">
+						{this.props.data.profile.bio}
+						<ul>
+							{
+								this.props.data.profile.services 
+									? ((Object.values(this.props.data.profile.services).indexOf(true) >= 0)
+										? (Object.keys(this.props.data.profile.services).map((key) => this.props.data.profile.services[key] ? (<li key={key}>{key}</li>) : ''))
+										: '(N/A)')
+									: '(N/A)'
+							}
+						</ul>
+					</div>
 				</div>
-				<div className="panel-body">
-					{this.props.data.profile.bio}
-					<ul>
-						{
-							this.props.data.profile.services 
-								? ((Object.values(this.props.data.profile.services).indexOf(true) >= 0)
-									? (Object.keys(this.props.data.profile.services).map((key) => this.props.data.profile.services[key] ? (<li key={key}>{key}</li>) : ''))
-									: '(N/A)')
-								: '(N/A)'
-						}
-					</ul>
-				</div>
-			</div>
 		);
 	}
 }

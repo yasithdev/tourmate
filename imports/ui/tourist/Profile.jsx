@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import React from 'react';
 
-import { Form, FormInput, FormButton} from '../common/Components';
+import { Form, FormInput, FormButton, FormTextArea} from '../common/Components';
 
 /* ------------------------------------------------------------ *
  * Page to update profile information of tourist -------------- *
@@ -47,7 +47,7 @@ export class Profile extends React.Component {
 			<Form title="Update profile" onSubmit={this.handleSubmit.bind(this)}>
 				<FormInput type="text" placeholder="Name" ref="inputName"/>
 				<FormInput type="url" placeholder="Webpage URL" ref="inputUrl"/>
-				<FormInput type="text" placeholder="Bio" ref="inputBio"/>
+				<FormTextArea rows="3" placeholder="Bio" ref="inputBio"/>
 				<FormInput type="file" accept="image/*" placeholder="Avatar" ref="inputAvatar"/>
 				<FormButton text="Submit"/>
 			</Form>
