@@ -13,11 +13,18 @@ class Reservations extends React.Component {
 		super(props);
 	}
 
+	handleUpdate(reservation){
+		console.log(reservation);
+		Meteor.call('reservations.update', reservation, (error, result) => {
+			if(result) alert("Successfully updated");
+		})
+	}
+
 	render(){
 		return (
 			<div>
 				<h2> Pending Reservations </h2>
-				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "pending").map((reservation) => (<ReservationRecord username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
+				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "pending").map((reservation) => (<ReservationRecord onUpdated={this.handleUpdate} username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
 
 				<h2> Accepted Reservations </h2>
 				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "accepted").map((reservation) => (<ReservationRecord username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
@@ -51,17 +58,20 @@ export default ReservationsContainer = createContainer((props) => {
 class ReservationRecord extends React.Component {
 	constructor(props){
 		super(props);
-		this.selectedAction = "";		
+		this.selectedAction = "";
+		this.selectedId = "";
 	}
 
 	handleAction(event){
-		console.log(event.target.id);
-		// Update database
+		if(this.selectedId && this.selectedAction){
+			let reservation = {'_id' : this.selectedId, 'status' : this.selectedAction};
+			this.props.onUpdated(reservation);
+		}
 	}
 
-	handleSelect(event){
-		console.log(event.target.id);
-		// Assign selected action and reservation id
+	handleSelect(event, action){
+		this.selectedId = event.target.id;
+		this.selectedAction = event.target.innerHTML == "Accept" ? "accepted" : event.target.innerHTML == "Reject" ? "canceled" : "pending";
 	}
 
 	render() {

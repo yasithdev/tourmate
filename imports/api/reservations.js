@@ -46,7 +46,7 @@ Meteor.methods({
 
 	// Updates an existing reservation
 	'reservations.update': (reservation) => {
-		Reservations.updateOne({'_id' : reservation._id}, {$set: reservation});
+		Reservations.update({'_id' : reservation._id}, {$set: reservation});
 		return true;
 	},
 
