@@ -51,7 +51,7 @@ export class TouristUI extends React.Component {
 /* ------------------------------------------------------------ *
  * Reactive data container for TouristUI ---------------------- *
  * ------------------------------------------------------------ */
-export default TouristUIContainer = createContainer((props) => {
+export default TouristUIContainer = createContainer(function(props) {
   return {
     currentUser: Meteor.user(),
   };

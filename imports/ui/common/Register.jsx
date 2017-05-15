@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { createContainer } from 'meteor/react-meteor-data';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-import { Form, FormInput, FormCheckbox, FormButton, FormRadioButtons } from './Components';
+import { Form, FormInput, FormCheckbox, FormButton, FormRadioButtons, FluidContainer } from './Components';
 
 export class Register extends React.Component
 {
@@ -59,20 +59,22 @@ export class Register extends React.Component
 
 	render(){
 		return(
-			<Form onSubmit={this.handleSubmit.bind(this)} title="Registration">
-				<FormRadioButtons placeholder="Account Type" ref='inputRole' buttons={{'tourist' : 'Tourist', 'tour-provider' : 'Tour Provider'}} selection="tourist"/>
-				<FormInput type='text' placeholder='Name' minlength='8' ref='inputName'/>
-				<FormInput type='text' placeholder='User Name' minlength='8' ref='inputUsername' tip={this.state.available === true ? 'Available' : this.state.available === false ? 'Already taken' : ''} onChange={this.handleUsernameChange.bind(this)}/>
-				<FormInput type='password' placeholder='Password' minlength='8' ref='inputPassword'/>
-				<FormInput type='email' placeholder='Email' minlength='8' ref='inputEmail'/>
-				<FormCheckbox text='I agree to the terms and conditions of TourMate' ref='inputAccepted' onChange={this.handleCheckChange.bind(this)}/>
-				<FormButton enabled={this.state.available === true && this.state.agreed === true} text='Register'/>
-			</Form>
+			<FluidContainer>
+				<Form onSubmit={this.handleSubmit.bind(this)} title="Registration">
+					<FormRadioButtons placeholder="Account Type" ref='inputRole' buttons={{'tourist' : 'Tourist', 'tour-provider' : 'Tour Provider'}} selection="tourist"/>
+					<FormInput type='text' placeholder='Name' minlength='8' ref='inputName'/>
+					<FormInput type='text' placeholder='User Name' minlength='8' ref='inputUsername' tip={this.state.available === true ? 'Available' : this.state.available === false ? 'Already taken' : ''} onChange={this.handleUsernameChange.bind(this)}/>
+					<FormInput type='password' placeholder='Password' minlength='8' ref='inputPassword'/>
+					<FormInput type='email' placeholder='Email' minlength='8' ref='inputEmail'/>
+					<FormCheckbox text='I agree to the terms and conditions of TourMate' ref='inputAccepted' onChange={this.handleCheckChange.bind(this)}/>
+					<FormButton enabled={this.state.available === true && this.state.agreed === true} text='Register'/>
+				</Form>
+			</FluidContainer>
 		);
 	}
 };
  
-export default RegisterContainer = createContainer((props) => {
+export default RegisterContainer = createContainer(function(props) {
   return {
   	currentUser: Meteor.user()
   };

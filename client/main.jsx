@@ -15,7 +15,7 @@ export class Routes extends React.Component {
 	render() {
 		return (
 			<Router>
-				<div className="container-fluid">
+				<div className="container-fluid full">
 					<Route path="/" component={App}/>
 
 					{/*Child Routes*/}

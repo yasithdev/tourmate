@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import React from 'react';
 
-import { Row, Col, Form, FormInput, FormButton, FormCheckboxGroup, Button, Modal} from '../common/Components';
+import { Row, Col, Form, FormInput, FormButton, FormCheckboxGroup, Button, Modal, FluidContainer} from '../common/Components';
 
 import {Reservations} from '../../api/reservations'
 
@@ -68,7 +68,7 @@ class PlanTour extends React.Component {
 
 	render(){
 		return (
-			<div>
+			<FluidContainer>
 
 				{/*SECTION > Search Form*/}
 				<Form title="Search for a service" onSubmit={this.handleSearch.bind(this)}>
@@ -97,7 +97,7 @@ class PlanTour extends React.Component {
 					<textArea ref="inputMessage" rows="3" style={{'width' : '100%'}}/>
 				</Modal>
 
-			</div>
+			</FluidContainer>
 		);
 	}
 
@@ -110,7 +110,7 @@ class PlanTour extends React.Component {
 /* ------------------------------------------------------------ *
  * Reactive data container for PlanTour ----------------------- *
  * ------------------------------------------------------------ */
-export default PlanTourContainer = createContainer((props) => {
+export default PlanTourContainer = createContainer(function(props) {
 	Meteor.subscribe('tour-providers');
 	Meteor.subscribe('reservations');
 	return({

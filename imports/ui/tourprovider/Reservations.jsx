@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 
-import { Button, Row, Col, Modal } from '../common/Components';
+import { Button, Row, Col, Modal, FluidContainer } from '../common/Components';
 import { Reservations as ReservationsDb } from '../../api/reservations';
 
 /* ------------------------------------------------------------ *
@@ -43,7 +43,7 @@ class Reservations extends React.Component {
 
 	render(){
 		return (
-			<div>
+			<FluidContainer>
 				<h2> Pending Reservations </h2>
 				{/*Pending Reservations - Can be accepted or rejected*/}
 				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "pending").map((reservation) => (<PendingReservation onAcceptReservation={this.handleAcceptReservation} onRejectReservation={this.handleRejectReservation} username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
@@ -63,7 +63,7 @@ class Reservations extends React.Component {
 				<h2> Pending Cancellation </h2>
 				{/*Pending Cancellations - Can accept or dispute*/}
 				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "pendingcancel").map((reservation) => (<PendingCancelReservation onConfirmCancellation={this.handleCancelReservation} onDisputeCancellation={this.handleDisputeReservation} username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
-			</div>
+			</FluidContainer>
 		);
 	}
 }
@@ -71,7 +71,7 @@ class Reservations extends React.Component {
 /* ------------------------------------------------------------ *
  * Reactive data container for Reservations ------------------- *
  * ------------------------------------------------------------ */
-export default ReservationsContainer = createContainer((props) => {
+export default ReservationsContainer = createContainer(function(props) {
 	Meteor.subscribe('tourists');
 	Meteor.subscribe('reservations', Meteor.user().profile.role, Meteor.userId());
 	return {

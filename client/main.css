@@ -1,0 +1,26 @@
+.bg {
+	background-image: url('background.jpg');
+	width: 100%;
+	height: 100%;
+	opacity: 0.3;
+	z-index: -99999;
+	position: fixed;
+	filter: blur(15px);
+}
+
+.jumbotron {
+	background-color: rgba(238,238,238,0.7);
+}
+
+.well {
+	background-color: rgba(245,245,245,0.7);
+}
+
+.panel, .panel-primary {
+	background: rgba(245,245,255,0.7);
+}
+
+.full {
+	padding-left: 0;
+	padding-right: 0;
+}

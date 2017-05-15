@@ -38,7 +38,9 @@ export class Home extends React.Component {
 					</Col>
 				</Row>
 				<Row>
-					<NavButton type="default" to={"/"+ this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/" + "profile"}>Update Profile</NavButton>
+					<Col width="12">
+						<NavButton type="default" to={"/"+ this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/" + "profile"}>Update Profile</NavButton>
+					</Col>
 				</Row>
 			</FluidContainer>
 		);
@@ -48,7 +50,7 @@ export class Home extends React.Component {
 /* ------------------------------------------------------------ *
  * Reactive data container for Homepage ----------------------- *
  * ------------------------------------------------------------ */
-export default HomeContainer = createContainer((props) => {
+export default HomeContainer = createContainer(function(props) {
   return {
     currentUser: Meteor.user(),
   };

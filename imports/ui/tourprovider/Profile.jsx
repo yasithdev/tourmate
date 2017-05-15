@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import React from 'react';
 
-import { Form, FormInput, FormButton, FormCheckboxGroup, FormRadioButtons, FormTextArea} from '../common/Components';
+import { Form, FormInput, FormButton, FormCheckboxGroup, FormRadioButtons, FormTextArea, FluidContainer} from '../common/Components';
 
 /* ------------------------------------------------------------ *
  * Update profile information of tour provider ---------------- *
@@ -48,15 +48,17 @@ export class Profile extends React.Component {
     /* UI layout for editing currentUser profile information */
     render(){
         return(
-            <Form title="Update Profile" onSubmit={this.handleSubmit.bind(this)}>
-                <FormInput type="text" placeholder="Name" ref="inputName"/>
-                <FormInput type="url" placeholder="Webpage URL" ref="inputUrl"/>
-                <FormTextArea rows="3" placeholder="Bio" ref="inputBio"/>
-                <FormInput type="file" accept="image/*" placeholder="Avatar" ref="inputAvatar"/>
-                <FormCheckboxGroup placeholder="Services" options={this.availableServices} selection={this.props.currentUser.profile.services} ref="inputServices"/>
-                <FormRadioButtons placeholder="Subscription" ref="inputSubscription" buttons={{'Free': 'Free', 'Paid' : 'Paid'}} selection={this.props.currentUser.profile.subscription}/>
-                <FormButton text="Submit"/>
-            </Form>
+            <FluidContainer>
+                <Form title="Update Profile" onSubmit={this.handleSubmit.bind(this)}>
+                    <FormInput type="text" placeholder="Name" ref="inputName"/>
+                    <FormInput type="url" placeholder="Webpage URL" ref="inputUrl"/>
+                    <FormTextArea rows="3" placeholder="Bio" ref="inputBio"/>
+                    <FormInput type="file" accept="image/*" placeholder="Avatar" ref="inputAvatar"/>
+                    <FormCheckboxGroup placeholder="Services" options={this.availableServices} selection={this.props.currentUser.profile.services} ref="inputServices"/>
+                    <FormRadioButtons placeholder="Subscription" ref="inputSubscription" buttons={{'Free': 'Free', 'Paid' : 'Paid'}} selection={this.props.currentUser.profile.subscription}/>
+                    <FormButton text="Submit"/>
+                </Form>
+            </FluidContainer>
         );
     }
 
@@ -77,7 +79,7 @@ export class Profile extends React.Component {
 /* ------------------------------------------------------------ *
  * Reactive data container for Profile ------------------------ *
  * ------------------------------------------------------------ */
-export default ProfileContainer = createContainer((props) => {
+export default ProfileContainer = createContainer(function(props) {
     return {
         currentUser: Meteor.user(),
   };

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { createContainer } from 'meteor/react-meteor-data';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-import { Jumbotron, Form, FormInput, FormButton } from './Components'
+import { Jumbotron, Form, FormInput, FormButton, FluidContainer } from './Components'
 
 export class Login extends React.Component {
 	constructor(props){
@@ -20,14 +20,16 @@ export class Login extends React.Component {
 
 	render() {
 		if(this.state.isLoggedIn) {
-			return (<div className="jumbotron text-center">Successfully Logged In. Redirecting..</div>);
+			return (<FluidContainer><div className="jumbotron text-center">Successfully Logged In. Redirecting..</div></FluidContainer>);
 		}
 		else return(
-			<Form onSubmit={this.handleSubmit.bind(this)} title="Log in to your Account">
-				<FormInput type='text' ref='inputUsername' placeholder='User Name'/>
-				<FormInput type='password' ref='inputPassword' placeholder='Password'/>
-				<FormButton text='Log in'/>
-			</Form>
+			<FluidContainer>
+				<Form onSubmit={this.handleSubmit.bind(this)} title="Log in to your Account">
+					<FormInput type='text' ref='inputUsername' placeholder='User Name'/>
+					<FormInput type='password' ref='inputPassword' placeholder='Password'/>
+					<FormButton text='Log in'/>
+				</Form>
+			</FluidContainer>
 		);
 	}
 

@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import React from 'react';
 
-import { Form, FormInput, FormButton, FormTextArea} from '../common/Components';
+import { Form, FormInput, FormButton, FormTextArea, FluidContainer} from '../common/Components';
 
 /* ------------------------------------------------------------ *
  * Page to update profile information of tourist -------------- *
@@ -44,13 +44,15 @@ export class Profile extends React.Component {
 	/* UI layout for editing currentUser profile information */
 	render(){
 		return(
-			<Form title="Update profile" onSubmit={this.handleSubmit.bind(this)}>
-				<FormInput type="text" placeholder="Name" ref="inputName"/>
-				<FormInput type="url" placeholder="Webpage URL" ref="inputUrl"/>
-				<FormTextArea rows="3" placeholder="Bio" ref="inputBio"/>
-				<FormInput type="file" accept="image/*" placeholder="Avatar" ref="inputAvatar"/>
-				<FormButton text="Submit"/>
-			</Form>
+			<FluidContainer>
+				<Form title="Update profile" onSubmit={this.handleSubmit.bind(this)}>
+					<FormInput type="text" placeholder="Name" ref="inputName"/>
+					<FormInput type="url" placeholder="Webpage URL" ref="inputUrl"/>
+					<FormTextArea rows="3" placeholder="Bio" ref="inputBio"/>
+					<FormInput type="file" accept="image/*" placeholder="Avatar" ref="inputAvatar"/>
+					<FormButton text="Submit"/>
+				</Form>
+			</FluidContainer>
 		);
 	}
 
@@ -64,7 +66,7 @@ export class Profile extends React.Component {
 /* ------------------------------------------------------------ *
  * Reactive data container for Profile ------------------------ *
  * ------------------------------------------------------------ */
-export default ProfileContainer = createContainer((props) => {
+export default ProfileContainer = createContainer(function(props) {
 	return {
 		currentUser: Meteor.user(),
   };

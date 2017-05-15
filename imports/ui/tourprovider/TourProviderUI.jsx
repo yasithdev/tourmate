@@ -51,7 +51,7 @@ export class TourProviderUI extends React.Component{
 /* ------------------------------------------------------------ *
  * Reactive data container for TourProviderUI ----------------- *
  * ------------------------------------------------------------ */
-export default TourProviderUIContainer = createContainer((props) => {
+export default TourProviderUIContainer = createContainer(function(props) {
   return {
     currentUser: Meteor.user(),
   };

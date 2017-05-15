@@ -1,10 +1,12 @@
 import React from 'react';
 
+import {FluidContainer} from '../common/Components';
+
 /* ------------------------------------------------------------ *
  * Reviews page for tour provider ----------------------------- *
  * ------------------------------------------------------------ */
 export default Reviews = () => ( 
-	<div>
+	<FluidContainer>
 		<h2> Reviews </h2>
-	</div>
+	</FluidContainer>
 );

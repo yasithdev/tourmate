@@ -53,7 +53,7 @@ export class App extends React.Component {
 	}
 };
 
-export default AppContainer = createContainer((props) => {
+export default AppContainer = createContainer(function(props) {
   return {
     currentUser: Meteor.user(),
   };

@@ -3,39 +3,39 @@ import { BrowserRouter as Router, Route, Link, browserHistory } from 'react-rout
 
 // RETURNS BOOTSTRAPPED HTML ELEMENTS
 export const Img =
-  (props) => (<img className="img-circle" src={props.source} style={{"maxWidth": "100%"}}/>);
+  function(props) {return(<img className="img-circle" src={props.source} style={{"maxWidth": "100%"}}/>)};
 
 export const FluidContainer =
-  (props) => (<div className="container-fluid">{props.children}</div>);
+  function(props) {return(<div className="container-fluid">{props.children}</div>)};
 
 export const Jumbotron =
-  (props) => (<div className="jumbotron text-center">{props.children}</div>);
+  function(props) {return(<div className="jumbotron text-center">{props.children}</div>)};
 
 export const Row =
-  (props) => (<div className="row">{props.children}</div>);
+  function(props) {return(<div className="row">{props.children}</div>)};
 
 export const Col =
-  (props) => (<div className={
+  function(props) {return(<div className={
     (props.widthXS ? ("col-xs-" + props.widthXS) : " ") +
     (props.width ? ("col-sm-" + props.width) : " ") +
     (props.widthM ? ("col-md-" + props.widthM) : " ") +
     (props.widthL ? ("col-lg-" + props.widthL) : " ") +
-    " " + props.className}>{props.children} </div>);
+    " " + props.className}>{props.children} </div>)};
 
 export const Button =
-  (props) => (<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default") + " " + props.className} data-toggle={props.dataToggle} data-target={props.dataTarget} id={props.id} onClick={props.onClick}>{props.children}</a>);
+  function(props) {return(<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default") + " " + props.className} data-toggle={props.dataToggle} data-target={props.dataTarget} id={props.id} onClick={props.onClick}>{props.children}</a>)};
 
 export const Navbar =
-  (props) => (<nav className="navbar navbar-default"><div className="container-fluid">{props.children}</div></nav>);
+  function(props) {return(<nav className="navbar navbar-default"><div className="container-fluid">{props.children}</div></nav>)};
 
 export const CollapsingNav =
-  (props) => (<div className="navbar-collapse collapse" id={props.id}>{props.children}</div>);
+  function(props) {return(<div className="navbar-collapse collapse" id={props.id}>{props.children}</div>)};
 
 export const Nav =
-  (props) => (<ul className={"nav navbar-nav " + (props.align == "right" ? "navbar-right " : "navbar-left ")}>{props.children}</ul>);
+  function(props) {return(<ul className={"nav navbar-nav " + (props.align == "right" ? "navbar-right " : "navbar-left ")}>{props.children}</ul>)};
 
 export const NavHeader =
-  (props) => (
+  function(props) {return(
     <div className="navbar-header">
       <button className="navbar-toggle" data-toggle="collapse" data-target={"#" + props.collapsetarget}>
         <span className="icon-bar"></span>
@@ -45,26 +45,26 @@ export const NavHeader =
       <NavItem to={props.to} parameters={props.parameters} collapsetarget={props.collapsetarget}>
         <a className="navbar-brand">{props.children}</a>
       </NavItem>
-    </div>);
+    </div>)};
 
 export const NavItem =
-  (props) => (
+  function(props) {return(
     <Route path={props.to} params={props.parameters} children={({match}) => {
       return (<li role="presentation" className={match ? 'active' : ''} data-toggle="collapse" data-target={"#" + props.collapsetarget + ".in"}>
         <Link to={props.to}>{props.children}</Link>
       </li>);
     }} />
-  );
+  )};
 
 export const NavButton =
-  (props) => (
+  function(props) {return(
     <Route path={props.to} params={props.parameters} children={({match}) => {
       return (<Link to={props.to}><Button>{props.children}</Button></Link>);
     }} />
-  );
+  )};
 
 export const Form =
-  (props) => (
+  function(props) {return(
     <div className="well bs-component">
       <form className="form-horizontal" onSubmit={props.onSubmit}>
         <fieldset>
@@ -72,7 +72,7 @@ export const Form =
           {props.children}
         </fieldset>
       </form>
-    </div>);
+    </div>)};
 
 export class FormInput extends React.Component{
   constructor(props){
