@@ -41,7 +41,15 @@
     border-bottom: 1px dotted #B3A9A9;
 }
 
-.chat li.left .chat-body
+.chat li .btn, .chat li.left .btn {
+    text-align: left;
+}
+
+.chat li.right .btn {
+    text-align: right;
+}
+
+.chat li.left .chat-body 
 {
     margin-left: 60px;
 }
@@ -49,6 +57,10 @@
 .chat li.right .chat-body
 {
     margin-right: 60px;
+}
+
+.chat li .btn {
+	width: 100%;
 }
 
 

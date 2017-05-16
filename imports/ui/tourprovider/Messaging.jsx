@@ -39,7 +39,9 @@ export class Messaging extends React.Component {
 
 	handleSelectionChange(event){
 		// Set the state to reservation : new selection
-		if(this.state.reservation['_id'] == event.target.id) return;
+		if(this.state.reservation) {
+			if(this.state.reservation['_id'] == event.target.id) return;
+		}
 		this.setState({
 			'reservation' : this.props.reservations.find((reservation) => reservation['_id'] == event.target.id), 
 			'title' : event.target.innerHTML
@@ -75,10 +77,9 @@ export default MessagingContainer = createContainer(function(props) {
 	Meteor.subscribe('reservationusers');
   return {
     currentUser: Meteor.user(),
-    reservations : Reservations.find({'tour-provider': Meteor.userId()}).fetch(),
+    reservations : Reservations.find().fetch(),
     namebyuserid : function(id) { 
     	let user = Meteor.users.find({'_id' : id}).fetch()[0];
-    	console.log(user);
     	return (user ? user.profile.name : '');
     },
     allmessages : Messages.find().fetch(),

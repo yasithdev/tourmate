@@ -23,7 +23,7 @@ export const Col =
     " " + props.className}>{props.children} </div>)};
 
 export const Button =
-  function(props) {return(<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default") + " " + props.className} data-toggle={props.dataToggle} data-target={props.dataTarget} id={props.id} onClick={props.onClick} disabled={props.disabled}>{props.children}</a>)};
+  function(props) {return(<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default") + " " + props.className} style={props.style} data-toggle={props.dataToggle} data-target={props.dataTarget} id={props.id} onClick={props.onClick} disabled={props.disabled}>{props.children}</a>)};
 
 export const Navbar =
   function(props) {return(<nav className="navbar navbar-default"><div className="container-fluid">{props.children}</div></nav>)};
@@ -302,13 +302,47 @@ export class ReservationList extends React.Component {
       <div className="well bs-component">
         <div className="panel-body panel-chat">
           <ul className="chat">
-            {this.props.source.map((reservation) => (<li key={reservation['_id']} className="left clearfix"><Button id={reservation['_id']} onClick={this.props.onClick}>{reservation.message}</Button></li>))}
+            {this.props.source.map((reservation) => (
+              <li key={reservation['_id']} className="left clearfix">
+                <Button id={reservation['_id']} name="clickbutton" onClick={this.props.onClick}>
+                  <span id={reservation['_id']} className="chat-img pull-left">
+                    <img id={reservation['_id']} src="http://placehold.it/50/55C1E7/fff&amp;text=YOU" alt="User Avatar" className="img-circle"/>
+                  </span>
+                  <div id={reservation['_id']}  className="chat-body clearfix">
+                    <div id={reservation['_id']}  className="header">
+                      <strong id={reservation['_id']} className="primary-font">{reservation.message}</strong>
+                      <small id={reservation['_id']} className="pull-right text-muted"><span className="glyphicon glyphicon-time"></span>{reservation.status}</small>
+                    </div>
+                    <p id={reservation['_id']} >{'(' + reservation.startDate.toLocaleDateString() + ' - ' + reservation.endDate.toLocaleDateString() + ')'}</p>
+                  </div>
+                </Button>
+              </li>))
+            }
           </ul>
         </div>
       </div>
     );
   }
 }
+
+const ReceivedMessage = function(props) {return (
+  <Row>
+    <Col widthXS="9">
+      <li className="left clearfix">
+        <span className="chat-img pull-left">
+          <img src="http://placehold.it/50/55C1E7/fff&amp;text=YOU" alt="User Avatar" className="img-circle"/>
+        </span>
+        <div className="chat-body clearfix">
+            <div className="header">
+                <strong className="primary-font">{props.sender}</strong>
+                <small className="pull-right text-muted"><span className="glyphicon glyphicon-time"></span>{props.date.getHours() + ":" + props.date.getMinutes()}</small>
+            </div>
+            <p>{props.message.messagetext}</p>
+        </div>
+      </li>
+    </Col>
+  </Row>
+);};
 
 const SentMessage = function(props) {return (
   <Row>
@@ -324,25 +358,6 @@ const SentMessage = function(props) {return (
                 <strong className="pull-right primary-font">{props.sender}</strong>
             </div>
             <p className="text-right">{props.message.messagetext}</p>
-        </div>
-      </li>
-    </Col>
-  </Row>
-);};
-
-const ReceivedMessage = function(props) {return (
-  <Row>
-    <Col widthXS="9">
-      <li className="left clearfix">
-        <span className="chat-img pull-left">
-          <img src="http://placehold.it/50/55C1E7/fff&amp;text=YOU" alt="User Avatar" className="img-circle"/>
-        </span>
-        <div className="chat-body clearfix">
-            <div className="header">
-                <strong className="primary-font">{props.sender}</strong>
-                <small className="pull-right text-muted"><span className="glyphicon glyphicon-time"></span>{props.date.getHours() + ":" + props.date.getMinutes()}</small>
-            </div>
-            <p>{props.message.messagetext}</p>
         </div>
       </li>
     </Col>

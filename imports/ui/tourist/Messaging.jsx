@@ -22,6 +22,7 @@ export class Messaging extends React.Component {
 
 	handleSubmit(event){
 		// Insert a new message from user to recipient, for current reservation
+		event.preventDefault();
 		let messagetext = this.refs.chatbox.refs.inputMessage.value;
 		this.refs.chatbox.setState({'text' : ''});
 		// Empty message handling
@@ -39,7 +40,9 @@ export class Messaging extends React.Component {
 
 	handleSelectionChange(event){
 		// Set the state to reservation : new selection
-		if(this.state.reservation['_id'] == event.target.id) return;
+		if(this.state.reservation) {
+			if(this.state.reservation['_id'] == event.target.id) return;
+		}
 		this.setState({
 			'reservation' : this.props.reservations.find((reservation) => reservation['_id'] == event.target.id), 
 			'title' : event.target.innerHTML
@@ -75,7 +78,7 @@ export default MessagingContainer = createContainer(function(props) {
 	Meteor.subscribe('reservationusers');
 	return {
     currentUser: Meteor.user(),
-    reservations : Reservations.find({'tourist': Meteor.userId()}).fetch(),
+    reservations : Reservations.find().fetch(),
     namebyuserid : function(id) { 
     	let user = Meteor.users.find({'_id' : id}).fetch()[0];
     	return (user ? user.profile.name : '');
