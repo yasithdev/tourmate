@@ -67,8 +67,9 @@ Meteor.publish("reservationusers", function() {
 	let reservations = Reservations.find(p).fetch();
 	let params = [];
 	if(reservations){
-		params = reservations.map((r) => ({'_id' : r['tourist']}, {'_id' : r['tour-provider']}));
+		params = Array.from(new Set(reservations.map((r) => r['tourist']).concat(reservations.map((r) => r['tour-provider'])))).map((p) => ({'_id' : p}));
 	}
+
 	if (params) {
 		return Meteor.users.find(
 			{$or : params },

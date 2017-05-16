@@ -49,14 +49,18 @@ export class Messaging extends React.Component {
 	render() {
 		return( 
 			<FluidContainer>
-				<h2> Messaging </h2>
-				<Col widthXS="4">
-					<ReservationList source={this.props.reservations} onClick={this.handleSelectionChange.bind(this)}/>
-				</Col>
-				<Col widthXS="8">
-					<Conversation sender={this.props.currentUser['_id']} senderName={this.props.namebyuserid(this.state.reservation['tourist'])} recipientName={this.props.namebyuserid(this.state.reservation['tour-provider'])} title={this.state.reservation['message']} messages={this.props.messages(this.state.reservation['_id'])}/>
-					{this.state.reservation ? (<ChatBox ref="chatbox" onSubmit={this.handleSubmit.bind(this)}/>) : ('')}
-				</Col>
+				<div className="well bs-component">
+					<h2> Messaging </h2>
+					<Row>
+						<Col widthXS="4">
+							<ReservationList source={this.props.reservations} onClick={this.handleSelectionChange.bind(this)}/>
+						</Col>
+						<Col widthXS="8">
+							<Conversation sender={this.props.currentUser['_id']} senderName={this.props.namebyuserid(this.state.reservation['tourist'])} recipientName={this.props.namebyuserid(this.state.reservation['tour-provider'])} title={this.state.reservation['message']} messages={this.props.messages(this.state.reservation['_id'])}/>
+							{this.state.reservation ? (<ChatBox ref="chatbox" onSubmit={this.handleSubmit.bind(this)}/>) : ('')}
+						</Col>
+					</Row>
+				</div>
 			</FluidContainer>
 		);
 	}
