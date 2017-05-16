@@ -236,12 +236,19 @@ export class ChatBox extends React.Component {
   handleChange(event){
     this.setState({'text' : event.target.value});
   }
+
+  handleKeyPress(event){
+    if(event.key === 'Enter'){
+      event.preventDefault();
+      this.props.onSubmit(event);
+    }
+  }
   
   render() {
     return (
         <div className="well bs-component">
           <Row>
-            <Col width="10"><textArea ref="inputMessage" value={this.state.text} onChange={this.handleChange.bind(this)} rows="3" style={{'width' : '100%'}}/></Col>
+            <Col width="10"><textArea ref="inputMessage" value={this.state.text} onChange={this.handleChange.bind(this)} onKeyPress={this.handleKeyPress.bind(this)} rows="3" style={{'width' : '100%'}}/></Col>
             <Col width="2"><Button type="primary" disabled={this.state.text == ''} onClick={this.props.onSubmit}>Send</Button></Col>
           </Row>
         </div>
@@ -253,15 +260,33 @@ export class Conversation extends React.Component {
   constructor(props){
     super(props);
   }
+
+  scrollToBottom() {
+    let node = this.refs.messagesEnd;
+    this.refs.chatpanel.scrollTop = this.refs.chatpanel.scrollHeight;
+  }
+
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
   
   render() {
     return (
       <div className="well bs-component">
         <h2>{this.props.title}</h2>
-        {this.props.sender
-          ? this.props.messages.map((msg) => (this.props.sender == msg.sender ? <SentMessage key={msg['_id']} message={msg}/> : <ReceivedMessage key={msg['_id']} message={msg}/>))
-          : ('')
-        }
+        <div ref="chatpanel" className="panel-body panel-chat">
+          <ul className="chat">
+            {this.props.sender
+              ? this.props.messages.map((msg) => (this.props.sender == msg.sender ? <SentMessage key={msg['_id']} message={msg} sender={msg.sender} date={msg.date}/> : <ReceivedMessage key={msg['_id']} message={msg} sender={msg.sender} date={msg.date}/>))
+              : ('')
+            }
+          </ul>
+        </div>
+        <p ref="messagesEnd"></p>
       </div>
     );
   }
@@ -274,12 +299,59 @@ export class ReservationList extends React.Component {
 
   render() {
     return (
-      <FluidContainer>
-        {this.props.source.map((reservation) => (<Button key={reservation['_id']} id={reservation['_id']} onClick={this.props.onClick}>{reservation.message}</Button>))}
-      </FluidContainer>
+      <div className="well bs-component">
+        <div className="panel-body panel-chat">
+          <ul className="chat">
+            {this.props.source.map((reservation) => (<li key={reservation['_id']} className="left clearfix"><Button id={reservation['_id']} onClick={this.props.onClick}>{reservation.message}</Button></li>))}
+          </ul>
+        </div>
+      </div>
     );
   }
 }
 
-const SentMessage = function(props) {return (<Row><div className="panel panel-success pull-right">{props.message.messagetext}</div></Row>);};
-const ReceivedMessage = function(props) {return (<Row><div className="panel panel-warning pull-left">{props.message.messagetext}</div></Row>);};
+const SentMessage = function(props) {return (
+  <Row>
+    <Col widthXS="3"></Col>
+    <Col widthXS="9">
+      <li className="right clearfix">
+        <span className="chat-img pull-right">
+          <img src="http://placehold.it/50/FA6F57/fff&amp;text=ME" alt="User Avatar" className="img-circle"/>
+        </span>
+        <div className="chat-body clearfix">
+            <div className="header">
+                <small className="text-muted"><span className="glyphicon glyphicon-time"></span>{props.date.getHours() + ":" + props.date.getMinutes()}</small>
+                <strong className="pull-right primary-font">{props.sender}</strong>
+            </div>
+            <p className="text-right">{props.message.messagetext}</p>
+        </div>
+      </li>
+    </Col>
+  </Row>
+);};
+
+const ReceivedMessage = function(props) {return (
+  <Row>
+    <Col widthXS="9">
+      <li className="left clearfix">
+        <span className="chat-img pull-left">
+          <img src="http://placehold.it/50/55C1E7/fff&amp;text=YOU" alt="User Avatar" className="img-circle"/>
+        </span>
+        <div className="chat-body clearfix">
+            <div className="header">
+                <strong className="primary-font">{props.sender}</strong>
+                <small className="pull-right text-muted"><span className="glyphicon glyphicon-time"></span>{props.date.getHours() + ":" + props.date.getMinutes()}</small>
+            </div>
+            <p>{props.message.messagetext}</p>
+        </div>
+      </li>
+    </Col>
+  </Row>
+);};
+
+
+
+
+
+
+
