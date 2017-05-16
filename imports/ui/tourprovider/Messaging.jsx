@@ -54,7 +54,7 @@ export class Messaging extends React.Component {
 					<ReservationList source={this.props.reservations} onClick={this.handleSelectionChange.bind(this)}/>
 				</Col>
 				<Col widthXS="8">
-					<Conversation sender={this.props.currentUser['_id']} title={this.state.reservation['message']} messages={this.props.messages(this.state.reservation['_id'])}/>
+					<Conversation sender={this.props.currentUser['_id']} senderName={this.props.namebyuserid(this.state.reservation['tour-provider'])} recipientName={this.props.namebyuserid(this.state.reservation['tourist'])} title={this.state.reservation['message']} messages={this.props.messages(this.state.reservation['_id'])}/>
 					{this.state.reservation ? (<ChatBox ref="chatbox" onSubmit={this.handleSubmit.bind(this)}/>) : ('')}
 				</Col>
 			</FluidContainer>
@@ -68,9 +68,14 @@ export class Messaging extends React.Component {
 export default MessagingContainer = createContainer(function(props) {
 	Meteor.subscribe('reservations');
 	Meteor.subscribe('messages');
+	Meteor.subscribe('reservationusers');
   return {
     currentUser: Meteor.user(),
     reservations : Reservations.find({'tour-provider': Meteor.userId()}).fetch(),
+    namebyuserid : function(id) { 
+    	let user = Meteor.users.find({'_id' : id}).fetch()[0];
+    	return (user ? user.profile.name : '');
+    },
     allmessages : Messages.find().fetch(),
 		messages : (id) => Messages.find({'reservation': id}).fetch(),
   };

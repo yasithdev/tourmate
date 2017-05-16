@@ -281,7 +281,7 @@ export class Conversation extends React.Component {
         <div ref="chatpanel" className="panel-body panel-chat">
           <ul className="chat">
             {this.props.sender
-              ? this.props.messages.map((msg) => (this.props.sender == msg.sender ? <SentMessage key={msg['_id']} message={msg} sender={msg.sender} date={msg.date}/> : <ReceivedMessage key={msg['_id']} message={msg} sender={msg.sender} date={msg.date}/>))
+              ? this.props.messages.map((msg) => (this.props.sender == msg.sender ? <SentMessage key={msg['_id']} message={msg} sender={this.props.senderName} date={msg.date}/> : <ReceivedMessage key={msg['_id']} message={msg} sender={this.props.recipientName} date={msg.date}/>))
               : ('')
             }
           </ul>

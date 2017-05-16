@@ -6,6 +6,8 @@ import '../imports/api/messages.js';
 import '../imports/api/reservations.js';
 import '../imports/api/reviews.js';
 
+import { Reservations } from '../imports/api/reservations.js';
+
 Meteor.startup(() => {
   // code to run on server at startup
 });
@@ -57,3 +59,22 @@ Meteor.publish("tour-providers", () =>
 		{fields: {'profile.role': 1, 'profile.name': 1, 'profile.url': 1, 'profile.bio': 1, 'profile.avatar': 1, 'profile.services': 1, 'username' : 1}}
 	)
 );
+
+Meteor.publish("reservationusers", function() {
+	let role = Meteor.users.findOne({'_id' : this.userId}).profile.role;
+	let p = {};
+	p[role] = this.userId;
+	let reservations = Reservations.find(p).fetch();
+	let params = [];
+	if(reservations){
+		params = reservations.map((r) => ({'_id' : r['tourist']}, {'_id' : r['tour-provider']}));
+	}
+	if (params) {
+		return Meteor.users.find(
+			{$or : params },
+			{fields: {'profile.name': 1, 'username' : 1}}
+		);
+	} else {
+		return null;
+	}
+});
