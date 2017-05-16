@@ -224,3 +224,62 @@ export class Modal extends React.Component {
   }
 }
 
+// --------------------
+// Composite Components
+// --------------------
+export class ChatBox extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {'text' : ''};
+  }
+
+  handleChange(event){
+    this.setState({'text' : event.target.value});
+  }
+  
+  render() {
+    return (
+        <div className="well bs-component">
+          <Row>
+            <Col width="10"><textArea ref="inputMessage" value={this.state.text} onChange={this.handleChange.bind(this)} rows="3" style={{'width' : '100%'}}/></Col>
+            <Col width="2"><Button type="primary" disabled={this.state.text == ''} onClick={this.props.onSubmit}>Send</Button></Col>
+          </Row>
+        </div>
+    );
+  }
+}
+
+export class Conversation extends React.Component {
+  constructor(props){
+    super(props);
+  }
+  
+  render() {
+    return (
+      <div className="well bs-component">
+        <h2>{this.props.title}</h2>
+        {this.props.sender
+          ? this.props.messages.map((msg) => (this.props.sender == msg.sender ? <SentMessage key={msg['_id']} message={msg}/> : <ReceivedMessage key={msg['_id']} message={msg}/>))
+          : ('')
+        }
+      </div>
+    );
+  }
+}
+
+export class ReservationList extends React.Component {
+  constructor(props){
+    super(props);
+  }
+
+  render() {
+    return (
+      <FluidContainer>
+        {this.props.source.map((reservation) => (<Button key={reservation['_id']} id={reservation['_id']} onClick={this.props.onClick}>{reservation.message}</Button>))}
+      </FluidContainer>
+    );
+  }
+}
+
+const SentMessage = function(props) {return (<Row><div className="panel panel-success pull-right">{props.message.messagetext}</div></Row>);};
+const ReceivedMessage = function(props) {return (<Row><div className="panel panel-warning pull-left">{props.message.messagetext}</div></Row>);};

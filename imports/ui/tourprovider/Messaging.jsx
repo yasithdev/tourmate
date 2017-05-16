@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 
-import { FluidContainer, Col, Row, Button } from '../common/Components';
+import { FluidContainer, Col, Row, Button, ReservationList, Conversation, ChatBox } from '../common/Components';
 
 import { Reservations } from '../../api/reservations';
 import { Messages } from '../../api/messages';
@@ -58,63 +58,6 @@ export class Messaging extends React.Component {
 					{this.state.reservation ? (<ChatBox ref="chatbox" onSubmit={this.handleSubmit.bind(this)}/>) : ('')}
 				</Col>
 			</FluidContainer>
-		);
-	}
-}
-
-export class ReservationList extends React.Component {
-	constructor(props){
-		super(props);
-	}
-
-	render() {
-		return (
-			<FluidContainer>
-				{this.props.source.map((reservation) => (<Button key={reservation['_id']} id={reservation['_id']} onClick={this.props.onClick}>{reservation.message}</Button>))}
-			</FluidContainer>
-		);
-	}
-}
-
-export class Conversation extends React.Component {
-	constructor(props){
-		super(props);
-	}
-	
-	render() {
-		return (
-			<div className="well bs-component">
-				<h2>{this.props.title}</h2>
-				{this.props.sender
-					?	this.props.messages.map((msg) => (this.props.sender == msg.sender ? <SentMessage key={msg['_id']} message={msg}/> : <ReceivedMessage key={msg['_id']} message={msg}/>))
-					: ('')
-				}
-			</div>
-		);
-	}
-}
-
-const SentMessage = function(props) {return (<Row><div className="success pull-right">{props.message.messagetext}</div></Row>);};
-const ReceivedMessage = function(props) {return (<Row><div className="warning pull-left">{props.message.messagetext}</div></Row>);};
-
-export class ChatBox extends React.Component {
-	constructor(props){
-		super(props);
-		this.state = {'text' : ''};
-	}
-
-	handleChange(event){
-		this.setState({'text' : event.target.value});
-	}
-	
-	render() {
-		return (
-				<div className="well bs-component">
-					<Row>
-						<Col width="10"><textArea ref="inputMessage" value={this.state.text} onChange={this.handleChange.bind(this)} rows="3" style={{'width' : '100%'}}/></Col>
-						<Col width="2"><Button type="primary" disabled={this.state.text == ''} onClick={this.props.onSubmit}>Send</Button></Col>
-					</Row>
-				</div>
 		);
 	}
 }

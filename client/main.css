@@ -1,11 +1,12 @@
 .bg {
 	background-image: url('background.jpg');
+	background-position: center bottom;
 	width: 100%;
 	height: 100%;
-	opacity: 0.3;
+	opacity: 0.8;
 	z-index: -99999;
 	position: fixed;
-	filter: blur(15px);
+	filter: blur(5px);
 }
 
 .jumbotron {
