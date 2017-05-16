@@ -7,7 +7,7 @@ export const Messages = new Mongo.Collection('messages');
 if (Meteor.isServer) {
 	Meteor.publish('messages', function() {
 		let userId = this.userId;
-		return Messages.find({$or : [{'sender' : userId},{'recipient' : userId}]});
+		return Messages.find({$or: [{'sender': userId}, {'recipient': userId}]});
 	});
 };
 

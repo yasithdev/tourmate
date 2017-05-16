@@ -23,7 +23,7 @@ export const Col =
     " " + props.className}>{props.children} </div>)};
 
 export const Button =
-  function(props) {return(<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default") + " " + props.className} data-toggle={props.dataToggle} data-target={props.dataTarget} id={props.id} onClick={props.onClick}>{props.children}</a>)};
+  function(props) {return(<a className={"btn " + (props.type ? ("btn-" + props.type) : "btn-default") + " " + props.className} data-toggle={props.dataToggle} data-target={props.dataTarget} id={props.id} onClick={props.onClick} disabled={props.disabled}>{props.children}</a>)};
 
 export const Navbar =
   function(props) {return(<nav className="navbar navbar-default"><div className="container-fluid">{props.children}</div></nav>)};
