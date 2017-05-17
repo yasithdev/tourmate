@@ -62,6 +62,7 @@ export default ReviewsContainer = createContainer(function(props) {
     	let user = Meteor.users.find({'_id' : id}).fetch()[0];
     	return (user ? user.profile.name : '');
     },
+    allReviews : ReviewsDb.find().fetch(),
     reviewCount : ReviewsDb.find().count(),
 		reviews : (reservationid) => ReviewsDb.find({'reservation': reservationid}).fetch(),
   };

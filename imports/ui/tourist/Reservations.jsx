@@ -5,6 +5,7 @@ import ReactStars from 'react-stars';
 
 import { Button, Row, Col, Modal, FluidContainer } from '../common/Components';
 import { Reservations as ReservationsDb } from '../../api/reservations';
+import { Reviews } from '../../api/reviews';
 
 /* ------------------------------------------------------------ *
  * Reservation page for tour provider ------------------------- *
@@ -43,6 +44,14 @@ class Reservations extends React.Component {
 		});
 	}
 
+	handleUpdateReview(review){
+		console.log("Running handleWriteReview");
+		console.log(review);
+		Meteor.call('reviews.update', review , (error, result) => {
+			if(result) alert("Successfully updated the review");
+		});
+	}
+
 	render(){
 		return (
 			<FluidContainer>
@@ -56,7 +65,7 @@ class Reservations extends React.Component {
 
 				<h2> Completed Reservations </h2>
 				{/*Completed Reservations - Can write a review, or view the review if one exists*/}
-				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "completed").map((reservation) => (<CompletedReservation onWriteReview={this.handleWriteReview} username={this.props.usernameById(reservation['tour-provider'])} key={reservation._id} reservation={reservation}/>)) : ''}
+				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "completed").map((reservation) => (<CompletedReservation onWriteReview={this.handleWriteReview} onUpdateReview={this.handleUpdateReview} existingReview={this.props.getReview(reservation._id)} username={this.props.usernameById(reservation['tour-provider'])} key={reservation._id} reservation={reservation}/>)) : ''}
 
 				<h2> Canceled Reservations </h2>
 				{/*Cancelled Reservations - No action possible*/}
@@ -76,9 +85,12 @@ class Reservations extends React.Component {
 export default ReservationsContainer = createContainer(function(props) {
 	Meteor.subscribe('tour-providers');
 	Meteor.subscribe('reservations', Meteor.user().profile.role, Meteor.userId());
+	Meteor.subscribe('reviews');
 	return {
 		currentUser : Meteor.user(),
 		reservations : ReservationsDb.find().fetch(),
+		getReview : (reservationId) => Reviews.find({'reservation' : reservationId}).fetch()[0],
+		allReviews : Reviews.find().fetch(),
 		usernameById : (userId) => (Meteor.users.findOne(userId) ? Meteor.users.findOne(userId)['username'] : ('')),
 	};
 }, Reservations);
@@ -176,8 +188,26 @@ class AcceptedReservation extends React.Component {
 class CompletedReservation extends React.Component {
 	constructor(props){
 		super(props);
-		this.state = {'rating' : 2.5};
+		this.state = {'rating' : ''};
 		if(this.props.reservation.status != "completed") throw 'Invalid reservation';
+	}
+
+	componentDidUpdate(){
+		if(this.props.existingReview){
+			if(this.state.rating == '') this.setState({
+				'rating' : this.props.existingReview.rating,
+				'title' : this.props.existingReview.title,
+				'review' : this.props.existingReview.review
+			});
+		}
+	}
+
+	handleTitleChange(event){
+		this.setState({'title' : event.target.value});
+	}
+
+	handleReviewChange(event){
+		this.setState({'review' : event.target.value});
 	}
 
 	handleWriteReview(event){
@@ -188,6 +218,24 @@ class CompletedReservation extends React.Component {
 			'rating' : this.state.rating
 		}
 		this.props.onWriteReview(review);
+	}
+
+	handleUpdateReview(event){
+		let existingReview = this.props.existingReview;
+		// Check if update necessary
+		let title = this.refs.inputTitle.value;
+		let rating = this.state.rating;
+		let review = this.refs.inputMessage.value;
+		if(title == existingReview.title && rating == existingReview.rating && review == existingReview.review) throw new Meteor.error('Nothing to update');
+		// Call update
+		let updatedReview = {
+			'_id' : existingReview['_id'],
+			'reservation' : this.props.reservation['_id'],
+			'review' : review,
+			'title' : title,
+			'rating' : rating
+		};
+		this.props.onUpdateReview(updatedReview);
 	}
 
 	handleRatingChange(newRating){
@@ -203,7 +251,7 @@ class CompletedReservation extends React.Component {
 							<Col widthXS="8"><strong className="panel-title">{this.props.reservation.message}</strong></Col>
 							<Col className="text-right" widthXS="4">
 								<span className="text-right">
-									<Button type="primary" id={this.props.reservation._id} dataToggle="modal" dataTarget="#reviewModal">Write a Review</Button>
+									<Button type="primary" id={this.props.reservation._id} dataToggle="modal" dataTarget="#reviewModal">{this.props.existingReview ? 'See Your Review' : 'Write a Review'}</Button>
 								</span>
 							</Col>
 						</Row>
@@ -215,11 +263,21 @@ class CompletedReservation extends React.Component {
 					</div>
 				</div>
 
-				<Modal id="reviewModal" title="Enter your review here" cancelText="Close" submitText="Review" onClick={this.handleWriteReview.bind(this)}>
-					<textArea ref="inputTitle" rows="1" style={{'width' : '100%'}}/>
-					<ReactStars ref="inputRating" count={5} onChange={this.handleRatingChange.bind(this)} value={this.state.rating} />
-					<textArea ref="inputMessage" rows="3" style={{'width' : '100%'}}/>
-				</Modal>
+				{ this.props.existingReview 
+					? (
+						<Modal id="reviewModal" title="Edit your review" cancelText="Close" submitText="Update" onClick={this.handleUpdateReview.bind(this)}>
+							<textArea ref="inputTitle" rows="1" style={{'width' : '100%'}} value={this.state.title} onChange={this.handleTitleChange.bind(this)}/>
+							<ReactStars ref="inputRating" count={5} onChange={this.handleRatingChange.bind(this)} value={this.state.rating ? this.state.rating : 2.5}/>
+							<textArea ref="inputMessage" rows="3" style={{'width' : '100%'}} value={this.state.review} onChange={this.handleReviewChange.bind(this)}/>
+						</Modal>
+						)
+					: (
+						<Modal id="reviewModal" title="Enter your review here" cancelText="Close" submitText="Review" onClick={this.handleWriteReview.bind(this)}>
+							<textArea ref="inputTitle" rows="1" style={{'width' : '100%'}}/>
+							<ReactStars ref="inputRating" count={5} onChange={this.handleRatingChange.bind(this)} value={this.state.rating ? this.state.rating : 2.5} />
+							<textArea ref="inputMessage" rows="3" style={{'width' : '100%'}}/>
+						</Modal>
+					)}
 			</div>
 		);
 	}

@@ -49,7 +49,23 @@ Meteor.methods({
 
 	// Updates an existing review
 	'reviews.update': (review) => {
-
+		check(review['reservation'], String);
+		check(review['title'], String);
+		check(review['rating'], Number);
+		check(review['review'], String);
+		if(review['rating'] > 5 || review['rating'] < 1) throw new Meteor.error('invalid value for rating');
+		// Set default values
+		review['date'] = new Date();
+		// If constraints satisfied, update title, rating, review and date of review
+		Reviews.update({'_id' : review['_id']}, {
+			$set : {
+				'title' : review['title'], 
+				'rating' : review['rating'], 
+				'review' : review['review'],
+				'date' : review['date']
+			}
+		});
+		return true;
 	},
 	
 	// Deletes an existing review
