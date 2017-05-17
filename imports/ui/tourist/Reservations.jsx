@@ -251,6 +251,7 @@ class CompletedReservation extends React.Component {
 							<Col widthXS="8"><strong className="panel-title">{this.props.reservation.message}</strong></Col>
 							<Col className="text-right" widthXS="4">
 								<span className="text-right">
+									{this.props.existingReview ? <span style={{'padding' : '5px'}} ><strong>(Reviewed)</strong></span> : ('')}
 									<Button type="primary" id={this.props.reservation._id} dataToggle="modal" dataTarget="#reviewModal">{this.props.existingReview ? 'See Your Review' : 'Write a Review'}</Button>
 								</span>
 							</Col>

@@ -10,6 +10,20 @@ import { Reservations } from '../imports/api/reservations.js';
 
 Meteor.startup(() => {
   // code to run on server at startup
+  // Create an admin account if not available
+  var user = Meteor.users.findOne({'profile.role' : 'admin'});
+  if(user) return;
+
+	user = {
+		'username' : 'admin',
+		'password' : 'admin',
+		'email' : 'admin@tourmate.com',
+		'profile' : {
+			'role' : 'admin',
+		},
+	};
+	Accounts.createUser(user);
+	console.log('admin user created');
 });
 
 Meteor.methods({
@@ -64,6 +78,14 @@ Meteor.publish("tour-providers", () =>
 		{fields: {'profile.role': 1, 'profile.name': 1, 'profile.url': 1, 'profile.bio': 1, 'profile.avatar': 1, 'profile.services': 1, 'username' : 1}}
 	)
 );
+
+Meteor.publish("allusers", function() {
+	if(Meteor.users.findOne({'_id' : this.userId}).profile.role == "admin"){
+		return Meteor.users.find();
+	} else {
+		return null;
+	}
+});
 
 Meteor.publish("reservationusers", function() {
 	let role = Meteor.users.findOne({'_id' : this.userId}).profile.role;

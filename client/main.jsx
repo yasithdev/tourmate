@@ -38,19 +38,50 @@ export class Routes extends React.Component {
 							return (<Redirect to="/login"/>);
 						}}/>
 						<Route path="/register" component={Register}/>
-						<Route path="/tourist/:username" render={() => currentUser
-							? <TouristApp/>
-							: (<Redirect to="/login"/>) }/>
-						<Route path="/tour-provider/:username" render={() => currentUser
-							? <TourProviderApp/>
-							: (<Redirect to="/login"/>) }/>
+
+						<Route path="/tourist/:username" render={(props) => {
+								console.log(props);
+								return (currentUser
+								? (<TouristApp/>)
+								: (<Redirect to="/login"/>) );
+							}}/>
+
+						<Route path="/tour-provider/:username" render={(props) => {
+								console.log(props);
+								return (currentUser
+								? (<TourProviderApp/>)
+								: (<Redirect to="/login"/>) );
+							}}/>
+
+						<Route path="/admin/:username" render={(props) => {
+								console.log(props);
+								return (currentUser
+								? (<AdminApp/>)
+								: (<Redirect to="/login"/>) );
+							}}/>
+
 						{/*Route corrections*/}
-						<Route path="/tourist" render={() => currentUser
-							? (<Redirect to={"/tourist/" + currentUser.username} />)
-							: (<Redirect to="/login"/>) }/>
-						<Route path="/tour-provider" render={() => currentUser
-							? (<Redirect to={"/tour-provider/" + currentUser.username} />)
-							: (<Redirect to="/login"/>) }/>
+						<Route path="/tourist" render={(props) => {
+								console.log(props);
+								return (currentUser
+								? (<Redirect to={"/tourist/" + currentUser.username} />)
+								: (<Redirect to="/login"/>) );
+							}}/>
+
+						<Route path="/tour-provider" render={(props) => {
+								console.log(props);
+								return (currentUser
+								? (<Redirect to={"/tour-provider/" + currentUser.username} />)
+								: (<Redirect to="/login"/>) );
+							}}/>
+
+						<Route path="/admin" render={(props) => {
+								console.log(props);
+								return (currentUser
+								? (<Redirect to={"/admin/" + currentUser.username} />)
+								: (<Redirect to="/login"/>) );
+							}}/>
+
 					</div>
 				</Router>
 			);

@@ -21,10 +21,12 @@ if (Meteor.isServer) {
   	let user = Meteor.users.findOne({'_id' : this.userId});
   	if(user){
   		params = {};
-  		params[user.profile.role] = this.userId;
+  		if (user.role != 'admin') params[user.profile.role] = this.userId;
   		let reservations = Reservations.find(params).fetch().map((r) => (r['_id']));
   		if(reservations){
-  			return Reviews.find({ 'reservation' : { $in : reservations } });
+  			var query = {}
+  			if (user.role != 'admin') query['reservation'] = { $in : reservations };
+  			return Reviews.find(query);
   		}
   	}
   	return null;

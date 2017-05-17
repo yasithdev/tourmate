@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { Navbar, NavHeader, Nav, NavItem, CollapsingNav } from './Components';
 import TouristApp from '../tourist/TouristApp';
 import TourProviderApp from '../tourprovider/TourProviderApp';
+import AdminApp from '../admin/AdminApp';
 
 export class App extends React.Component {
 	constructor(props){
