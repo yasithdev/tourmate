@@ -282,7 +282,13 @@ export class Conversation extends React.Component {
         <div ref="chatpanel" className="panel-body panel-chat">
           <ul className="chat">
             {this.props.sender
-              ? this.props.messages.map((msg) => (this.props.sender == msg.sender ? <SentMessage key={msg['_id']} message={msg} sender={this.props.senderName} date={msg.date}/> : <ReceivedMessage key={msg['_id']} message={msg} sender={this.props.recipientName} date={msg.date}/>))
+              ? this.props.messages.map((msg) => 
+                  ((msg.sender == 'broadcast' || msg.recipient == 'broadcast') ? <BroadcastMessage key={msg['_id']} message={msg} sender={this.props.recipientName} date={msg.date}/>
+                  :this.props.sender == msg.sender ? <SentMessage key={msg['_id']} message={msg} sender={this.props.senderName} date={msg.date}/> 
+                  :this.props.sender == msg.recipient ? <ReceivedMessage key={msg['_id']} message={msg} sender={this.props.recipientName} date={msg.date}/>
+                  : ('')
+                  )
+                )
               : ('')
             }
           </ul>
@@ -365,6 +371,22 @@ const ReceivedMessage = function(props) {return (
                 <small className="pull-right text-muted"><span className="glyphicon glyphicon-time"></span>{props.date.getHours() + ":" + props.date.getMinutes()}</small>
             </div>
             <p>{props.message.messagetext}</p>
+        </div>
+      </li>
+    </Col>
+  </Row>
+);};
+
+const BroadcastMessage = function(props) {return (
+  <Row>
+    <Col widthXS="9">
+      <li className=" center clearfix">
+        <div className="chat-body clearfix">
+            <div className="header">
+                <strong className="primary-font">{"Notification"}</strong>
+                <small className="pull-right text-muted"><span className="glyphicon glyphicon-time"></span>{props.date.getHours() + ":" + props.date.getMinutes()}</small>
+            </div>
+            <p className="text-center">{props.message.messagetext}</p>
         </div>
       </li>
     </Col>

@@ -20,6 +20,7 @@ Meteor.startup(() => {
 		'email' : 'admin@tourmate.com',
 		'profile' : {
 			'role' : 'admin',
+			'name' : 'Administrator'
 		},
 	};
 	Accounts.createUser(user);
@@ -83,7 +84,7 @@ Meteor.publish("allusers", function() {
 	if(Meteor.users.findOne({'_id' : this.userId}).profile.role == "admin"){
 		return Meteor.users.find();
 	} else {
-		return null;
+		return Meteor.users.find({null});
 	}
 });
 
@@ -93,16 +94,17 @@ Meteor.publish("reservationusers", function() {
 	p[role] = this.userId;
 	let reservations = Reservations.find(p).fetch();
 	let params = [];
+
 	if(reservations){
 		params = Array.from(new Set(reservations.map((r) => r['tourist']).concat(reservations.map((r) => r['tour-provider'])))).map((p) => ({'_id' : p}));
 	}
 
-	if (params) {
+	if (params[0] != null) {
 		return Meteor.users.find(
 			{$or : params },
 			{fields: {'profile.name': 1, 'username' : 1}}
 		);
 	} else {
-		return null;
+		return Meteor.users.find({null});
 	}
 });

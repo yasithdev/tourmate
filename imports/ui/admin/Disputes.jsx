@@ -33,7 +33,7 @@ class Disputes extends React.Component {
 				<div className="well bs-component">
 					<h2>Pending Disputes</h2>
 					{/*Pending Disputes - Can be accepted or rejected*/}
-					{this.props.Disputes ? this.props.reservations.map((reservation) => (<DisputedReservation onAcceptCancellationRequest={this.handleAcceptRequest} onRejectCancellationRequest={this.handleRejectRequest} username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
+					{this.props.reservations ? this.props.reservations.map((reservation) => (<DisputedReservation onAcceptCancellationRequest={this.handleAcceptRequest} onRejectCancellationRequest={this.handleRejectRequest} username={this.props.usernameById(reservation.tourist)} key={reservation._id} reservation={reservation}/>)) : ''}
 				</div>
 			</FluidContainer>
 		);
@@ -41,14 +41,14 @@ class Disputes extends React.Component {
 }
 
 /* ------------------------------------------------------------ *
- * Reactive data container for Disputes ------------------- *
+ * Reactive data container for Disputes ----------------------- *
  * ------------------------------------------------------------ */
 export default ReservationsContainer = createContainer(function(props) {
 	Meteor.subscribe('tourists');
-	Meteor.subscribe('Disputes', Meteor.user().profile.role, Meteor.userId());
+	Meteor.subscribe('reservations');
 	return {
 		currentUser : Meteor.user(),
-		reservations : ReservationsDb.find().fetch({'status' : 'disputed'}),
+		reservations : ReservationsDb.find({'status' : 'disputed'}).fetch(),
 		usernameById : (userId) => (Meteor.users.findOne(userId) ? Meteor.users.findOne(userId)['username'] : ('')),
 	};
 }, Disputes);

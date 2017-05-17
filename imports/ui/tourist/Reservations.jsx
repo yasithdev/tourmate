@@ -84,7 +84,7 @@ class Reservations extends React.Component {
  * ------------------------------------------------------------ */
 export default ReservationsContainer = createContainer(function(props) {
 	Meteor.subscribe('tour-providers');
-	Meteor.subscribe('reservations', Meteor.user().profile.role, Meteor.userId());
+	Meteor.subscribe('reservations');
 	Meteor.subscribe('reviews');
 	return {
 		currentUser : Meteor.user(),

@@ -19,8 +19,10 @@ export const Messages = new Mongo.Collection('messages');
 if (Meteor.isServer) {
 	// Only return messages where the current user is either sender or recipient
 	Meteor.publish('messages', function() {
-		let userId = this.userId;
-		return Messages.find({$or: [{'sender': userId}, {'recipient': userId}]});
+		let user = Meteor.users.findOne({'_id' : this.userId});
+		if(!user) return Messages.find({null});
+		if(user.profile.role == 'admin') return Messages.find({});
+		return Messages.find({$or: [{'sender': this.userId}, {'recipient': this.userId}, {'recipient' : 'broadcast'}]});
 	});
 };
 

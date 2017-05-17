@@ -29,7 +29,7 @@ export class Messaging extends React.Component {
 		let recipient = this.state.reservation['tourist'];
 		let reservation = this.state.reservation['_id'];
 
-		let message = {'sender' : sender, 'recipient' : recipient, 'reservation' : reservation, 'messagetext' : messagetext};
+		let message = {'sender' : sender, 'recipient' : 'broadcast', 'reservation' : reservation, 'messagetext' : messagetext};
 		Meteor.call('messages.insert', message, (error, result) => {
 			console.log(error, result);
 		});
@@ -56,7 +56,7 @@ export class Messaging extends React.Component {
 							<ReservationList source={this.props.reservations} onClick={this.handleSelectionChange.bind(this)}/>
 						</Col>
 						<Col widthXS="8">
-							<Conversation sender={this.props.currentUser['_id']} senderName={this.props.namebyuserid(this.state.reservation['tour-provider'])} recipientName={this.props.namebyuserid(this.state.reservation['tourist'])} title={this.state.reservation['message']} messages={this.props.messages(this.state.reservation['_id'])}/>
+							<Conversation sender={this.state.reservation['tour-provider']} senderName={this.props.namebyuserid(this.state.reservation['tour-provider'])} recipientName={this.props.namebyuserid(this.state.reservation['tourist'])} title={this.state.reservation['message']} messages={this.props.messages(this.state.reservation['_id'])}/>
 							{this.state.reservation ? (<ChatBox ref="chatbox" onSubmit={this.handleSubmit.bind(this)}/>) : ('')}
 						</Col>
 					</Row>

@@ -29,7 +29,7 @@ if (Meteor.isServer) {
   			return Reviews.find(query);
   		}
   	}
-  	return null;
+  	return Reviews.find({null});
   });
 }
 
