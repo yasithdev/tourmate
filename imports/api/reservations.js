@@ -16,6 +16,7 @@ export const Reservations = new Mongo.Collection('reservations');
  */
 
 if (Meteor.isServer) {
+	// Only return reservations where the current user is involved
   Meteor.publish('reservations', function () {
   	let user = Meteor.users.findOne(this.userId);
   	if(user){

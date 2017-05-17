@@ -27,9 +27,19 @@ class Reservations extends React.Component {
 		});
 	}
 
-	handleWriteReview(reservation){
+	handleCompleteReservation(reservation){
+		console.log("Running handleCompleteReservation");
+		Meteor.call('reservations.update', reservation._id, {'status' : 'completed'} , (error, result) => {
+			if(result) alert("Successfully marked as completed");
+		});
+	}
+
+	handleWriteReview(review){
 		console.log("Running handleWriteReview");
-		console.log('not implemented');
+		console.log(review);
+		Meteor.call('reviews.insert', review , (error, result) => {
+			if(result) alert("Successfully added the review");
+		});
 	}
 
 	render(){
@@ -41,7 +51,7 @@ class Reservations extends React.Component {
 
 				<h2> Accepted Reservations </h2>
 				{/*Accepted Reservations - Can be cancelled (request to cancel with message)*/}
-				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "accepted").map((reservation) => (<AcceptedReservation onCancelReservation={this.handleCancelAcceptedReservation} username={this.props.usernameById(reservation['tour-provider'])} key={reservation._id} reservation={reservation}/>)) : ''}
+				{this.props.reservations ? this.props.reservations.filter((reservation) => reservation.status == "accepted").map((reservation) => (<AcceptedReservation onCancelReservation={this.handleCancelAcceptedReservation} onCompleteReservation={this.handleCompleteReservation} username={this.props.usernameById(reservation['tour-provider'])} key={reservation._id} reservation={reservation}/>)) : ''}
 
 				<h2> Completed Reservations </h2>
 				{/*Completed Reservations - Can write a review, or view the review if one exists*/}
@@ -124,6 +134,10 @@ class AcceptedReservation extends React.Component {
 		this.props.onCancelReservation(this.props.reservation);
 	}
 
+	handleComplete(event){
+		this.props.onCompleteReservation(this.props.reservation);
+	}
+
 	render() {
 		return (
 			<div>
@@ -133,6 +147,7 @@ class AcceptedReservation extends React.Component {
 							<Col widthXS="8"><strong className="panel-title">{this.props.reservation.message}</strong></Col>
 							<Col className="text-right" widthXS="4">
 								<span className="text-right">
+									<Button type="primary" id={this.props.reservation._id} dataToggle="modal" dataTarget="#completionModal">Complete</Button>
 									<Button type="primary" id={this.props.reservation._id} dataToggle="modal" dataTarget="#confirmationModal">Cancel</Button>
 								</span>
 							</Col>
@@ -148,6 +163,9 @@ class AcceptedReservation extends React.Component {
 				<Modal id="confirmationModal" title="Confirmation" cancelText="No" submitText="Yes" onClick={this.handleClick.bind(this)}>
 					<p>{"Are you sure you want to request a cancellation?"}</p>
 				</Modal>
+				<Modal id="completionModal" title="Mark Completion" cancelText="No" submitText="Yes" onClick={this.handleComplete.bind(this)}>
+					<p>{"Are you sure you want to mark this reservation as completed?"}</p>
+				</Modal>
 
 			</div>
 		);
@@ -160,8 +178,14 @@ class CompletedReservation extends React.Component {
 		if(this.props.reservation.status != "completed") throw 'Invalid reservation';
 	}
 
-	handleClick(event){
-		this.props.onWriteReview(this.props.reservation, this.refs.inputMessage.value);
+	handleWriteReview(event){
+		let review = {
+			'reservation' : this.props.reservation['_id'],
+			'review' : this.refs.inputMessage.value,
+			'title' : this.refs.inputTitle.value,
+			'rating' : Number(this.refs.inputRating.value)
+		}
+		this.props.onWriteReview(review);
 	}
 
 	render() {
@@ -173,7 +197,7 @@ class CompletedReservation extends React.Component {
 							<Col widthXS="8"><strong className="panel-title">{this.props.reservation.message}</strong></Col>
 							<Col className="text-right" widthXS="4">
 								<span className="text-right">
-									<Button type="primary" id={this.props.reservation._id} dataToggle="modal" dataTarget="#confirmationModal">Write a Review</Button>
+									<Button type="primary" id={this.props.reservation._id} dataToggle="modal" dataTarget="#reviewModal">Write a Review</Button>
 								</span>
 							</Col>
 						</Row>
@@ -185,10 +209,11 @@ class CompletedReservation extends React.Component {
 					</div>
 				</div>
 
-				<Modal id="<confirmationModaldiv></confirmationModaldiv>" title="Enter your review here" cancelText="Close" submitText="Make Reservation" onClick={this.handleClick.bind(this)}>
+				<Modal id="reviewModal" title="Enter your review here" cancelText="Close" submitText="Review" onClick={this.handleWriteReview.bind(this)}>
+					<textArea ref="inputTitle" rows="1" style={{'width' : '100%'}}/>
+					<textArea ref="inputRating" rows="1" style={{'width' : '100%'}}/>
 					<textArea ref="inputMessage" rows="3" style={{'width' : '100%'}}/>
 				</Modal>
-
 			</div>
 		);
 	}

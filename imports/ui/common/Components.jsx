@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link, browserHistory } from 'react-router-dom';
+import StarRating from 'react-star-rating';
 
 // RETURNS BOOTSTRAPPED HTML ELEMENTS
 export const Img =
@@ -288,6 +289,32 @@ export class Conversation extends React.Component {
         </div>
         <p ref="messagesEnd"></p>
       </div>
+    );
+  }
+}
+
+export class Review extends React.Component {
+  constructor(props){
+    super(props);
+  }
+
+  render() {
+    return(
+      <div className="well bs-component">
+        <div className="panel panel-primary">
+          <div className="panel-heading">
+            <Row>
+              <Col width="8"><strong className="panel-title">{this.props.review.title}</strong></Col>
+              <Col className="text-right" width="4">
+                <span className="text-right pull-right">
+                  <StarRating name="airbnb-rating" caption="Rating : " totalStars={5} rating={this.props.review.rating} />
+                </span>
+              </Col>
+            </Row>
+          </div>
+          <div className="panel-body"><p>{this.props.review.review}</p></div>
+        </div>
+      </div> 
     );
   }
 }

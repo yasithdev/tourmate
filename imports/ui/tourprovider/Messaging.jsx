@@ -15,7 +15,6 @@ export class Messaging extends React.Component {
 		super(props);
 		this.state = {
 			'reservation' : '',
-			'title' : '',
 			'unreadCount' : ''
 		};
 	}
@@ -44,7 +43,6 @@ export class Messaging extends React.Component {
 		}
 		this.setState({
 			'reservation' : this.props.reservations.find((reservation) => reservation['_id'] == event.target.id), 
-			'title' : event.target.innerHTML
 		});
 	}
 
