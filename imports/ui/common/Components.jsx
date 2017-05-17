@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link, browserHistory } from 'react-router-dom';
-import StarRating from 'react-star-rating';
+import ReactStars from 'react-stars';
 
 // RETURNS BOOTSTRAPPED HTML ELEMENTS
 export const Img =
@@ -307,7 +307,7 @@ export class Review extends React.Component {
               <Col width="8"><strong className="panel-title">{this.props.review.title}</strong></Col>
               <Col className="text-right" width="4">
                 <span className="text-right pull-right">
-                  <StarRating name="airbnb-rating" caption="Rating : " totalStars={5} rating={this.props.review.rating} />
+                  <ReactStars count={5} value={this.props.review.rating} edit={false} />
                 </span>
               </Col>
             </Row>

@@ -14,8 +14,7 @@ export class Reviews extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			'reservation' : '',
-			'reviews' : []
+			'reservation' : ''
 		};
 	}
 
@@ -24,28 +23,23 @@ export class Reviews extends React.Component {
 		if(this.state.reservation) {
 			if(this.state.reservation['_id'] == event.target.id) return;
 		}
-
-		let res = this.props.reservations.find((reservation) => reservation['_id'] == event.target.id);
-		let rev = this.props.review(res['_id']);
 		this.setState({
-			'reservation' : res,
-			'reviews' : rev ? rev : this.state.reviews
+			'reservation' : this.props.reservations.find((reservation) => reservation['_id'] == event.target.id)
 		});
 	}
 
 	render() {
-		console.log(this.state);
 		return( 
 			<FluidContainer>
 				<div className="well bs-component">
-					<h2> Reviews </h2>
+					<h2> Reviews ({this.props.reviewCount}) </h2>
 					{/*Show list of all reservations along with their reviews once selected*/}
 					<Row>
 						<Col widthXS="4">
 							<ReservationList source={this.props.reservations} onClick={this.handleSelectionChange.bind(this)}/>
 						</Col>
 						<Col widthXS="8">
-							{this.state.reviews.map((review) => <Review key={review['_id']} review={review}/>)}
+							{this.props.reviews(this.state.reservation['_id']).map((review) => <Review key={review['_id']} review={review}/>)}
 						</Col>
 					</Row>
 				</div>
@@ -68,7 +62,7 @@ export default ReviewsContainer = createContainer(function(props) {
     	let user = Meteor.users.find({'_id' : id}).fetch()[0];
     	return (user ? user.profile.name : '');
     },
-    allreviews : ReviewsDb.find().fetch(),
-		review : (reservationid) => ReviewsDb.find({'reservation': reservationid}).fetch(),
+    reviewCount : ReviewsDb.find().count(),
+		reviews : (reservationid) => ReviewsDb.find({'reservation': reservationid}).fetch(),
   };
 }, Reviews);

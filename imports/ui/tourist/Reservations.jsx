@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
+import ReactStars from 'react-stars';
 
 import { Button, Row, Col, Modal, FluidContainer } from '../common/Components';
 import { Reservations as ReservationsDb } from '../../api/reservations';
@@ -175,6 +176,7 @@ class AcceptedReservation extends React.Component {
 class CompletedReservation extends React.Component {
 	constructor(props){
 		super(props);
+		this.state = {'rating' : 2.5};
 		if(this.props.reservation.status != "completed") throw 'Invalid reservation';
 	}
 
@@ -183,9 +185,13 @@ class CompletedReservation extends React.Component {
 			'reservation' : this.props.reservation['_id'],
 			'review' : this.refs.inputMessage.value,
 			'title' : this.refs.inputTitle.value,
-			'rating' : Number(this.refs.inputRating.value)
+			'rating' : this.state.rating
 		}
 		this.props.onWriteReview(review);
+	}
+
+	handleRatingChange(newRating){
+		this.setState({'rating' : newRating});
 	}
 
 	render() {
@@ -211,7 +217,7 @@ class CompletedReservation extends React.Component {
 
 				<Modal id="reviewModal" title="Enter your review here" cancelText="Close" submitText="Review" onClick={this.handleWriteReview.bind(this)}>
 					<textArea ref="inputTitle" rows="1" style={{'width' : '100%'}}/>
-					<textArea ref="inputRating" rows="1" style={{'width' : '100%'}}/>
+					<ReactStars ref="inputRating" count={5} onChange={this.handleRatingChange.bind(this)} value={this.state.rating} />
 					<textArea ref="inputMessage" rows="3" style={{'width' : '100%'}}/>
 				</Modal>
 			</div>

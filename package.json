@@ -17,7 +17,7 @@
     "react-dom": "^15.5.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
-    "react-star-rating": "^1.4.2"
+    "react-stars": "^2.1.0"
   },
   "description": "**TourMate** is a platform which connects Tourists with Tour Service providers, and boosts the productivity of tour reservations over traditional means.",
   "version": "1.0.0",
