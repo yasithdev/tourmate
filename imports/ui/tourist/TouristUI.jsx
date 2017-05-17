@@ -14,14 +14,6 @@ export class TouristUI extends React.Component {
 		super(props);
 	}
 
-	componentWillMount(){
-		if(this.props.currentUser && this.props.username){
-			if(this.props.currentUser.role != "tourist" || this.props.currentUser.username != this.props.username){
-				this.props.history.push(this.props.currentUser ? '/' : '/login');
-			}
-		}
-	}
-
 	render(){
 		if (!this.props.currentUser) return (<div><h1>Loading.. </h1></div>);
 		return (

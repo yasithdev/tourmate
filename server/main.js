@@ -44,6 +44,11 @@ Meteor.methods({
 		let user = Accounts.findUserByUsername(uname);
 		return !(user != null);
 	},
+
+	'users.isLoggedIn' : () => {
+		return !(!(Meteor.userId()));
+	}
+
 });
 
 Meteor.publish("tourists", () => 

@@ -12,11 +12,11 @@ export class Login extends React.Component {
 		this.state = {'isLoggedIn' : false};
 	}
 
-	componentDidMount(){
-		if(this.state.isLoggedIn){
-			this.props.history.push("/" + this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/");
-		}
-	}
+	// componentDidMount(){
+	// 	if(this.state.isLoggedIn){
+	// 		this.props.history.push("/" + this.props.currentUser.profile.role + "/" + this.props.currentUser.username + "/");
+	// 	}
+	// }
 
 	render() {
 		if(this.state.isLoggedIn) {
@@ -40,9 +40,10 @@ export class Login extends React.Component {
 		
 		// Login
 		Meteor.loginWithPassword(username, password, (error) => {
-			console.log(username, password, error);
 			if(!error) {
 				this.setState({'isLoggedIn' : true});
+			} else {
+				alert('The username or password you entered was incorrect');
 			}
 		});
 	}
