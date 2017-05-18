@@ -1,3 +1,5 @@
+import { check } from 'meteor/check';
+
 export class Message {
 /* -------------------
  * |--- sender : id
@@ -10,6 +12,12 @@ export class Message {
  * |--- date : date
  */
 	constructor(sender, recipient, reservation, messagetext){
+
+		check(sender, String);
+		check(recipient, String);
+		check(reservation, String);
+		check(messagetext, String);
+
 		this.sender = sender;
 		this.recipient = recipient;
 		this.reservation = reservation;

@@ -1,3 +1,5 @@
+import { check } from 'meteor/check';
+
 export class Review {
 /* -------------------
  * |--- reservation : id
@@ -7,6 +9,12 @@ export class Review {
  * |--- date : Date
  */
 	constructor(reservation, title, rating, review){
+		check(reservation, String);
+		check(title, String);
+		check(rating, Number);
+		if(rating < 0 || rating > 5) throw new Meteor.error('rating must be between 0 and 5');
+		check(review, String);
+
 		this.reservation = reservation;
 		this.title = title;
 		this.rating = rating;
