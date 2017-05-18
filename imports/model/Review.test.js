@@ -1,4 +1,7 @@
-import { Review } from '../../model/Review.js';
+import { Review } from './Review.js';
+import { check } from 'meteor/check';
+import { Random } from 'meteor/random';
+import { assert } from 'meteor/practicalmeteor:chai';
 /* -------------------
  * |--- rating : id
  * |--- title : String
@@ -6,7 +9,7 @@ import { Review } from '../../model/Review.js';
  * |--- review : String
  * |--- date : Date
  */
-if (Meteor.isServer) {
+// if (Meteor.isServer) {
 
   describe('Review Unit Tests', function() {
 
@@ -17,7 +20,7 @@ if (Meteor.isServer) {
         var title = "review_title";
         var rating = (Random.fraction() * 1000).toFixed() % 6;
         var reviewtext = "sample review text";
-        let review = new review(reservation, title, rating, reviewtext);
+        let review = new Review(reservation, title, rating, reviewtext);
       }, Match.error);
     });
 
@@ -28,7 +31,7 @@ if (Meteor.isServer) {
         var title = null;
         var rating = (Random.fraction() * 1000).toFixed() % 6;
         var reviewtext = "sample review text";
-        let review = new review(reservation, title, rating, reviewtext);
+        let review = new Review(reservation, title, rating, reviewtext);
       }, Match.error);
     });
 
@@ -39,7 +42,7 @@ if (Meteor.isServer) {
         var title = "review_title";
         var rating = null;
         var reviewtext = "sample review text";
-        let review = new review(reservation, title, rating, reviewtext);
+        let review = new Review(reservation, title, rating, reviewtext);
       }, Match.error);
     });
 
@@ -50,7 +53,7 @@ if (Meteor.isServer) {
         var title = "review_title";
         var rating = 6;
         var reviewtext = "sample review text";
-        let review = new review(reservation, title, rating, reviewtext);
+        let review = new Review(reservation, title, rating, reviewtext);
       }, Meteor.error, 'rating must be between 0 and 5');
     });
 
@@ -61,7 +64,7 @@ if (Meteor.isServer) {
         var title = "review_title";
         var rating = (Random.fraction() * 1000).toFixed() % 6;
         var reviewtext = null;
-        let review = new review(reservation, title, rating, reviewtext);
+        let review = new Review(reservation, title, rating, reviewtext);
       }, Match.error);
     });
 
@@ -72,11 +75,11 @@ if (Meteor.isServer) {
         var title = "review_title";
         var rating = (Random.fraction() * 1000).toFixed() % 6;
         var reviewtext = "sample review text";
-        let review = new review(reservation, title, rating, reviewtext);
+        let review = new Review(reservation, title, rating, reviewtext);
         expect(review).toExist();
       }, Error);
     });
 
   });
 
-}
+// }

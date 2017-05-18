@@ -1,9 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import { PublicationCollector } from 'meteor/publication-collector';
+import { check } from 'meteor/check';
+import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
 import { assert } from 'meteor/practicalmeteor:chai';
 
-import { Reservations } from '../../api/reservations.js';
+import { Reservations } from './reservations.js';
 /* -------------------
  * |--- tourist : id
  * |--- tour-provider : id
@@ -14,7 +15,7 @@ import { Reservations } from '../../api/reservations.js';
  * |--- message : string
  */
 
-if (Meteor.isServer) {
+// if (Meteor.isServer) {
 
 	describe('Reservations Module (DB)', function() {
 
@@ -29,7 +30,7 @@ if (Meteor.isServer) {
 		const message = "test_message";
 
 		let updaterole = function(role) {
-			Meteor.users.update({_id: userId}, {'profile.role', role});
+			Meteor.users.update({_id: userId}, {'profile.role': role});
 		}
 
 		let reservationId;
@@ -38,7 +39,7 @@ if (Meteor.isServer) {
 
 			// --------------------------
 			// Create a new user account with username test and make sure its properly inserted
-			let testUserId = Accounts.createUser( {_id: userId, profile : {role : 'test'} } );
+			let testUserId = Accounts.createUser( {_id: userId, profile : {role : 'test'}, 'username' : 'test_user' } );
 			isDefined(testUserId);
 			// Keep a copy of original Meteor.user function
 			userFct = Meteor.user;
@@ -63,9 +64,9 @@ if (Meteor.isServer) {
 			reservation = {
 				'tourist' : tourist,
 				'tour-provider' : tour_provider,
-				'services' : services
-				'startDate' : startDate
-				'endDate' : endDate.
+				'services' : services,
+				'startDate' : startDate,
+				'endDate' : endDate,
 				'status' : status,
 				'message' : message,
 			};
@@ -210,4 +211,4 @@ if (Meteor.isServer) {
 
 	});
 	// End of isServer block
-}
+// }

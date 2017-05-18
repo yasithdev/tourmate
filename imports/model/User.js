@@ -24,7 +24,7 @@ export class User {
 	}
 }
 
-export const UserRole {
+export const UserRole = {
 	'Admin' : 'admin',
 	'TourProvider' : 'tour-provider',
 	'Tourist' : 'tourist'

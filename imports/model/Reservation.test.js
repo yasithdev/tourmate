@@ -1,4 +1,7 @@
-import { Reservation } from '../../model/Reservation.js';
+import { Reservation } from './Reservation.js';
+import { check } from 'meteor/check';
+import { Random } from 'meteor/random';
+import { assert } from 'meteor/practicalmeteor:chai';
 /* -------------------
  * |--- tourist : id
  * |--- tour-provider : id
@@ -8,9 +11,9 @@ import { Reservation } from '../../model/Reservation.js';
  * |--- status : string (pending, accepted, completed, pendingcancel, canceled, rejected, disputed)
  * |--- message : string
  */
-import { ReservationStatus } from '../../model/Reservation.js';
+import { ReservationStatus } from './Reservation.js';
 
-if (Meteor.isServer) {
+// if (Meteor.isServer) {
 
   describe('Reservation Unit Tests', function() {
 
@@ -171,4 +174,4 @@ if (Meteor.isServer) {
 
   });
 
-}
+// }

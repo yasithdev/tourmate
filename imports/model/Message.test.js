@@ -1,4 +1,7 @@
-import { Message } from '../../model/Message.js';
+import { Message } from './Message.js';
+import { check } from 'meteor/check';
+import { Random } from 'meteor/random';
+import { assert } from 'meteor/practicalmeteor:chai';
 /* -------------------
  * |--- sender : id
  * |--- recipient : id
@@ -10,7 +13,7 @@ import { Message } from '../../model/Message.js';
  * |--- date : date
  */
 
-if (Meteor.isServer) {
+// if (Meteor.isServer) {
 
 	describe('Messages Unit Tests', function() {
 
@@ -71,4 +74,4 @@ if (Meteor.isServer) {
 		});
 	});
 
-}
+// }

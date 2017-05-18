@@ -1,4 +1,7 @@
-import { User } from '../../model/User.js';
+import { User } from './User.js';
+import { check } from 'meteor/check';
+import { Random } from 'meteor/random';
+import { assert } from 'meteor/practicalmeteor:chai';
 /* -------------------
  * |--- profile.name : String
  * |--- username : String
@@ -6,9 +9,9 @@ import { User } from '../../model/User.js';
  * |--- email : String
  * |--- profile.role : String
  */
- import { UserRole } from '../../model/User.js';
+ import { UserRole } from './User.js';
 
-if (Meteor.isServer) {
+// if (Meteor.isServer) {
 
   describe('User Unit Tests', function() {
   	//@Test - Data
@@ -19,7 +22,7 @@ if (Meteor.isServer) {
         var password = Random.secret;
         var email = "test@test.com";
         var role = UserRole.Tourist;
-        let user = new user(name, username, password, email, role);
+        let user = new User(name, username, password, email, role);
       }, Match.error);
     });
 
@@ -31,7 +34,7 @@ if (Meteor.isServer) {
         var password = Random.secret;
         var email = "test@test.com";
         var role = UserRole.Tourist;
-        let user = new user(name, username, password, email, role);
+        let user = new User(name, username, password, email, role);
       }, Match.error);
     });
 
@@ -43,7 +46,7 @@ if (Meteor.isServer) {
         var password = null;
         var email = "test@test.com";
         var role = UserRole.Tourist;
-        let user = new user(name, username, password, email, role);
+        let user = new User(name, username, password, email, role);
       }, Match.error);
     });
 
@@ -55,7 +58,7 @@ if (Meteor.isServer) {
         var password = Random.secret;
         var email = null;
         var role = UserRole.Tourist;
-        let user = new user(name, username, password, email, role);
+        let user = new User(name, username, password, email, role);
       }, Match.error);
     });
 
@@ -67,7 +70,7 @@ if (Meteor.isServer) {
         var password = Random.secret;
         var email = "test@test.com";
         var role = null;
-        let user = new user(name, username, password, email, role);
+        let user = new User(name, username, password, email, role);
       }, Match.error);
     });
 
@@ -79,7 +82,7 @@ if (Meteor.isServer) {
         var password = Random.secret;
         var email = "test@test.com";
         var role = "invalid_role";
-        let user = new user(name, username, password, email, role);
+        let user = new User(name, username, password, email, role);
       }, Match.error);
     });
 
@@ -92,10 +95,10 @@ if (Meteor.isServer) {
         var password = Random.secret;
         var email = "test@test.com";
         var role = UserRole.Tourist;
-        let user = new user(name, username, password, email, role);
+        let user = new User(name, username, password, email, role);
         expect(user).toExist();
       }, Error);
     });
   });
 
-}
+// }

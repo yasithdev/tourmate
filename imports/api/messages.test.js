@@ -1,9 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import { PublicationCollector } from 'meteor/publication-collector';
+import { check } from 'meteor/check';
+import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
 import { assert } from 'meteor/practicalmeteor:chai';
 
-import { Messages } from '../../api/messages.js';
+import { Messages } from './messages.js';
 /* -------------------
  * |--- sender : id
  * |--- recipient : id
@@ -15,7 +16,7 @@ import { Messages } from '../../api/messages.js';
  * |--- date : date
  */
 
-if (Meteor.isServer) {
+// if (Meteor.isServer) {
 
 	describe('Messages Module (DB)', function() {
 
@@ -26,7 +27,7 @@ if (Meteor.isServer) {
 		const reservation = 'test_reservation';
 
 		let updaterole = function(role) {
-			Meteor.users.update({_id: userId}, {'profile.role', role});
+			Meteor.users.update({_id: userId}, {'profile.role': role});
 		}
 
 		let messageId;
@@ -35,7 +36,7 @@ if (Meteor.isServer) {
 
 			// --------------------------
 			// Create a new user account with username test and make sure its properly inserted
-			let testUserId = Accounts.createUser( {_id: userId, profile : {role : 'test'} } );
+			let testUserId = Accounts.createUser( {_id: userId, profile : {role : 'test'}, 'username' : 'test_user' } );
 			isDefined(testUserId);
 			// Keep a copy of original Meteor.user function
 			userFct = Meteor.user;
@@ -60,9 +61,9 @@ if (Meteor.isServer) {
 			messageId = Messages.insert({
 				'sender' : sender,
 				'recipient' : recipient,
-				'reservation' : reservation
-				'senderVisible' : true
-				'recipientVisible' : true.
+				'reservation' : reservation,
+				'senderVisible' : true,
+				'recipientVisible' : true,
 				'unread' : true,
 				'date' : new Date(),
 			});
@@ -184,4 +185,4 @@ if (Meteor.isServer) {
 
 	});
 	// End of isServer block
-}
+// }
