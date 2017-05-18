@@ -19,7 +19,7 @@ export class Routes extends React.Component {
 
 	render() {
 		if(this.props.isLoading){
-			return (<div className="loading">Loading&#8230;</div>);
+			return (<div className="loading">Hang On..&#8230;</div>);
 		} else {
 			let currentUser = this.props.currentUser;
 			return (
@@ -40,21 +40,18 @@ export class Routes extends React.Component {
 						<Route path="/register" component={Register}/>
 
 						<Route path="/tourist/:username" render={(props) => {
-								console.log(props);
 								return (currentUser
 								? (<TouristApp/>)
 								: (<Redirect to="/login"/>) );
 							}}/>
 
 						<Route path="/tour-provider/:username" render={(props) => {
-								console.log(props);
 								return (currentUser
 								? (<TourProviderApp/>)
 								: (<Redirect to="/login"/>) );
 							}}/>
 
 						<Route path="/admin/:username" render={(props) => {
-								console.log(props);
 								return (currentUser
 								? (<AdminApp/>)
 								: (<Redirect to="/login"/>) );
@@ -62,21 +59,18 @@ export class Routes extends React.Component {
 
 						{/*Route corrections*/}
 						<Route path="/tourist" render={(props) => {
-								console.log(props);
 								return (currentUser
 								? (<Redirect to={"/tourist/" + currentUser.username} />)
 								: (<Redirect to="/login"/>) );
 							}}/>
 
 						<Route path="/tour-provider" render={(props) => {
-								console.log(props);
 								return (currentUser
 								? (<Redirect to={"/tour-provider/" + currentUser.username} />)
 								: (<Redirect to="/login"/>) );
 							}}/>
 
 						<Route path="/admin" render={(props) => {
-								console.log(props);
 								return (currentUser
 								? (<Redirect to={"/admin/" + currentUser.username} />)
 								: (<Redirect to="/login"/>) );

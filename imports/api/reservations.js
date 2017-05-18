@@ -17,14 +17,14 @@ export const Reservations = new Mongo.Collection('reservations');
 
 if (Meteor.isServer) {
 	// Only return reservations where the current user is involved
-  Meteor.publish('reservations', function () {
-  	let user = Meteor.users.findOne(this.userId);
-  	if(user){
+	Meteor.publish('reservations', function () {
+		let user = Meteor.users.findOne(this.userId);
+		if(user){
 			if(user.profile.role == 'tourist') return Reservations.find({'tourist': this.userId});
 			else if(user.profile.role == 'tour-provider') return Reservations.find({'tour-provider': this.userId});
 			else return Reservations.find();
 		}
-  });
+	});
 }
 
 Meteor.methods({
@@ -39,7 +39,8 @@ Meteor.methods({
 		check(reservation['message'], String);
 		// For any reservation, set status to pending on insert
 		reservation['status'] = 'pending';
-		if( reservation[Meteor.user().profile.role] !== Meteor.userId() ) throw new Meteor.error('Reservation not made for current user');
+		if( Meteor.user().profile.role != 'tourist' ) throw new Meteor.error('Current user is not a tourist');
+		if( reservation[Meteor.user().profile.role] != Meteor.userId() ) throw new Meteor.error('Reservation not made for current user');
 
 		Reservations.insert(reservation);
 		return true;

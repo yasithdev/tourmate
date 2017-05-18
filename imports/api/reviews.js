@@ -17,20 +17,20 @@ export const Reviews = new Mongo.Collection('reviews');
 
 if (Meteor.isServer) {
 	// Only return review that are made for reservations where current user is involved
-  Meteor.publish('reviews', function() {
-  	let user = Meteor.users.findOne({'_id' : this.userId});
-  	if(user){
-  		params = {};
-  		if (user.role != 'admin') params[user.profile.role] = this.userId;
-  		let reservations = Reservations.find(params).fetch().map((r) => (r['_id']));
-  		if(reservations){
-  			var query = {}
-  			if (user.role != 'admin') query['reservation'] = { $in : reservations };
-  			return Reviews.find(query);
-  		}
-  	}
-  	return Reviews.find({null});
-  });
+	Meteor.publish('reviews', function() {
+		let user = Meteor.users.findOne({'_id' : this.userId});
+		if(user){
+			params = {};
+			if (user.role != 'admin') params[user.profile.role] = this.userId;
+			let reservations = Reservations.find(params).fetch().map((r) => (r['_id']));
+			if(reservations){
+				var query = {}
+				if (user.role != 'admin') query['reservation'] = { $in : reservations };
+				return Reviews.find(query);
+			}
+		}
+		return Reviews.find({null});
+	});
 }
 
 Meteor.methods({
@@ -41,6 +41,7 @@ Meteor.methods({
 		check(review['title'], String);
 		check(review['rating'], Number);
 		check(review['review'], String);
+		if(Meteor.user().profile.role != 'tourist') throw new Meteor.error('current user is not a tourist');
 		if(review['rating'] > 5 || review['rating'] < 1) throw new Meteor.error('invalid value for rating');
 		// Set default values
 		review['date'] = new Date();
@@ -61,17 +62,17 @@ Meteor.methods({
 		// If constraints satisfied, update title, rating, review and date of review
 		Reviews.update({'_id' : review['_id']}, {
 			$set : {
-				'title' : review['title'], 
-				'rating' : review['rating'], 
+				'title' : review['title'],
+				'rating' : review['rating'],
 				'review' : review['review'],
 				'date' : review['date']
 			}
 		});
 		return true;
 	},
-	
+
 	// Deletes an existing review
 	'reviews.delete': (id) => {
-		
+
 	},
 });
