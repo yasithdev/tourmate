@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="localhost:3000" />
-<title>login</title>
+<title>logout</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">login</td></tr>
+<tr><td rowspan="1" colspan="3">logout</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -17,29 +17,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>open</td>
-	<td>/login</td>
+	<td>assertLocation</td>
+	<td>http://localhost:3000/login</td>
 	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>css=input.form-control</td>
-	<td>yasithmilinda</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>//input[@type='password']</td>
-	<td>12345678</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>css=button.btn.btn-primary</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertHtmlSource</td>
-	<td>css=navbar-brand</td>
-	<td>Yasith Jayawardana (tourist)</td>
 </tr>
 </tbody></table>
 </body>

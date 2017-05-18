@@ -27,7 +27,7 @@ Meteor.startup(() => {
 	console.log('admin user created');
 
 	// Start Kadira Monitoring
-	// Kadira.connect('<AppId>', '<AppSecret>');
+	Kadira.connect('evjajefxN5Co6g6gG', '4b2145e8-d439-4652-bf8c-bf7c92ba2043');
 });
 
 Meteor.methods({

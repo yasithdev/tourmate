@@ -3,44 +3,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="localhost:3000" />
-<title>login</title>
+<link rel="selenium.base" href="http://localhost:3000/" />
+<title>about</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">login</td></tr>
+<tr><td rowspan="1" colspan="3">about</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/logout</td>
+	<td>/</td>
 	<td></td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>/login</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>css=input.form-control</td>
-	<td>yasithmilinda</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>//input[@type='password']</td>
-	<td>12345678</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=button.btn.btn-primary</td>
+	<td>link=About Us</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertHtmlSource</td>
-	<td>css=navbar-brand</td>
-	<td>Yasith Jayawardana (tourist)</td>
+	<td>assertLocation</td>
+	<td>http://localhost:3000/about</td>
+	<td></td>
 </tr>
+
 </tbody></table>
 </body>
 </html>
