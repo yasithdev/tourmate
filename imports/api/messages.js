@@ -32,7 +32,7 @@ Meteor.methods({
 	'messages.insert': (message) => {
 		// Validation
 		check(message['sender'], String);
-		if(message['sender'] != Meteor.userId()) throw new Meteor.error("userId does not match sender");
+		if(message['sender'] != Meteor.userId()) throw new Meteor.Error("userId does not match sender");
 		check(message['recipient'], String);
 		check(message['reservation'], String);
 		check(message['messagetext'], String);
@@ -67,6 +67,6 @@ Meteor.methods({
 			return true;
 		}
 
-		else throw Meteor.error('current user is not either sender nor recipient of this message');
+		else throw Meteor.Error('current user is not either sender nor recipient of this message');
 	},
 });

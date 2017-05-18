@@ -15,7 +15,7 @@ export class User {
 		check(email, String);
 		check(role, String);
 
-		if(Object.values(UserRole).indexOf(role) == -1) throw new Meteor.error('role cannot be a value outside of UserRole');
+		if(Object.values(UserRole).indexOf(role) == -1) throw new Meteor.Error('role cannot be a value outside of UserRole');
 
 		this.profile = {'name' : name, 'role' : role};
 		this.username = username;

@@ -12,7 +12,7 @@ export class Review {
 		check(reservation, String);
 		check(title, String);
 		check(rating, Number);
-		if(rating < 0 || rating > 5) throw new Meteor.error('rating must be between 0 and 5');
+		if(rating < 0 || rating > 5) throw new Meteor.Error('rating must be between 0 and 5');
 		check(review, String);
 
 		this.reservation = reservation;

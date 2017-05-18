@@ -1,5 +1,6 @@
 import { Message } from './Message.js';
 import { check } from 'meteor/check';
+import { Match } from 'meteor/match';
 import { Random } from 'meteor/random';
 import { assert } from 'meteor/practicalmeteor:chai';
 /* -------------------
@@ -25,7 +26,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
 				var reservation = Random.id();
 				var messagetext = "sample message text";
 				let message = new Message(sender, recipient, reservation, messagetext);
-			}, Match.error);
+			}, Match.Error);
 		});
 
 			//@Test - Data
@@ -36,7 +37,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
 				var reservation = Random.id();
 				var messagetext = "sample message text";
 				let message = new Message(sender, recipient, reservation, messagetext);
-			}, Match.error);
+			}, Match.Error);
 		});
 
 			//@Test - Data
@@ -47,7 +48,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
 				var reservation = null;
 				var messagetext = "sample message text";
 				let message = new Message(sender, recipient, reservation, messagetext);
-			}, Match.error);
+			}, Match.Error);
 		});
 
 			//@Test - Data
@@ -58,7 +59,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
 				var reservation = Random.id();
 				var messagetext = null;
 				let message = new Message(sender, recipient, reservation, messagetext);
-			}, Match.error);
+			}, Match.Error);
 		});
 
 		//@Test - Data

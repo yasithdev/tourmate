@@ -1,5 +1,6 @@
 import { Review } from './Review.js';
 import { check } from 'meteor/check';
+import { Match } from 'meteor/match';
 import { Random } from 'meteor/random';
 import { assert } from 'meteor/practicalmeteor:chai';
 /* -------------------
@@ -21,7 +22,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
         var rating = (Random.fraction() * 1000).toFixed() % 6;
         var reviewtext = "sample review text";
         let review = new Review(reservation, title, rating, reviewtext);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -32,7 +33,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
         var rating = (Random.fraction() * 1000).toFixed() % 6;
         var reviewtext = "sample review text";
         let review = new Review(reservation, title, rating, reviewtext);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -43,7 +44,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
         var rating = null;
         var reviewtext = "sample review text";
         let review = new Review(reservation, title, rating, reviewtext);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -54,7 +55,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
         var rating = 6;
         var reviewtext = "sample review text";
         let review = new Review(reservation, title, rating, reviewtext);
-      }, Meteor.error, 'rating must be between 0 and 5');
+      }, Meteor.Error, 'rating must be between 0 and 5');
     });
 
     //@Test - Data
@@ -65,7 +66,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
         var rating = (Random.fraction() * 1000).toFixed() % 6;
         var reviewtext = null;
         let review = new Review(reservation, title, rating, reviewtext);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data

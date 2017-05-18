@@ -1,5 +1,6 @@
 import { User } from './User.js';
 import { check } from 'meteor/check';
+import { Match } from 'meteor/match';
 import { Random } from 'meteor/random';
 import { assert } from 'meteor/practicalmeteor:chai';
 /* -------------------
@@ -23,7 +24,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
         var email = "test@test.com";
         var role = UserRole.Tourist;
         let user = new User(name, username, password, email, role);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -35,7 +36,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
         var email = "test@test.com";
         var role = UserRole.Tourist;
         let user = new User(name, username, password, email, role);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -47,7 +48,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
         var email = "test@test.com";
         var role = UserRole.Tourist;
         let user = new User(name, username, password, email, role);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -59,7 +60,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
         var email = null;
         var role = UserRole.Tourist;
         let user = new User(name, username, password, email, role);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -71,7 +72,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
         var email = "test@test.com";
         var role = null;
         let user = new User(name, username, password, email, role);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -83,7 +84,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
         var email = "test@test.com";
         var role = "invalid_role";
         let user = new User(name, username, password, email, role);
-      }, Match.error);
+      }, Match.Error);
     });
 
 

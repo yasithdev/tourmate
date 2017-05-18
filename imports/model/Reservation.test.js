@@ -1,5 +1,6 @@
 import { Reservation } from './Reservation.js';
 import { check } from 'meteor/check';
+import { Match } from 'meteor/match';
 import { Random } from 'meteor/random';
 import { assert } from 'meteor/practicalmeteor:chai';
 /* -------------------
@@ -28,7 +29,7 @@ import { ReservationStatus } from './Reservation.js';
         var status = ReservationStatus.Pending;
         var message = "sample message text";
         let reservation = new Reservation(tourist, tourprovider, services, startDate, endDate, status, message);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -42,7 +43,7 @@ import { ReservationStatus } from './Reservation.js';
         var status = ReservationStatus.Pending;
         var message = "sample message text";
         let reservation = new Reservation(tourist, tourprovider, services, startDate, endDate, status, message);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -56,7 +57,7 @@ import { ReservationStatus } from './Reservation.js';
         var status = ReservationStatus.Pending;
         var message = "sample message text";
         let reservation = new Reservation(tourist, tourprovider, services, startDate, endDate, status, message);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -70,7 +71,7 @@ import { ReservationStatus } from './Reservation.js';
         var status = ReservationStatus.Pending;
         var message = "sample message text";
         let reservation = new Reservation(tourist, tourprovider, services, startDate, endDate, status, message);
-      }, Meteor.error, 'services cannot be empty');
+      }, Meteor.Error, 'services cannot be empty');
     });
 
     //@Test - Data
@@ -84,7 +85,7 @@ import { ReservationStatus } from './Reservation.js';
         var status = ReservationStatus.Pending;
         var message = "sample message text";
         let reservation = new Reservation(tourist, tourprovider, services, startDate, endDate, status, message);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -98,7 +99,7 @@ import { ReservationStatus } from './Reservation.js';
         var status = ReservationStatus.Pending;
         var message = "sample message text";
         let reservation = new Reservation(tourist, tourprovider, services, startDate, endDate, status, message);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -112,7 +113,7 @@ import { ReservationStatus } from './Reservation.js';
         var status = ReservationStatus.Pending;
         var message = "sample message text";
         let reservation = new Reservation(tourist, tourprovider, services, startDate, endDate, status, message);
-      }, Meteor.error, 'start cannot be date greater than end date');
+      }, Meteor.Error, 'start cannot be date greater than end date');
     });
 
     //@Test - Data
@@ -126,7 +127,7 @@ import { ReservationStatus } from './Reservation.js';
         var status = null;
         var message = "sample message text";
         let reservation = new Reservation(tourist, tourprovider, services, startDate, endDate, status, message);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data
@@ -140,7 +141,7 @@ import { ReservationStatus } from './Reservation.js';
         var status = "test_status";
         var message = "sample message text";
         let reservation = new Reservation(tourist, tourprovider, services, startDate, endDate, status, message);
-      }, Meteor.error, 'reservation status cannot be a value outside of ReservationStatus');
+      }, Meteor.Error, 'reservation status cannot be a value outside of ReservationStatus');
     });
 
     //@Test - Data
@@ -154,7 +155,7 @@ import { ReservationStatus } from './Reservation.js';
         var status = ReservationStatus.Pending;
         var message = null;
         let reservation = new Reservation(tourist, tourprovider, services, startDate, endDate, status, message);
-      }, Match.error);
+      }, Match.Error);
     });
 
     //@Test - Data

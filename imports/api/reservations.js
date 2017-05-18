@@ -39,8 +39,8 @@ Meteor.methods({
 		check(reservation['message'], String);
 		// For any reservation, set status to pending on insert
 		reservation['status'] = 'pending';
-		if( Meteor.user().profile.role != 'tourist' ) throw new Meteor.error('Current user is not a tourist');
-		if( reservation[Meteor.user().profile.role] != Meteor.userId() ) throw new Meteor.error('Reservation not made for current user');
+		if( Meteor.user().profile.role != 'tourist' ) throw new Meteor.Error('Current user is not a tourist');
+		if( reservation[Meteor.user().profile.role] != Meteor.userId() ) throw new Meteor.Error('Reservation not made for current user');
 
 		Reservations.insert(reservation);
 		return true;

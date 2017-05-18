@@ -41,8 +41,8 @@ Meteor.methods({
 		check(review['title'], String);
 		check(review['rating'], Number);
 		check(review['review'], String);
-		if(Meteor.user().profile.role != 'tourist') throw new Meteor.error('current user is not a tourist');
-		if(review['rating'] > 5 || review['rating'] < 1) throw new Meteor.error('invalid value for rating');
+		if(Meteor.user().profile.role != 'tourist') throw new Meteor.Error('current user is not a tourist');
+		if(review['rating'] > 5 || review['rating'] < 1) throw new Meteor.Error('invalid value for rating');
 		// Set default values
 		review['date'] = new Date();
 		// If constraints satisfied, insert review
@@ -56,7 +56,7 @@ Meteor.methods({
 		check(review['title'], String);
 		check(review['rating'], Number);
 		check(review['review'], String);
-		if(review['rating'] > 5 || review['rating'] < 1) throw new Meteor.error('invalid value for rating');
+		if(review['rating'] > 5 || review['rating'] < 1) throw new Meteor.Error('invalid value for rating');
 		// Set default values
 		review['date'] = new Date();
 		// If constraints satisfied, update title, rating, review and date of review
