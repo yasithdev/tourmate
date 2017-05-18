@@ -21,7 +21,7 @@ export class Reservation {
 
  	if (services.Length == 0) throw new Meteor.error('services cannot be empty');
  	if(endDate < startDate) throw new Meteor.error('start cannot be date greater than end date');
- 	if(Object.values(ReservationStatus).indexOf(status) == -1) throw new Meteor.error('reservation status cannot be a value outside of ReservationStatus')
+ 	if(Object.values(ReservationStatus).indexOf(status) == -1) throw new Meteor.error('reservation status cannot be a value outside of ReservationStatus');
 
  	this.tourist = tourist;
  	this.tourprovider = tourprovider;
